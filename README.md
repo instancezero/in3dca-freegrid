@@ -2,14 +2,17 @@
 
 This project contains [FreeCAD](https://freecadweb.org) macros for generating FreeGrid storage system components.
 
+![screen capture of the FreeGrid User Interface](img/screen.png "FreeGrid dialog")
+
 ## Installation
 
 Clone or download the project, copy the contents of the FreeCAD-Macros folder into your FreeCAD user macro folder.
-If you update the code, restarting FreeCAD is advised.
+If you are updating the code, restarting FreeCAD is advised.
 
 ## Community/Contributing
 
-If you use FreeGrid or add components to it, please let me know!
+If you use FreeGrid or add components to it, please let me know! If you have models on Cults, tag them with In3D and
+FreeGrid.
 
 You can find In3D:
 
@@ -28,7 +31,7 @@ organization system. But I wanted to design some of my own components and there 
 So I started working on my own, but like many projects it got shuffled aside. Then I got a CNC router and
 my limited workspace turned into an unmanageable mess. I thought I'd do another search before returning to my project
 and found Zack Freedman's [Gridfinity system](https://www.youtube.com/watch?v=ra_9zU-mnl8). Perfect, here's a free
-system that saves be going back to my design from scratch approach!
+system that saves be going back to my design-from-scratch approach!
 
 Alas, nothing is perfect. So here's my "more perfect for me" alternative. I hope others will find it worthwhile.
 
@@ -36,13 +39,15 @@ Alas, nothing is perfect. So here's my "more perfect for me" alternative. I hope
 
 The 3D printing community has a love affair with Autodesk's Fusion 360. After all, it's free, why not?
 
-But Fusion is only free as in "no cost for limited use", not free as in freedom. While Fusion 360 is more powerful than
-FreeCAD for most of what I do, there aren't enough advantages to prefer it. Also, I'm a software developer:
-"parametric" CAD systems are great, but my concept of parameters is higher level. It's great that you can go into
-different shapes to adjust and change a design, but when those parameters are deeply nested, this is
-still a tricky process. For me, a parameter is something you supply to a block of code to get the object you want;
-the underlying code should be responsible for working out the details. FreeCAD's macros give me the capability of doing
-just that. Fusion 360 doesn't even come close.
+But Fusion is only free as in "no cost for limited use", not free as in freedom. I'm never comfortable with systems that
+are only free until someone decides to change the terms overnight.
+
+Fusion 360 is certainly more powerful than FreeCAD, for most of what I do there aren't enough advantages to prefer it.
+Also, I'm a software developer: "parametric" CAD systems are great, but my concept of parameters is higher level. It's
+great that you can go into different shapes to adjust and change a design, but when those parameters are deeply nested,
+this is still a tricky process. For me, parameters are something you supply to a block of code to get the object you
+want; the underlying code should be responsible for working out the details. FreeCAD's macros give me the capability of
+doing just that. Fusion 360 doesn't even come close.
 
 ## Back to "not quite perfect"
 
@@ -56,8 +61,8 @@ I enthusiastically printed out a few of his modules and ran into some things I w
 * He uses Fusion 360. Importing his work wasn't possible, unless I just wanted a bunch of primitives.
   This means no parameters at all and that's essentially useless.
 * His grid size is 42mm, which seems odd. I think he picked it so his grids would fit perfectly in his shop drawers.
-  In my case, I've got big hands and getting two fingers into a 1x1 box to fish out a small part simply doesn't work
-  that well.
+  In my case, I've got big hands and getting two fingers into a 42mm 1x1 box to fish out a small part simply doesn't
+  work that well.
 * The default boxes come in a 24mm height. The system I was working on used multiples of 10mm. I am more
   comfortable with that. Also, anything in the range of 25mm feels like an inch. Eeew.
 

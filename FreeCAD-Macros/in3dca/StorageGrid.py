@@ -210,9 +210,9 @@ class StorageGrid:
         if self.magnets:
             holder = self.magnet_holder(6)
             c = 10
-            for i in range(0, self.x_size):
+            for i in range(0, self.y_size):
                 y = i * self.spacing
-                for w in range(0, self.y_size):
+                for w in range(0, self.x_size):
                     x = w * self.spacing
                     holder.Placement = Placement(h.xyz(x + c, y + c), Rotation())
                     rails = rails.fuse(holder)
