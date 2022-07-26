@@ -38,9 +38,11 @@ __Files__ = ''
 
 import copy
 import DraftVecUtils
+import FreeCAD
 from FreeCAD import Base
 import math
 import Part
+import Sketcher
 
 
 # Create a list of Vectors forming an arc
@@ -83,12 +85,30 @@ def poly_rotate(list, degrees, axis):
         list[i] = DraftVecUtils.rotate(p, math.radians(degrees), axis)
     return list
 
-
 def poly_to_face(points, close=0):
     if close != 0:
         points = poly_close(points)
 
     return Part.Face(Part.makePolygon(points))
+
+def poly_to_sketch(name, points, close=0):
+    if close != 0:
+        points = poly_close(points)
+
+    doc = FreeCAD.ActiveDocument
+    sketch = doc.addObject('Sketcher::SketchObject', name)
+    last_index = len(points) - 1
+    for i in range(last_index):
+        sketch.addGeometry(Part.LineSegment(points[i], points[i + 1]))
+        if i:
+            sketch.addConstraint(Sketcher.Constraint('Coincident', i - 1, 2, i, 1))
+        sketch.addConstraint(Sketcher.Constraint('DistanceX', i, 1, points[i].x))
+        sketch.addConstraint(Sketcher.Constraint('DistanceY', i, 1, points[i].y))
+    sketch.addConstraint(Sketcher.Constraint('Coincident', last_index - 1, 2, 0, 1))
+    sketch.MapMode = 'FlatFace'
+    doc.recompute()
+    return sketch
+
 
 def poly_translate(list, vector):
     for i, p in enumerate(list):
