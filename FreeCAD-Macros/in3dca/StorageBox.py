@@ -47,11 +47,18 @@ import Part
 
 class StorageBox:
     def __init__(self):
+        self.INSIDE_RIM_BOTTOM = 3.4
+        self.INSIDE_RIM_WIDTH = 0.4
         self.MIN_FLOOR = 4.8
-        self.RIM_BOTTOM = 4.1
+        self.STACK_ADJUSTMENT = 2.3
         self.WALL_THICKNESS = 2.0
         self.as_components = False
+        self.cells_x = 1
+        self.cells_y = 1
         self.corner_size = 5.0
+        # Generate the front face
+        self.closed_front = True
+        # Number of areas within the box
         self.divisions = 0
         self.divider_width = 1.2
         self.floor_thickness = self.MIN_FLOOR
@@ -91,8 +98,13 @@ class StorageBox:
         new_box = new_box.fuse(right)
 
         x_wall = wall_face.extrude(h.xyz(z=x))
-        x_wall.Placement = Placement(h.xyz(self.corner_size), Rotation(h.xyz(1.0, 1.0, 1.0), 120))
-        new_box = new_box.fuse(x_wall)
+        if self.closed_front:
+            x_wall.Placement = Placement(h.xyz(self.corner_size), Rotation(h.xyz(1.0, 1.0, 1.0), 120))
+            new_box = new_box.fuse(x_wall)
+        else:
+            x_ledge = h.poly_to_face(self.wall_profile(True)).extrude(h.xyz(z=x))
+            x_ledge.Placement = Placement(h.xyz(self.corner_size), Rotation(h.xyz(1.0, 1.0, 1.0), 120))
+            new_box = new_box.fuse(x_ledge)
 
         x_wall.Placement = Placement(
             h.xyz(x + self.corner_size, self.size_y), Rotation(h.xyz(-1.0, 1.0, 1.0), 240)
@@ -157,8 +169,8 @@ class StorageBox:
         # Create the divider profile in the XZ plane, clockwise from top left
         # when looking toward +Y
         points = [
-            h.xyz(-offset, self.WALL_THICKNESS, self.size_z - self.RIM_BOTTOM),
-            h.xyz(offset, self.WALL_THICKNESS, self.size_z - self.RIM_BOTTOM),
+            h.xyz(-offset, self.WALL_THICKNESS, self.size_z - self.INSIDE_RIM_BOTTOM),
+            h.xyz(offset, self.WALL_THICKNESS, self.size_z - self.INSIDE_RIM_BOTTOM),
             h.xyz(offset, self.WALL_THICKNESS, self.floor_thickness + 1.0),
             h.xyz(offset + 1.0, self.WALL_THICKNESS, self.floor_thickness),
             h.xyz(-offset - 1.0, self.WALL_THICKNESS, self.floor_thickness),
@@ -225,15 +237,16 @@ class StorageBox:
         # Build the grip profile in the YZ plane
         back_wall = self.size_y - self.WALL_THICKNESS
         depth = self.grip_depth
-        if self.size_z - self.RIM_BOTTOM - depth < self.floor_thickness:
-            depth = self.size_z - self.RIM_BOTTOM - self.floor_thickness
+        if self.size_z - self.INSIDE_RIM_BOTTOM - depth < self.floor_thickness + 1.0:
+            depth = self.size_z - self.INSIDE_RIM_BOTTOM - (self.floor_thickness + 1.0)
         if depth <= 0:
             return None
         points = [
-            h.xyz(self.WALL_THICKNESS, back_wall, self.size_z - self.RIM_BOTTOM),
-            h.xyz(self.WALL_THICKNESS, back_wall - depth, self.size_z - self.RIM_BOTTOM),
-            h.xyz(self.WALL_THICKNESS, back_wall, self.size_z - self.RIM_BOTTOM - depth),
-            h.xyz(self.WALL_THICKNESS, back_wall, self.size_z - self.RIM_BOTTOM),
+            h.xyz(self.WALL_THICKNESS, back_wall, self.size_z - self.INSIDE_RIM_BOTTOM),
+            h.xyz(self.WALL_THICKNESS, back_wall - depth, self.size_z - self.INSIDE_RIM_BOTTOM),
+            h.xyz(self.WALL_THICKNESS, back_wall - depth, self.size_z - self.INSIDE_RIM_BOTTOM - 1),
+            h.xyz(self.WALL_THICKNESS, back_wall, self.size_z - self.INSIDE_RIM_BOTTOM - depth - 1),
+            h.xyz(self.WALL_THICKNESS, back_wall, self.size_z - self.INSIDE_RIM_BOTTOM),
         ]
         grip = h.poly_to_face(points).extrude(h.xyz(self.size_x - 2 * self.WALL_THICKNESS))
         trim = self.corner_size + 0.5
@@ -266,6 +279,30 @@ class StorageBox:
             h.xyz(-3.0, z=0.0),  # Left lower bevel back to the start
         ]
         return profile
+
+    def insert_as_sketch(self, length, width):
+        self.size_x = length * self.spacing
+        self.size_y = width * self.spacing
+        points = [h.xyz(self.corner_size, self.WALL_THICKNESS)]
+        if not self.closed_front:
+            points.extend([
+                h.xyz(self.corner_size, 0),
+                h.xyz(self.size_x - self.corner_size, 0),
+            ])
+
+        points.extend([
+            h.xyz(self.size_x - self.corner_size, self.WALL_THICKNESS),  # Across the bottom
+            h.xyz(self.size_x - self.WALL_THICKNESS, self.corner_size),       # Up the LowerR corner bevel
+            h.xyz(self.size_x - self.WALL_THICKNESS, self.size_y - self.corner_size),   # Up the right side
+            h.xyz(self.size_x - self.corner_size, self.size_y - self.WALL_THICKNESS),   # The UpperR corner bevel
+            h.xyz(self.corner_size, self.size_y - self.WALL_THICKNESS),       # R to L across the top
+            h.xyz(self.WALL_THICKNESS, self.size_y - self.corner_size),       # The UpperL corner bevel
+            h.xyz(self.WALL_THICKNESS, self.corner_size),           # Down the left side
+            h.xyz(self.corner_size, self.WALL_THICKNESS),           # LowerL bevel to origin
+        ])
+        sketch = h.poly_to_sketch('box_' + str(self.cells_x) + " " + str(self.cells_y) + "_insert", points)
+        sketch.Placement = Placement(h.xyz(z=self.floor_thickness), Rotation())
+        return sketch
 
     # Create an object to introduce clearance at floor intersections
     def intersection(self):
@@ -370,11 +407,13 @@ class StorageBox:
     def make(self, width=1, length=1, height=1, floor_thickness=None):
         if floor_thickness is not None:
             self.floor_thickness = floor_thickness
+        self.cells_x = width
+        self.cells_y = length
         self.size_x = width * self.spacing
         self.size_y = length * self.spacing
         if height < 1:
             height = 1
-        self.size_z = height * self.unit_height
+        self.size_z = height * self.unit_height + self.STACK_ADJUSTMENT
 
         new_box = self.box_frame()
 
@@ -453,22 +492,50 @@ class StorageBox:
 
         return ramp
 
-    def wall_profile(self):
+    def top_profile(self, origin, reverse=True):
+        # Generate this clockwise, relative to the origin, which is the outside top of the box,
+        # inset by the spacing margin of 0.1. The profile ends at the bottom of the bottom rim bevel.
+        width_at_rim = self.WALL_THICKNESS + self.INSIDE_RIM_WIDTH
+        points = [
+            h.xyz(0.1, -0.1).add(origin),
+            h.xyz(1.1, -0.1).add(origin),
+            h.xyz(width_at_rim, -(width_at_rim - 1.0)).add(origin),
+            h.xyz(width_at_rim, -self.INSIDE_RIM_BOTTOM).add(origin),
+            h.xyz(self.WALL_THICKNESS, -self.INSIDE_RIM_BOTTOM - self.INSIDE_RIM_WIDTH).add(origin),
+        ]
+        if reverse:
+            points.reverse()
+
+        FreeCAD.Console.PrintMessage("origin: (" + str(origin.x) + ", " + str(origin.y) + "),\n")
+        for p in points:
+            FreeCAD.Console.PrintMessage("(" + str(p.x) + ", " + str(p.y) + "),\n")
+        FreeCAD.Console.PrintMessage("top profile end\n")
+        return points
+
+    def wall_profile(self, open_face=False):
         diagonal_end = max(self.floor_thickness, self.MIN_FLOOR)
         profile = [
             h.xyz(self.corner_size, 0.0),  # Bottom left
             h.xyz(self.corner_size, self.floor_thickness),  # Inside top of floor
             h.xyz(self.MIN_FLOOR, self.floor_thickness),  # to start of inner diagonal
             h.xyz(self.WALL_THICKNESS, diagonal_end),  # End of inner diagonal
-            h.xyz(self.WALL_THICKNESS, self.size_z - 4.5),  # Up inner wall
-            h.xyz(2.4, self.size_z - self.RIM_BOTTOM),  # Bottom rim diagonal
-            h.xyz(2.4, self.size_z - 1.9),  # Inside rim
-            h.xyz(1.1, self.size_z - 0.1),  # Top rim diagonal
-            h.xyz(0.1, self.size_z - 0.1),  # Top flat
+        ]
+        if open_face:
+            profile.append(h.xyz(0.1, diagonal_end))
+        else:
+            profile.extend(self.top_profile(h.xyz(y=self.size_z)))
+            # profile.extend([
+            #    h.xyz(self.WALL_THICKNESS, self.size_z - 4.5),  # Up inner wall
+            #    h.xyz(2.4, self.size_z - self.INSIDE_RIM_BOTTOM),  # Bottom rim diagonal
+            #    h.xyz(2.4, self.size_z - 1.9),  # Inside rim
+            #    h.xyz(1.1, self.size_z - 0.1),  # Top rim diagonal
+            #    h.xyz(0.1, self.size_z - 0.1),  # Top flat
+            # ])
+        profile.extend([
             h.xyz(0.1, 3.4),  # Down outer wall
             h.xyz(2.5, 1),  # Bottom outer diagonal
             h.xyz(2.5, 0.5),  #
             h.xyz(3.0, 0.0),  # Chamfer
             h.xyz(self.corner_size, 0.0),  # Return to origin
-        ]
+        ])
         return profile

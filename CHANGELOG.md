@@ -1,5 +1,18 @@
 # In3D.ca FreeGrid Change Log
 
+## 1.1.0
+
+Bugs:
+* Fixed issue with box height computation.
+
+Added:
+* Option to generate box with open front face.
+* Sketch generator for inside profile of a box.
+
+### 1.0.2 Bugfix
+
+* Change "number of dividers" to "number of divisions" to reflect what actually happens.
+
 ### 1.0.1 Bugfix
 
 * Fix axis mix-up with magnet pads in grids.
