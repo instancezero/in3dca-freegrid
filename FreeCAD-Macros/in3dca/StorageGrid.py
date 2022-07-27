@@ -47,7 +47,7 @@ class StorageGrid:
         self.clearance = 0.3
         self.gap = 0.1
         self.magnet_floor_thickness = 2.0 + 1.2
-        self.magnets = False
+        self.magnets = True
         self.spacing = 50
         self.rail_height = 3.0
         self.rail_width = 5.0
@@ -244,3 +244,47 @@ class StorageGrid:
         rails = rails.cut(insert)
 
         return rails
+
+    def reset(self):
+        self.bevel = 0.5
+        self.clearance = 0.3
+        self.gap = 0.1
+        self.magnet_floor_thickness = 2.0 + 1.2
+        self.magnets = True
+        self.spacing = 50
+        self.rail_height = 3.0
+        self.rail_width = 5.0
+        self.top_width = 1.0
+        self.x_size = 3
+        self.y_size = 3
+
+    def self_test(self):
+        # Generate test grids
+        start = h.xyz(z=-60)
+        incr = 60
+
+        self.reset()
+        g1x1 = self.make(1, 1)
+        g1x1.Placement = Placement(start, Rotation())
+        Part.show(g1x1, 'g1x1')
+        start.x += incr
+
+        self.reset()
+        self.magnets = False
+        g1x1_nm = self.make(1, 1)
+        g1x1_nm.Placement = Placement(start, Rotation())
+        Part.show(g1x1_nm, 'g1x1_nm')
+        start.x += incr
+
+        self.reset()
+        g1x2 = self.make(1, 2)
+        g1x2.Placement = Placement(start, Rotation())
+        Part.show(g1x2, 'g1x2')
+        start.x += incr
+
+        self.reset()
+        g2x1 = self.make(2, 1)
+        g2x1.Placement = Placement(start, Rotation())
+        Part.show(g2x1, 'g2x1')
+        start.x += 2 * incr
+
