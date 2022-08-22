@@ -96,3 +96,8 @@ failed prints, and frustration.
 As of version 1.0, the base grids have a little corner detail that was designed to make it possible to add a coupling
 and link grids together more securely. The current design is too detailed to be useful and a better version is on
 the way. Your slicer might want to add supports there, but it's not necessary.
+
+## Magnets
+
+The magnets are entirely optional, but really help to keep things in place. Use 6x2mm magnets commonly available in
+packs of 100 or more. It's important to pick one magnet orientation for the grid and the opposite for the modules.
