@@ -52,10 +52,12 @@ class StorageBox:
         self.MIN_FLOOR = 4.8
         self.STACK_ADJUSTMENT = 2.3
         self.WALL_THICKNESS = 2.0
+        self.SUPPORT_THICKNESS = 1.0
         self.as_components = False
         self.cells_x = 1
         self.cells_y = 1
         self.corner_size = 5.0
+        self.floor_support = True
         # Generate the front face
         self.closed_front = True
         # Number of areas within the box
@@ -202,6 +204,21 @@ class StorageBox:
                         s - 2 * margin, s - 2 * margin, self.floor_thickness - 1.2, h.xyz(x, y)
                     )
                     floor = floor.cut(cutout)
+
+            if self.floor_support:
+                t = self.SUPPORT_THICKNESS
+                d = (s - 2 * self.corner_size) / 1.414
+                di = d - 2*t
+                floor_support = Part.makeBox(d, d, self.floor_thickness - 1.19, h.xyz(-d/2, -d/2))
+                floor_support = floor_support.cut(Part.makeBox(di, di, self.floor_thickness - 1.2, h.xyz(-di/2, -di/2)))
+                floor_support = floor_support.fuse(Part.makeBox(di, t, self.floor_thickness - 1.19, h.xyz(-di/2, -t/2)))
+                floor_support = floor_support.fuse(Part.makeBox(t, di, self.floor_thickness - 1.19, h.xyz(-t/2, -di/2)))
+                for i in range(0, width):
+                    y = i * s
+                    for w in range(0, depth):
+                        x = w * s
+                        floor_support.Placement = Placement(h.xyz(x + s/2, y + s/2), Rotation(h.xyz(z=1), 45))
+                        floor = floor.fuse(floor_support)
 
         if self.magnets and self.floor_thickness >= 2.2 + 1.2:
             # Holders for magnets
