@@ -420,8 +420,8 @@ class StorageBox:
             h.xyz(-peg_radius, peg_radius),
             h.xyz(0, peg_radius),
             h.xyz()
-        ]).extrude(h.xyz(z=self.floor_thickness))
-        holder = holder.fuse(h.disk(mag_radius + 1.2, self.floor_thickness))
+        ]).extrude(h.xyz(z=self.floor_thickness-0.01))
+        holder = holder.fuse(h.disk(mag_radius + 1.2, self.floor_thickness-0.01))
         holder = holder.cut(h.disk(mag_radius + 0.1, 2.2))
         return holder
 
