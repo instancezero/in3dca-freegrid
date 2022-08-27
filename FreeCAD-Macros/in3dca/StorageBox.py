@@ -45,6 +45,76 @@ import math
 import Part
 
 
+class BitCartridgeHolder:
+    def __init__(self):
+        self.tilt = 8.0
+
+    def make(self, size, width, depth, height, open_face = True):
+        box = StorageBox()
+        box.closed_front = not open_face
+        points = box.insert(width, depth)
+        margin_x = 9
+        count_x = int((box.size_x - 2 * margin_x + 2) // (size + 2))
+        extent_x = count_x * (size + 2) - 2
+        offset_x = (box.size_x - extent_x) / 2
+        margin_y = 3 + 3
+        range_z = height * box.unit_height - box.floor_thickness - 3
+        shift = range_z * math.sin(math.radians(self.tilt))
+        size_y = size + shift
+        count_y = int((box.size_y - shift - 2 *margin_y + 2) // (size + 2))
+        extent_y = count_y * (size + 2) - 2 + shift
+        offset_y = 3
+
+        # Create a solid insert
+        insert = h.poly_to_face(points).extrude(h.xyz(z=range_z))
+
+        # Cut the holes out of the insert
+        # Make a quadrilateral face in the YZ plane to represent the tilted profile,
+        # Extrude in X to get the tilted prism.
+        hole_points = [
+            h.xyz(), h.xyz(y=size), h.xyz(0, size_y, range_z), h.xyz(0, shift, range_z), h.xyz()
+        ]
+        hole = h.poly_to_face(hole_points).extrude(h.xyz(size))
+
+        for x in range(count_x):
+            for y in range(count_y):
+                hole.Placement = Placement(h.xyz(offset_x + x * (size + 2), offset_y + y * (size + 2)), Rotation())
+                insert = insert.cut(hole)
+
+        # Cut Y channels out
+        channel_points = [
+            h.xyz(), h.xyz(y=extent_y - shift), h.xyz(0, extent_y, range_z), h.xyz(0, 0, range_z), h.xyz()
+        ]
+        tab = size / 3
+        channel = h.poly_to_face(channel_points).extrude(h.xyz(size - 2 * tab))
+        for x in range(count_x):
+            channel.Placement = Placement(h.xyz(offset_x + tab + x * (size + 2)), Rotation())
+            insert = insert.cut(channel)
+
+        # Get the edges on the top face, including across the front
+        limit_y = extent_y + offset_y + 2
+        origin = h.xyz(offset_x - 1, - 1, range_z - 1)
+        box_size = h.xyz(extent_x + 2, limit_y, 2)
+        edge_list = h.get_edges_enclosed_by_box(insert, origin, box_size)
+        # Add the edges on the channel tabs
+        for x in range(count_x):
+            origin = h.xyz(offset_x + tab + x * (size + 2) - 1, -1, -1)
+            box_size = h.xyz(tab + 2, limit_y, range_z + 1)
+            edge_list.extend(h.get_edges_enclosed_by_box(insert, origin, box_size))
+
+        # add the segments across the top front
+        origin = h.xyz(box.corner_size - 1, -1, range_z - 1)
+        box_size = h.xyz(box.size_x - 2 * box.corner_size + 1, points[2].y, 2)
+        edge_list.extend(h.get_edges_enclosed_by_box(insert, origin, box_size))
+        edges = []
+        for index in edge_list:
+            edges.append(insert.Edges[index])
+
+        chamfer = insert.makeChamfer(0.5, edges)
+        chamfer.Placement = Placement(h.xyz(y=box.floor_thickness), Rotation())
+        return chamfer
+
+
 class StorageBox:
     def __init__(self):
         self.INSIDE_RIM_BOTTOM = 3.4
@@ -207,17 +277,23 @@ class StorageBox:
 
             if self.floor_support:
                 t = self.SUPPORT_THICKNESS
-                d = (s - 2 * self.corner_size) / 1.414
-                di = d - 2*t
-                floor_support = Part.makeBox(d, d, self.floor_thickness - 1.19, h.xyz(-d/2, -d/2))
-                floor_support = floor_support.cut(Part.makeBox(di, di, self.floor_thickness - 1.2, h.xyz(-di/2, -di/2)))
-                floor_support = floor_support.fuse(Part.makeBox(di, t, self.floor_thickness - 1.19, h.xyz(-di/2, -t/2)))
-                floor_support = floor_support.fuse(Part.makeBox(t, di, self.floor_thickness - 1.19, h.xyz(-t/2, -di/2)))
+                offset_t = -0.5 * t
+                d = (s - 2 * self.corner_size) * 0.707
+                offset_d = -0.5 * d
+                di = d - 2 * t
+                offset_di = -0.5 * di
+                floor_support = Part.makeBox(d, d, self.floor_thickness - 1.19, h.xyz(offset_d, offset_d))
+                floor_support = floor_support.cut(
+                    Part.makeBox(di, di, self.floor_thickness - 1.2, h.xyz(offset_di, offset_di)))
+                floor_support = floor_support.fuse(
+                    Part.makeBox(di, t, self.floor_thickness - 1.19, h.xyz(offset_di, offset_t)))
+                floor_support = floor_support.fuse(
+                    Part.makeBox(t, di, self.floor_thickness - 1.19, h.xyz(offset_t, offset_di)))
                 for i in range(0, width):
-                    y = i * s
+                    y = (i + 0.5) * s
                     for w in range(0, depth):
-                        x = w * s
-                        floor_support.Placement = Placement(h.xyz(x + s/2, y + s/2), Rotation(h.xyz(z=1), 45))
+                        x = (w + 0.5) * s
+                        floor_support.Placement = Placement(h.xyz(x, y), Rotation(h.xyz(z=1), 45))
                         floor = floor.fuse(floor_support)
 
         if self.magnets and self.floor_thickness >= 2.2 + 1.2:
@@ -297,7 +373,7 @@ class StorageBox:
         ]
         return profile
 
-    def insert_as_sketch(self, width, depth):
+    def insert(self, width, depth):
         if self.floor_thickness < self.MIN_FLOOR:
             self.floor_thickness = self.MIN_FLOOR
         self.cells_x = width
@@ -306,6 +382,7 @@ class StorageBox:
         self.size_y = depth * self.spacing
         points = [h.xyz(self.corner_size, self.WALL_THICKNESS)]
         if not self.closed_front:
+            # Open front, step down, then across. Then resume
             points.extend([
                 h.xyz(self.corner_size, 0),
                 h.xyz(self.size_x - self.corner_size, 0),
@@ -321,6 +398,10 @@ class StorageBox:
             h.xyz(self.WALL_THICKNESS, self.corner_size),           # Down the left side
             h.xyz(self.corner_size, self.WALL_THICKNESS),           # LowerL bevel to origin
         ])
+        return points
+
+    def insert_as_sketch(self, width, depth):
+        points = self.insert(width, depth)
         sketch = h.poly_to_sketch('box_' + str(self.cells_x) + " " + str(self.cells_y) + "_insert", points)
         sketch.Placement = Placement(h.xyz(z=self.floor_thickness), Rotation())
         return sketch
@@ -672,6 +753,24 @@ class StorageBox:
         s1x1_open = self.insert_as_sketch(1, 1)
         s1x1_open.Placement = Placement(origin.add(h.xyz(shift)), Rotation())
         shift += incr
+
+    # Convenience method to facilitate data-driven generation.
+    def set_param(self, name, value):
+        if name == 'as_components':
+            self.as_components = value
+        elif name == 'closed_front':
+            self.closed_front = value
+        elif name == 'divisions':
+            self.divisions = value
+        elif name == 'grip_depth':
+            self.grip_depth = value
+        # Set to make magnet holes
+        elif name == 'magnets':
+            self.magnets = value
+        elif name == 'magnets_corners_only':
+            self.magnets_corners_only = value
+        elif name == 'ramp':
+            self.ramp = value
 
     def top_profile(self, origin, reverse=True):
         # Generate this clockwise, relative to the origin, which is the outside top of the box,
