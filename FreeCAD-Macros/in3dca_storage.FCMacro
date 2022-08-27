@@ -255,7 +255,6 @@ class In3dGridUi(QtGui.QWidget):
                 msg += " as components"
             msg += "."
             self.message.setText(msg)
-            # box.insert_as_sketch()
         else:
             self.message.setText("Box sizes must be greater than zero.")
 
