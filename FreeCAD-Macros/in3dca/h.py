@@ -66,6 +66,26 @@ def disk(radius, depth, at=None):
     return face.extrude(xyz(0, 0, depth))
 
 
+# Get all edges of the base shape inside a box defined by origin and size
+# If fully_enclosed is set, both edge endpoints must be in the box. If not,
+# any edge with a vertex inside the box is selected.
+def get_edges_enclosed_by_box(base_shape, origin, size, fully_enclosed=True, show=False):
+    enclosure = FreeCAD.BoundBox(origin, origin.add(size))
+    if show:
+        box = Part.show(Part.makeBox(size.x, size.y, size.z, origin))
+        box.ViewObject.DisplayMode = 'Wireframe'
+    edge_list = []
+    # Note, the isInside() method is misnamed. Actual function is "contains"
+    for i, edge in enumerate(base_shape.Edges):
+        if fully_enclosed:
+            if enclosure.isInside(edge.BoundBox):
+                edge_list.append(i)
+        else:
+            if enclosure.isInside(edge.Vertexes[0].Point) or enclosure.isInside(edge.Vertexes[1].Point):
+                edge_list.append(i)
+    return edge_list
+
+
 # Move a list of vertices to a new origin and if the list isn't a closed polygon, close it.
 def poly_close(vec, to_origin=0):
     if to_origin == 0:
