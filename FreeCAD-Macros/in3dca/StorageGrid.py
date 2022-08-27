@@ -288,3 +288,8 @@ class StorageGrid:
         Part.show(g2x1, 'g2x1')
         start.x += 2 * incr
 
+    # Convenience method to facilitate data-driven generation.
+    def set_param(self, name, value):
+        # Set to make magnet holes
+        if name == 'magnets':
+            self.magnets = value
