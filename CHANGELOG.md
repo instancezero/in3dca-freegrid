@@ -1,5 +1,10 @@
 # In3D.ca FreeGrid Change Log
 
+## 1.2.0
+
+Changes:
+* Added set_param() method to box and grid to make data-driven generation easier
+
 ### 1.1.1
 
 Changes:
