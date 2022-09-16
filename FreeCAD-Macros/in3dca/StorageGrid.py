@@ -54,6 +54,7 @@ class StorageGrid:
         self.top_width = 1.0
         self.x_size = 3
         self.y_size = 3
+        self.corner_connectors = True
 
     def connector_insert(self):
         # A hole to accommodate the connectors
@@ -150,6 +151,20 @@ class StorageGrid:
         ]
         return profile
 
+    def outer_rail_cleanup_face(self):
+        profile = [
+            h.xyz(0, z=self.bevel+self.gap),
+            h.xyz(0, z=0),
+            h.xyz(self.bevel+self.gap, z=0),
+            h.xyz(0, z=self.bevel+self.gap)
+        ]
+        return Part.Face(Part.makePolygon(profile))
+
+    def outer_rail_cleanup(self, len):
+        face = self.outer_rail_cleanup_face()
+        cleanup = face.extrude(h.xyz(y=len))
+        return cleanup
+
     def rails(self):
         # Get the profile
         # extrude
@@ -223,25 +238,55 @@ class StorageGrid:
                     holder.Placement = Placement(h.xyz(x + self.spacing - c, y + self.spacing - c), Rotation(h.xyz(z=1), 180))
                     rails = rails.fuse(holder)
 
-        # Cut spaces for the connectors
-        insert = self.connector_insert()
-        insert.Placement = Placement(h.xyz(z=-0.05), Rotation())
-        rails = rails.cut(insert)
-        insert.Placement = Placement(
-            h.xyz(self.x_size * self.spacing, 0, -0.05),
-            Rotation(h.xyz(z=1.0), 90)
-        )
-        rails = rails.cut(insert)
-        insert.Placement = Placement(
-            h.xyz(self.x_size * self.spacing, self.y_size * self.spacing, -0.05),
-            Rotation(h.xyz(z=1.0), 180)
-        )
-        rails = rails.cut(insert)
-        insert.Placement = Placement(
-            h.xyz(0, self.y_size * self.spacing, -0.05),
-            Rotation(h.xyz(z=1.0), 270)
-        )
-        rails = rails.cut(insert)
+        if self.corner_connectors:
+            # Cut spaces for the connectors
+            insert = self.connector_insert()
+            insert.Placement = Placement(h.xyz(z=-0.05), Rotation())
+            rails = rails.cut(insert)
+            insert.Placement = Placement(
+                h.xyz(self.x_size * self.spacing, 0, -0.05),
+                Rotation(h.xyz(z=1.0), 90)
+            )
+            rails = rails.cut(insert)
+            insert.Placement = Placement(
+                h.xyz(self.x_size * self.spacing, self.y_size * self.spacing, -0.05),
+                Rotation(h.xyz(z=1.0), 180)
+            )
+            rails = rails.cut(insert)
+            insert.Placement = Placement(
+                h.xyz(0, self.y_size * self.spacing, -0.05),
+                Rotation(h.xyz(z=1.0), 270)
+            )
+            rails = rails.cut(insert)
+        else:
+            x_len = self.x_size * self.spacing
+            y_len = self.y_size * self.spacing
+            cleanup_x = self.outer_rail_cleanup(y_len) # x face is y len long
+            cleanup_y = self.outer_rail_cleanup(x_len) # y face is x len long
+
+            cleanup_x.Placement = Placement(
+                h.xyz(),
+                Rotation(h.xyz(z=1.0), 0)
+            )
+            rails = rails.cut(cleanup_x)
+
+            cleanup_x.Placement = Placement(
+                h.xyz(x_len, self.y_size * self.spacing - self.gap),
+                Rotation(h.xyz(z=1.0), 180)
+            )
+            rails = rails.cut(cleanup_x)
+
+            cleanup_y.Placement = Placement(
+                h.xyz(x_len),
+                Rotation(h.xyz(z=1.0), 90)
+            )
+            rails = rails.cut(cleanup_y)
+
+            cleanup_y.Placement = Placement(
+                h.xyz(y=y_len),
+                Rotation(h.xyz(z=1.0), -90)
+            )
+            rails = rails.cut(cleanup_y)
 
         return rails
 
@@ -293,3 +338,5 @@ class StorageGrid:
         # Set to make magnet holes
         if name == 'magnets':
             self.magnets = value
+        if name == 'corner_connectors':
+            self.corner_connectors = value

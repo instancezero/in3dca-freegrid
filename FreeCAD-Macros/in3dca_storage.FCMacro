@@ -132,6 +132,9 @@ class In3dGridUi(QtGui.QWidget):
         self.grid_y.setMaxLength(3)
         self.grid_y.setText("1")
         form.addRow("Grid Depth (y, 50mm units)", self.grid_y)
+        self.corner_connectors = QtGui.QCheckBox("Space for locking connectors at outside corners")
+        self.corner_connectors.setChecked(True)
+        form.addRow(self.corner_connectors)
         self.grid_tab.setLayout(form)
 
         # Tab 2: Sketch options
@@ -210,6 +213,8 @@ class In3dGridUi(QtGui.QWidget):
         self.apply_button.clicked.connect(self.start_button_click)
         self.close_button.clicked.connect(self.close_button_click)
         self.inside_sketch_button.clicked.connect(self.inside_sketch_button_click)
+        self.corner_connectors.clicked.connect(self.corner_connectors_click)
+
         self.ok_button.clicked.connect(self.ok_button_click)
         self.show()
 
@@ -261,6 +266,7 @@ class In3dGridUi(QtGui.QWidget):
     def generate_grid(self):
         grid = StorageGrid.StorageGrid()
         grid.magnets = not self.opt_magnets_none.isChecked()
+        grid.corner_connectors = self.corner_connectors.isChecked()
         x = int(self.grid_x.text())
         y = int(self.grid_y.text())
         if x > 0 and y > 0:
@@ -284,6 +290,9 @@ class In3dGridUi(QtGui.QWidget):
             self.message.setText("Sketch generated.")
         else:
             self.message.setText("Sizes must be greater than zero.")
+
+    def corner_connectors_click(self, state):
+        self.corner_connectors.setEnabled(state)
 
     def ok_button_click(self):
         self.start_button_click()
