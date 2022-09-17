@@ -116,6 +116,9 @@ class In3dGridUi(QtGui.QWidget):
         self.box_grip_depth.setMaxLength(3)
         self.box_grip_depth.setText("15")
         form.addRow("Depth of grip (mm)", self.box_grip_depth)
+        self.floor_support = QtGui.QCheckBox("Add integral floor support")
+        self.floor_support.setChecked(True)
+        form.addRow(self.floor_support)
         self.box_tab.setLayout(form)
 
         # Tab 1: Grid options
@@ -209,6 +212,7 @@ class In3dGridUi(QtGui.QWidget):
 
         # Now set up events
         self.box_grip.clicked.connect(self.box_grip_click)
+        self.floor_support.clicked.connect(self.floor_support_click)
         self.box_open_front.clicked.connect(self.box_open_front_click)
         self.apply_button.clicked.connect(self.start_button_click)
         self.close_button.clicked.connect(self.close_button_click)
@@ -220,6 +224,9 @@ class In3dGridUi(QtGui.QWidget):
 
     def box_grip_click(self, state):
         self.box_grip_depth.setEnabled(state)
+
+    def floor_support_click(self, state):
+        self.floor_support.setEnabled(state)
 
     def box_open_front_click(self, state):
         if state:
@@ -246,6 +253,7 @@ class In3dGridUi(QtGui.QWidget):
             box.magnets = True
             box.magnets_corners_only = self.opt_magnets_box.isChecked()
         box.ramp = self.box_ramp.isChecked()
+        box.floor_support = self.floor_support.isChecked()
 
         x = int(self.box_x.text())
         y = int(self.box_y.text())
