@@ -250,7 +250,7 @@ class In3dGridUi(QtGui.QWidget):
         x = int(self.box_x.text())
         y = int(self.box_y.text())
         z = int(self.box_z.text())
-        if x > 0 and y > 0 and z > 0:
+        if x > 0 and y > 0 and z >= 0:
             self.message.setText("Generating...")
             self.message.repaint()
             size = str(x) + "x" + str(y) + "x" + str(z)
@@ -261,7 +261,7 @@ class In3dGridUi(QtGui.QWidget):
             msg += "."
             self.message.setText(msg)
         else:
-            self.message.setText("Box sizes must be greater than zero.")
+            self.message.setText("At least one box size is too small.")
 
     def generate_grid(self):
         grid = StorageGrid.StorageGrid()

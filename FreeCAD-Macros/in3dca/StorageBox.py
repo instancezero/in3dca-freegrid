@@ -126,6 +126,7 @@ class StorageBox:
         self.as_components = False
         self.cells_x = 1
         self.cells_y = 1
+        self.cells_z = 1
         self.corner_size = 5.0
         self.floor_support = True
         # Generate the front face
@@ -158,7 +159,7 @@ class StorageBox:
         x = self.size_x - 2 * self.corner_size
         y = self.size_y - 2 * self.corner_size
 
-        # Start by creating the four walls of the box
+        # Start by creating the four walls of the box. Get the wall profile.
         wall_face = h.poly_to_face(self.wall_profile())
         new_box = wall_face.extrude(h.xyz(z=y))
         new_box.Placement = Placement(h.xyz(y=y + self.corner_size), Rotation(h.xyz(1), 90))
@@ -219,13 +220,14 @@ class StorageBox:
         faces.append(h.poly_to_face([x_verticies[1], x_verticies[2], z_verticies[2]], 1))
 
         # connect the wall faces on a diagonal
-        for i in range(2, 12):
+        last_vertex = len(z_verticies) - 1
+        for i in range(2, last_vertex - 1):
             faces.append(h.poly_to_face(
                 [x_verticies[i], x_verticies[i + 1], z_verticies[i + 1], z_verticies[i]], 1)
             )
 
         # Fill the outside triangle
-        faces.append(h.poly_to_face([x_verticies[13], x_verticies[12], z_verticies[12]], 1))
+        faces.append(h.poly_to_face([x_verticies[last_vertex], x_verticies[last_vertex - 1], z_verticies[last_vertex - 1]], 1))
 
         corner = Part.makeSolid(Part.makeShell(faces))
         # debug
@@ -276,6 +278,7 @@ class StorageBox:
                     floor = floor.cut(cutout)
 
             if self.floor_support:
+                # Generate diagonal boxes to support the spans over the floor.
                 t = self.SUPPORT_THICKNESS
                 offset_t = -0.5 * t
                 d = (s - 2 * self.corner_size) * 0.707
@@ -515,8 +518,9 @@ class StorageBox:
         self.cells_y = width
         self.size_x = depth * self.spacing
         self.size_y = width * self.spacing
-        if height < 1:
-            height = 1
+        if height < 0:
+            height = 0
+        self.cells_z = height
         self.size_z = height * self.unit_height + self.STACK_ADJUSTMENT
 
         new_box = self.box_frame()
@@ -524,7 +528,7 @@ class StorageBox:
         # Add the floor
         new_box = new_box.fuse(self.floor(depth, width))
 
-        # If there are dimensions larger than one, subtract room for the grids
+        # If there are dimensions larger than one, subtract slots for the grids
         intersection = self.intersection()
         if depth > 1:
             cut = h.poly_to_face(self.inner_cut_profile()).extrude(h.xyz(y=self.size_y))
@@ -570,7 +574,8 @@ class StorageBox:
                 else:
                     new_box = new_box.fuse(grip)
 
-        return new_box
+        # Perform a refine operation on the result.
+        return new_box.removeSplitter()
 
     # Create a circular ramp across the front of the box
     def ramp_object(self):
@@ -600,6 +605,7 @@ class StorageBox:
         self.as_components = False
         self.cells_x = 1
         self.cells_y = 1
+        self.cells_z = 1
         self.corner_size = 5.0
         # Generate the front face
         self.closed_front = True
@@ -794,6 +800,9 @@ class StorageBox:
         return points
 
     def wall_profile(self, open_face=False):
+        # Generate a cross-section of the wall for a box. This profile will be extruded from
+        # corner to corner. If the face is open, then the top profile (designed to mate with
+        # a box above) is omitted.
         diagonal_end = max(self.floor_thickness, self.MIN_FLOOR)
         profile = [
             h.xyz(self.corner_size, 0.0),  # Bottom left
@@ -801,7 +810,7 @@ class StorageBox:
             h.xyz(self.MIN_FLOOR, self.floor_thickness),  # to start of inner diagonal
             h.xyz(self.WALL_THICKNESS, diagonal_end),  # End of inner diagonal
         ]
-        if open_face:
+        if open_face or self.cells_z == 0:
             profile.append(h.xyz(0.1, diagonal_end))
         else:
             profile.extend(self.top_profile(h.xyz(y=self.size_z)))
