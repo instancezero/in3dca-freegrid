@@ -77,8 +77,8 @@ class StorageGrid:
             h.xyz(-0.1, -0.1),  # close the polygon
         ]
         face = Part.Face(Part.makePolygon(profile))
-        insert = face.extrude(h.xyz(z=1.95))
-        insert.Placement = Placement(h.xyz(z=-0.05), Rotation())
+        insert = face.extrude(h.xyz(z=1.95+self.extra_bottom))
+        insert.Placement = Placement(h.xyz(z=-0.05-self.extra_bottom), Rotation())
 
         return insert
 
@@ -131,9 +131,10 @@ class StorageGrid:
         holder = holder.cut(h.disk(mag_radius + 0.1, height, h.xyz(z=1.2)))
         return holder
 
-    def make(self, x=1, y=1):
+    def make(self, x=1, y=1, extra_bottom=0):
         self.x_size = x
         self.y_size = y
+        self.extra_bottom = extra_bottom
         outer = self.rails()
         return outer
 
@@ -187,6 +188,7 @@ class StorageGrid:
             Rotation(h.xyz(z=1.0), 180)
         )
         rails = rails.fuse(new_rail)
+
         # Bottom rail
         new_rail = face.extrude(h.xyz(y=rail_length_x))
         new_rail.Placement = Placement(
@@ -223,40 +225,72 @@ class StorageGrid:
             )
             rails = rails.fuse(new_rail)
 
-        # Magnet holders
-        if self.magnets:
-            holder = self.magnet_holder(6)
-            c = 10
-            for i in range(0, self.y_size):
-                y = i * self.spacing
-                for w in range(0, self.x_size):
-                    x = w * self.spacing
-                    holder.Placement = Placement(h.xyz(x + c, y + c), Rotation())
-                    rails = rails.fuse(holder)
-                    holder.Placement = Placement(h.xyz(x + self.spacing - c, y + c), Rotation(h.xyz(z=1), 90))
-                    rails = rails.fuse(holder)
-                    holder.Placement = Placement(h.xyz(x + c, y + self.spacing - c), Rotation(h.xyz(z=1), 270))
-                    rails = rails.fuse(holder)
-                    holder.Placement = Placement(h.xyz(x + self.spacing - c, y + self.spacing - c), Rotation(h.xyz(z=1), 180))
-                    rails = rails.fuse(holder)
+        # Extra material under the grid, to simulate a thick wood piece
+        if self.is_substractive:
+            base = h.poly_to_face([
+                h.xyz(self.gap, self.gap, - self.extra_bottom),
+                h.xyz(self.spacing * self.x_size - 2 * self.gap, 0, - self.extra_bottom),
+                h.xyz(self.spacing * self.x_size - 2 * self.gap,
+                      self.spacing * self.y_size - 2 * self.gap, - self.extra_bottom),
+                h.xyz(0, self.spacing * self.y_size - 2 * self.gap, - self.extra_bottom),
+                h.xyz(self.gap, self.gap, - self.extra_bottom),
+            ]).extrude(h.xyz(z=self.extra_bottom + 2.4 + 0.8))
+            # Part.show(base, 'base')
+            rails = rails.fuse(base)
+
+            # Magnet holders on substractive mode
+            if self.magnets:
+                magnet_hole = h.disk(6/2 + 0.1, 2.4 + 0.8, h.xyz(z=1.2))
+                c = 10
+                for i in range(0, self.y_size):
+                    y = i * self.spacing
+                    for w in range(0, self.x_size):
+                        x = w * self.spacing
+                        magnet_hole.Placement = Placement(h.xyz(x + c, y + c), Rotation())
+                        rails = rails.cut(magnet_hole)
+                        magnet_hole.Placement = Placement(h.xyz(x + self.spacing - c, y + c), Rotation(h.xyz(z=1), 90))
+                        rails = rails.cut(magnet_hole)
+                        magnet_hole.Placement = Placement(h.xyz(x + c, y + self.spacing - c), Rotation(h.xyz(z=1), 270))
+                        rails = rails.cut(magnet_hole)
+                        magnet_hole.Placement = Placement(h.xyz(x + self.spacing - c, y + self.spacing - c), Rotation(h.xyz(z=1), 180))
+                        rails = rails.cut(magnet_hole)
+
+        else:
+            # Magnet holders on additive mode
+            if self.magnets:
+                holder = self.magnet_holder(6)
+                c = 10
+                for i in range(0, self.y_size):
+                    y = i * self.spacing
+                    for w in range(0, self.x_size):
+                        x = w * self.spacing
+                        holder.Placement = Placement(h.xyz(x + c, y + c), Rotation())
+                        rails = rails.fuse(holder)
+                        holder.Placement = Placement(h.xyz(x + self.spacing - c, y + c), Rotation(h.xyz(z=1), 90))
+                        rails = rails.fuse(holder)
+                        holder.Placement = Placement(h.xyz(x + c, y + self.spacing - c), Rotation(h.xyz(z=1), 270))
+                        rails = rails.fuse(holder)
+                        holder.Placement = Placement(h.xyz(x + self.spacing - c, y + self.spacing - c), Rotation(h.xyz(z=1), 180))
+                        rails = rails.fuse(holder)
 
         if self.corner_connectors:
             # Cut spaces for the connectors
+            zz = -0.05 - self.extra_bottom
             insert = self.connector_insert()
-            insert.Placement = Placement(h.xyz(z=-0.05), Rotation())
+            insert.Placement = Placement(h.xyz(z=zz), Rotation())
             rails = rails.cut(insert)
             insert.Placement = Placement(
-                h.xyz(self.x_size * self.spacing, 0, -0.05),
+                h.xyz(self.x_size * self.spacing, 0, zz),
                 Rotation(h.xyz(z=1.0), 90)
             )
             rails = rails.cut(insert)
             insert.Placement = Placement(
-                h.xyz(self.x_size * self.spacing, self.y_size * self.spacing, -0.05),
+                h.xyz(self.x_size * self.spacing, self.y_size * self.spacing, zz),
                 Rotation(h.xyz(z=1.0), 180)
             )
             rails = rails.cut(insert)
             insert.Placement = Placement(
-                h.xyz(0, self.y_size * self.spacing, -0.05),
+                h.xyz(0, self.y_size * self.spacing, zz),
                 Rotation(h.xyz(z=1.0), 270)
             )
             rails = rails.cut(insert)
