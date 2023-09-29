@@ -59,7 +59,8 @@ except AttributeError:
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
-    _fromUtf8 = lambda s: s
+    def _fromUtf8(s):
+        return s
 
 
 class In3dGridUi(QtGui.QWidget):
@@ -97,11 +98,16 @@ class In3dGridUi(QtGui.QWidget):
         self.box_z.setMaxLength(3)
         self.box_z.setText("1")
         form.addRow("Box Height (z, 10mm units)", self.box_z)
-        self.box_divs = QtGui.QLineEdit()
-        self.box_divs.setValidator(plus_int)
-        self.box_divs.setMaxLength(3)
-        self.box_divs.setText("1")
-        form.addRow("Number of divisions", self.box_divs)
+        self.box_divs_x = QtGui.QLineEdit()
+        self.box_divs_x.setValidator(plus_int)
+        self.box_divs_x.setMaxLength(3)
+        self.box_divs_x.setText("1")
+        form.addRow("Number of divisions along the X axis", self.box_divs_x)
+        self.box_divs_y = QtGui.QLineEdit()
+        self.box_divs_y.setValidator(plus_int)
+        self.box_divs_y.setMaxLength(3)
+        self.box_divs_y.setText("1")
+        form.addRow("Number of divisions along the Y axis", self.box_divs_y)
         self.box_open_front = QtGui.QCheckBox("Leave front of box open")
         self.box_open_front.setChecked(False)
         form.addRow(self.box_open_front)
@@ -241,9 +247,12 @@ class In3dGridUi(QtGui.QWidget):
         box.as_components = self.opt_as_objects.isChecked()
         box.closed_front = not self.box_open_front.isChecked()
         depth = int(self.box_grip_depth.text())
-        box.divisions = int(self.box_divs.text())
-        if box.divisions < 1:
-            box.divisions = 1
+        box.divisions_x = int(self.box_divs_x.text())
+        box.divisions_y = int(self.box_divs_y.text())
+        if box.divisions_x < 1:
+            box.divisions_x = 1
+        if box.divisions_y < 1:
+            box.divisions_y = 1
         if self.box_grip.isChecked() and depth > 0:
             box.grip_depth = depth
         if self.opt_magnets_none.isChecked():
