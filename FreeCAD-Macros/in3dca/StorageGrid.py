@@ -324,6 +324,9 @@ class StorageGrid:
             )
             rails = rails.cut(cleanup_y)
 
+        # Move down the grid to make it not collide with boxes in the 3D view
+        rails = rails.translate(h.xyz(z=-3.2))
+
         return rails
 
     def reset(self):
