@@ -55,6 +55,8 @@ class StorageGrid:
         self.x_size = 3
         self.y_size = 3
         self.corner_connectors = True
+        self.is_substractive = False
+        self.extra_bottom = 0
 
     def connector_insert(self):
         # A hole to accommodate the connectors
@@ -302,6 +304,9 @@ class StorageGrid:
         self.top_width = 1.0
         self.x_size = 3
         self.y_size = 3
+        self.corner_connectors = True
+        self.is_substractive = False
+        self.extra_bottom = 0
 
     def self_test(self):
         # Generate test grids
@@ -340,3 +345,5 @@ class StorageGrid:
             self.magnets = value
         if name == 'corner_connectors':
             self.corner_connectors = value
+        if name == 'is_substractive':
+            self.is_substractive = value

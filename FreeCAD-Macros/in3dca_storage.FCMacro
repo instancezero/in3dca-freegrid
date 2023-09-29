@@ -138,6 +138,15 @@ class In3dGridUi(QtGui.QWidget):
         self.corner_connectors = QtGui.QCheckBox("Space for locking connectors at outside corners")
         self.corner_connectors.setChecked(True)
         form.addRow(self.corner_connectors)
+        self.is_substractive = QtGui.QCheckBox("Create a grid suitable for substractive manufacturing")
+        self.is_substractive.setChecked(False)
+        form.addRow(self.is_substractive)
+        self.extra_bottom = QtGui.QLineEdit()
+        self.extra_bottom.setValidator(QtGui.QIntValidator())
+        self.extra_bottom.setMaxLength(3)
+        self.extra_bottom.setText("16")
+        self.extra_bottom.setEnabled(False)
+        form.addRow("Extra thickness under grid (mm)", self.extra_bottom)
         self.grid_tab.setLayout(form)
 
         # Tab 2: Sketch options
@@ -218,6 +227,7 @@ class In3dGridUi(QtGui.QWidget):
         self.close_button.clicked.connect(self.close_button_click)
         self.inside_sketch_button.clicked.connect(self.inside_sketch_button_click)
         self.corner_connectors.clicked.connect(self.corner_connectors_click)
+        self.is_substractive.clicked.connect(self.is_substractive_click)
 
         self.ok_button.clicked.connect(self.ok_button_click)
         self.show()
@@ -234,6 +244,9 @@ class In3dGridUi(QtGui.QWidget):
 
     def close_button_click(self):
         self.hide()
+    def is_substractive_click(self, state):
+        self.is_substractive.setChecked(state)
+        self.extra_bottom.setEnabled(state)
 
     def generate_box(self):
         # We are creating a box
@@ -275,13 +288,15 @@ class In3dGridUi(QtGui.QWidget):
         grid = StorageGrid.StorageGrid()
         grid.magnets = not self.opt_magnets_none.isChecked()
         grid.corner_connectors = self.corner_connectors.isChecked()
+        grid.is_substractive = self.is_substractive.isChecked()
+        extra_bottom = int(self.extra_bottom.text())
         x = int(self.grid_x.text())
         y = int(self.grid_y.text())
         if x > 0 and y > 0:
             self.message.setText("Generating...")
             self.message.repaint()
             size = str(x) + "x" + str(y)
-            Part.show(grid.make(x, y), "In3D_" + size + "_grid")
+            Part.show(grid.make(x, y, extra_bottom), "In3D_" + size + "_grid")
             msg = "Created " + str(x) + "x" + str(y) + " grid."
             self.message.setText(msg)
         else:
