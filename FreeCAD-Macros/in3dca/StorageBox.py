@@ -132,7 +132,8 @@ class StorageBox:
         # Generate the front face
         self.closed_front = True
         # Number of areas within the box
-        self.divisions = 0
+        self.divisions_x = 0
+        self.divisions_y = 0
         self.divider_width = 1.2
         self.floor_thickness = self.MIN_FLOOR
         self.grip_depth = 0.0
@@ -237,26 +238,47 @@ class StorageBox:
         return corner
 
     def dividers(self):
-        if self.divisions <= 1:
+        if self.divisions_x <= 1 and self.divisions_y <= 1:
             return []
-        offset = self.divider_width / 2.0
-        # Create the divider profile in the XZ plane, clockwise from top left
-        # when looking toward +Y
-        points = [
-            h.xyz(-offset, self.WALL_THICKNESS, self.size_z - self.INSIDE_RIM_BOTTOM),
-            h.xyz(offset, self.WALL_THICKNESS, self.size_z - self.INSIDE_RIM_BOTTOM),
-            h.xyz(offset, self.WALL_THICKNESS, self.floor_thickness + 1.0),
-            h.xyz(offset + 1.0, self.WALL_THICKNESS, self.floor_thickness),
-            h.xyz(-offset - 1.0, self.WALL_THICKNESS, self.floor_thickness),
-            h.xyz(-offset, self.WALL_THICKNESS, self.floor_thickness + 1.0),
-        ]
-        profile = h.poly_to_face(points, 1)
-        divider = profile.extrude(h.xyz(y=self.size_y - 2 * self.WALL_THICKNESS))
+
         dividers = []
-        spacing = self.size_x / self.divisions
-        for i in range(1, self.divisions):
-            divider.Placement = Placement(h.xyz(spacing * i), Rotation())
-            dividers.append(copy.copy(divider))
+        offset = self.divider_width / 2.0
+        # Create the x divider profile in the XZ plane, clockwise from top left
+        # when looking toward +Y
+        if self.divisions_x > 1:
+            points = [
+                h.xyz(-offset, self.WALL_THICKNESS, self.size_z - self.INSIDE_RIM_BOTTOM),
+                h.xyz(offset, self.WALL_THICKNESS, self.size_z - self.INSIDE_RIM_BOTTOM),
+                h.xyz(offset, self.WALL_THICKNESS, self.floor_thickness + 1.0),
+                h.xyz(offset + 1.0, self.WALL_THICKNESS, self.floor_thickness),
+                h.xyz(-offset - 1.0, self.WALL_THICKNESS, self.floor_thickness),
+                h.xyz(-offset, self.WALL_THICKNESS, self.floor_thickness + 1.0),
+            ]
+            profile = h.poly_to_face(points, 1)
+            divider = profile.extrude(h.xyz(y=self.size_y - 2 * self.WALL_THICKNESS))
+            spacing = self.size_x / self.divisions_x
+            for i in range(1, self.divisions_x):
+                divider.Placement = Placement(h.xyz(spacing * i), Rotation())
+                dividers.append(copy.copy(divider))
+
+        # Create the y divider profile in the YZ plane, clockwise from top left
+        # when looking toward +X
+        if self.divisions_y > 1:
+            points = [
+                h.xyz(self.WALL_THICKNESS, -offset, self.size_z - self.INSIDE_RIM_BOTTOM),
+                h.xyz(self.WALL_THICKNESS, offset, self.size_z - self.INSIDE_RIM_BOTTOM),
+                h.xyz(self.WALL_THICKNESS, offset, self.floor_thickness + 1.0),
+                h.xyz(self.WALL_THICKNESS, offset + 1.0, self.floor_thickness),
+                h.xyz(self.WALL_THICKNESS, -offset - 1.0, self.floor_thickness),
+                h.xyz(self.WALL_THICKNESS, -offset, self.floor_thickness + 1.0),
+            ]
+            profile = h.poly_to_face(points, 1)
+            divider = profile.extrude(h.xyz(x=self.size_x - 2 * self.WALL_THICKNESS))
+            spacing = self.size_y / self.divisions_y
+            for i in range(1, self.divisions_y):
+                divider.Placement = Placement(h.xyz(0, spacing * i), Rotation())
+                dividers.append(copy.copy(divider))
+
         return dividers
 
     def floor(self, depth, width):
@@ -509,7 +531,7 @@ class StorageBox:
         holder = holder.cut(h.disk(mag_radius + 0.1, 2.2))
         return holder
 
-    def make(self, depth=1, width=1, height=1, floor_thickness=None):
+    def make(self, depth=1, width=1, height=1.0, floor_thickness=None):
         if floor_thickness is not None:
             self.floor_thickness = floor_thickness
         if self.floor_thickness < self.MIN_FLOOR:
@@ -610,7 +632,8 @@ class StorageBox:
         # Generate the front face
         self.closed_front = True
         # Number of areas within the box
-        self.divisions = 0
+        self.divisions_x = 0
+        self.divisions_y = 0
         self.divider_width = 1.2
         self.floor_thickness = self.MIN_FLOOR
         self.grip_depth = 0.0
@@ -681,21 +704,24 @@ class StorageBox:
         shift += incr
 
         self.reset()
-        self.divisions = 2
+        self.divisions_x = 2
+        self.divisions_y = 1
         b1x1x1d2 = self.make()
         b1x1x1d2.Placement = Placement(origin.add(h.xyz(shift)), Rotation())
         Part.show(b1x1x1d2, 'b1x1x1d2')
         shift += incr
 
         self.reset()
-        self.divisions = 3
+        self.divisions_x = 3
+        self.divisions_y = 1
         b1x1x3d3 = self.make(1, 1, 3)
         b1x1x3d3.Placement = Placement(origin.add(h.xyz(shift)), Rotation())
         Part.show(b1x1x3d3, 'b1x1x1d3')
         shift += incr
 
         self.reset()
-        self.divisions = 3
+        self.divisions_x = 3
+        self.divisions_y = 1
         self.grip_depth = 15
         b1x1x3d3_grip = self.make(1, 1, 3)
         b1x1x3d3_grip.Placement = Placement(origin.add(h.xyz(shift)), Rotation())
@@ -719,7 +745,8 @@ class StorageBox:
         shift += incr
 
         self.reset()
-        self.divisions = 2
+        self.divisions_x = 2
+        self.divisions_y = 1
         b1x2x1p2 = self.make(1, 2)
         b1x2x1p2.Placement = Placement(origin.add(h.xyz(shift)), Rotation())
         Part.show(b1x2x1p2, 'b1x2x1p2')
@@ -766,8 +793,10 @@ class StorageBox:
             self.as_components = value
         elif name == 'closed_front':
             self.closed_front = value
-        elif name == 'divisions':
-            self.divisions = value
+        elif name == 'divisions_x':
+            self.divisions_x = value
+        elif name == 'divisions_y':
+            self.divisions_y = value
         elif name == 'grip_depth':
             self.grip_depth = value
         # Set to make magnet holes
