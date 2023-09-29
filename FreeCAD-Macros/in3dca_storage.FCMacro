@@ -223,27 +223,40 @@ class In3dGridUi(QtGui.QWidget):
         self.box_grip.clicked.connect(self.box_grip_click)
         self.floor_support.clicked.connect(self.floor_support_click)
         self.box_open_front.clicked.connect(self.box_open_front_click)
-        self.apply_button.clicked.connect(self.start_button_click)
-        self.close_button.clicked.connect(self.close_button_click)
         self.inside_sketch_button.clicked.connect(self.inside_sketch_button_click)
         self.corner_connectors.clicked.connect(self.corner_connectors_click)
         self.is_substractive.clicked.connect(self.is_substractive_click)
 
         self.ok_button.clicked.connect(self.ok_button_click)
+        self.apply_button.clicked.connect(self.start_button_click)
+        self.close_button.clicked.connect(self.close_button_click)
+
         self.show()
 
     def box_grip_click(self, state):
         self.box_grip_depth.setEnabled(state)
 
     def floor_support_click(self, state):
-        self.floor_support.setEnabled(state)
+        self.floor_support.setChecked(state)
 
     def box_open_front_click(self, state):
         if state:
             self.box_ramp.setChecked(False)
 
-    def close_button_click(self):
-        self.hide()
+    def inside_sketch_button_click(self):
+        box = StorageBox.StorageBox()
+        x = int(self.sketch_x.text())
+        y = int(self.sketch_y.text())
+        if x > 0 and y > 0:
+            box.closed_front = not self.sketch_open_front.isChecked()
+            box.insert_as_sketch(x, y)
+            self.message.setText("Sketch generated.")
+        else:
+            self.message.setText("Sizes must be greater than zero.")
+
+    def corner_connectors_click(self, state):
+        self.corner_connectors.setChecked(state)
+
     def is_substractive_click(self, state):
         self.is_substractive.setChecked(state)
         self.extra_bottom.setEnabled(state)
@@ -302,21 +315,6 @@ class In3dGridUi(QtGui.QWidget):
         else:
             self.message.setText("Grid sizes must be greater than zero.")
 
-
-    def inside_sketch_button_click(self):
-        box = StorageBox.StorageBox()
-        x = int(self.sketch_x.text())
-        y = int(self.sketch_y.text())
-        if x > 0 and y > 0:
-            box.closed_front = not self.sketch_open_front.isChecked()
-            box.insert_as_sketch(x, y)
-            self.message.setText("Sketch generated.")
-        else:
-            self.message.setText("Sizes must be greater than zero.")
-
-    def corner_connectors_click(self, state):
-        self.corner_connectors.setEnabled(state)
-
     def ok_button_click(self):
         self.start_button_click()
         self.close_button_click()
@@ -330,5 +328,8 @@ class In3dGridUi(QtGui.QWidget):
             self.generate_grid()
         elif self.tabs.currentIndex() == 2:
             pass
+
+    def close_button_click(self):
+        self.hide()
 
 gui = In3dGridUi()
