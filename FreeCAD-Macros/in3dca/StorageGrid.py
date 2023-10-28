@@ -54,6 +54,8 @@ class StorageGrid:
         self.top_width = 1.0
         self.x_size = 3
         self.y_size = 3
+        self.mag_diameter = 6
+        self.mag_height = 2
         self.corner_connectors = True
         self.is_substractive = False
         self.extra_bottom = 0
@@ -114,26 +116,44 @@ class StorageGrid:
         ]
         return profile
 
-    def magnet_holder(self, mag_diameter):
-        height = 2.2
+    def magnet_holder(self, mag_diameter, mag_height):
+        """
+        Creates a single corner magnet holder.
+        The maximun height of this body is 3.2[mm] meaning that:
+        the height of the magnet plus the height of the floor in which
+        the magnet is glued sums 3.2mm.
+        floor_thickness + mag_diameter = 3.2[mm]
+
+        The initial (arbitrary) square holder size is 13.4[mm], i.e.
+        2 * peg_radius + extra = 13.4mm
+
+        As of the current constants:
+        - the maximun magnet diameter is 10[mm], 11[mm] don't fit
+        - the maximun magnet height is 3[mm] (and 0.2[mm] of floor)
+        """
+        height = mag_height + 0.2 # Height of the magnet cutter
         mag_radius = mag_diameter / 2.0
         peg_radius = mag_radius + 1.2
+        floor_thickness = 3.2 - mag_height
+        extra = 13.4 - 2 * peg_radius
         holder = h.poly_to_face([
             h.xyz(),
             h.xyz(peg_radius, 0),
-            h.xyz(peg_radius, -peg_radius - 5),
-            h.xyz(-peg_radius - 5, -peg_radius - 5),
-            h.xyz(-peg_radius - 5, peg_radius),
+            h.xyz(peg_radius, -peg_radius - extra),
+            h.xyz(-peg_radius - extra, -peg_radius - extra),
+            h.xyz(-peg_radius - extra, peg_radius),
             h.xyz(0, peg_radius),
             h.xyz()
         ]).extrude(h.xyz(z=2.4))
         holder = holder.fuse(h.disk(mag_radius + 1.2, self.magnet_floor_thickness))
-        holder = holder.cut(h.disk(mag_radius + 0.1, height, h.xyz(z=1.2)))
+        holder = holder.cut(h.disk(mag_radius + 0.1, height, h.xyz(z=floor_thickness)))
         return holder
 
-    def make(self, x=1, y=1, extra_bottom=0):
+    def make(self, x=1, y=1, mag_d=6, mag_h=2, extra_bottom=0):
         self.x_size = x
         self.y_size = y
+        self.mag_diameter = mag_d
+        self.mag_height = mag_h
         self.extra_bottom = extra_bottom
         outer = self.rails()
         return outer
@@ -240,7 +260,7 @@ class StorageGrid:
 
             # Magnet holders on substractive mode
             if self.magnets:
-                magnet_hole = h.disk(6/2 + 0.1, 2.4 + 0.8, h.xyz(z=1.2))
+                magnet_hole = h.disk(self.mag_diameter/2 + 0.1, 2.4 + 0.8, h.xyz(z=1.2))
                 c = 10
                 for i in range(0, self.y_size):
                     y = i * self.spacing
@@ -256,10 +276,13 @@ class StorageGrid:
                         rails = rails.cut(magnet_hole)
 
         else:
-            # Magnet holders on additive mode
+            # Magnet holders on additive mode (original)
+            # Aparently the distance from the holder to the inmediate grid border is 14.1[mm]
+            # The diameter of the magnet and the constanc 'c' play a role here
+            # The holder separates from the grid border: (mag_diameter - 6mm)/2
             if self.magnets:
-                holder = self.magnet_holder(6)
-                c = 10
+                holder = self.magnet_holder(self.mag_diameter, self.mag_height)
+                c = 10 - (self.mag_diameter - 6)/2.0
                 for i in range(0, self.y_size):
                     y = i * self.spacing
                     for w in range(0, self.x_size):
