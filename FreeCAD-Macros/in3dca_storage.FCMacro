@@ -180,16 +180,28 @@ class In3dGridUi(QtGui.QWidget):
         # Magnet options in a group
         self.opt_magnet_group = QtGui.QGroupBox("Options for magnet mounts")
 
-        grid = QtGui.QVBoxLayout()
+        grid = QtGui.QFormLayout()
         grid.setSpacing(10)
+
+        self.magnet_diameter = QtGui.QLineEdit()
+        self.magnet_diameter.setValidator(QtGui.QIntValidator())
+        self.magnet_diameter.setMaxLength(3)
+        self.magnet_diameter.setText("6")
+        grid.addRow("Diameter of the magnet (mm)", self.magnet_diameter)
+
+        self.magnet_height = QtGui.QLineEdit()
+        self.magnet_height.setValidator(QtGui.QIntValidator())
+        self.magnet_height.setMaxLength(3)
+        self.magnet_height.setText("2")
+        grid.addRow("Height of the magnet (mm)", self.magnet_height)
 
         self.opt_magnets_all = QtGui.QRadioButton("At all box/grid intersections")
         self.opt_magnets_all.setChecked(True)
-        grid.addWidget(self.opt_magnets_all)
+        grid.addRow(self.opt_magnets_all)
         self.opt_magnets_box = QtGui.QRadioButton("Box corners only / all grid intersections")
-        grid.addWidget(self.opt_magnets_box)
+        grid.addRow(self.opt_magnets_box)
         self.opt_magnets_none = QtGui.QRadioButton("No magnet mounts")
-        grid.addWidget(self.opt_magnets_none)
+        grid.addRow(self.opt_magnets_none)
 
         self.opt_magnet_group.setLayout(grid)
         self.global_opts.addWidget(self.opt_magnet_group)
@@ -327,11 +339,13 @@ class In3dGridUi(QtGui.QWidget):
         extra_bottom = int(self.extra_bottom.text())
         x = int(self.grid_x.text())
         y = int(self.grid_y.text())
+        mag_d = float(self.magnet_diameter.text())
+        mag_h = float(self.magnet_height.text())
         if x > 0 and y > 0:
             self.message.setText("Generating...")
             self.message.repaint()
             size = str(x) + "x" + str(y)
-            Part.show(grid.make(x, y, extra_bottom), "In3D_" + size + "_grid")
+            Part.show(grid.make(x, y, mag_d, mag_h, extra_bottom), "In3D_" + size + "_grid")
             msg = "Created " + str(x) + "x" + str(y) + " grid."
             self.message.setText(msg)
         else:
