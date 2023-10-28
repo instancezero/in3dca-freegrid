@@ -547,7 +547,7 @@ class StorageBox:
         holder = holder.cut(h.disk(mag_radius + 0.1, mag_height + 0.2))
         return holder
 
-    def make(self, depth=1, width=1, height=1.0, mag_d=6.0, mag_h=2.0, floor_thickness=None):
+    def make(self, depth=1, width=1, height=10.0, mag_d=6.0, mag_h=2.0, floor_thickness=None):
         if floor_thickness is not None:
             self.floor_thickness = floor_thickness
         if self.floor_thickness < self.MIN_FLOOR:
@@ -558,8 +558,9 @@ class StorageBox:
         self.size_y = width * self.spacing
         if height < 0:
             height = 0
-        self.cells_z = height
-        self.size_z = height * self.unit_height + self.STACK_ADJUSTMENT
+        # self.cells_z = height # unit deprecated
+        # height is already in mm
+        self.size_z = height + self.STACK_ADJUSTMENT
         self.mag_diameter = mag_d
         self.mag_height = mag_h
 
