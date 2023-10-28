@@ -137,6 +137,9 @@ class StorageBox:
         self.divider_width = 1.2
         self.floor_thickness = self.MIN_FLOOR
         self.grip_depth = 0.0
+        # Magnet parameters
+        self.mag_diameter = 6
+        self.mag_height = 2
         # Set to make magnet holes
         self.magnets = True
         # Set if box magnets are only in the far corners
@@ -323,8 +326,8 @@ class StorageBox:
 
         if self.magnets and self.floor_thickness >= 2.2 + 1.2:
             # Holders for magnets
-            holder = self.magnet_holder(6)
-            c = 10
+            holder = self.magnet_holder(self.mag_diameter, self.mag_height)
+            c = 10 - (self.mag_diameter - 6)/2.0
             if self.magnets_corners_only:
                 holder.Placement = Placement(h.xyz(c, c), Rotation())
                 floor = floor.fuse(holder)
@@ -515,23 +518,36 @@ class StorageBox:
         #   Part.show(inter, 'inter')
         return inter
 
-    def magnet_holder(self, mag_diameter):
+    def magnet_holder(self, mag_diameter, mag_height):
+        """
+        Creates a single corner magnet holder.
+        The grid floor thickness must be 3.2[mm].
+
+        The limit square holder size is 11.2[mm].
+        The available space is less than the grid.
+
+        As of the current constants:
+        - the maximun magnet diameter is 7[mm], 8[mm] don't fit
+        - the maximun magnet height is 3[mm] (and 0.2[mm] of floor)
+        """
         mag_radius = mag_diameter / 2.0
         peg_radius = mag_radius + 1.2
+        extra = 11.2 - 2 * peg_radius
         holder = h.poly_to_face([
             h.xyz(),
             h.xyz(peg_radius, 0),
-            h.xyz(peg_radius, -peg_radius),
-            h.xyz(-peg_radius, -peg_radius),
-            h.xyz(-peg_radius, peg_radius),
+            h.xyz(peg_radius, - peg_radius - extra),
+            h.xyz(-peg_radius - extra + 2, - peg_radius - extra), # Cut corner
+            h.xyz(-peg_radius - extra , - peg_radius - extra + 2),
+            h.xyz(-peg_radius - extra, peg_radius),
             h.xyz(0, peg_radius),
             h.xyz()
         ]).extrude(h.xyz(z=self.floor_thickness-0.01))
         holder = holder.fuse(h.disk(mag_radius + 1.2, self.floor_thickness-0.01))
-        holder = holder.cut(h.disk(mag_radius + 0.1, 2.2))
+        holder = holder.cut(h.disk(mag_radius + 0.1, mag_height + 0.2))
         return holder
 
-    def make(self, depth=1, width=1, height=1.0, floor_thickness=None):
+    def make(self, depth=1, width=1, height=1.0, mag_d=6.0, mag_h=2.0, floor_thickness=None):
         if floor_thickness is not None:
             self.floor_thickness = floor_thickness
         if self.floor_thickness < self.MIN_FLOOR:
@@ -544,6 +560,8 @@ class StorageBox:
             height = 0
         self.cells_z = height
         self.size_z = height * self.unit_height + self.STACK_ADJUSTMENT
+        self.mag_diameter = mag_d
+        self.mag_height = mag_h
 
         new_box = self.box_frame()
 
@@ -637,6 +655,9 @@ class StorageBox:
         self.divider_width = 1.2
         self.floor_thickness = self.MIN_FLOOR
         self.grip_depth = 0.0
+        # Magnet parameters
+        self.mag_diameter = 6
+        self.mag_height = 2
         # Set to make magnet holes
         self.magnets = True
         # Set if box magnets are only in the far corners

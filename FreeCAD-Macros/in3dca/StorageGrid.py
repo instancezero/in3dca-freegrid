@@ -61,8 +61,10 @@ class StorageGrid:
         self.extra_bottom = 0
 
     def connector_insert(self):
-        # A hole to accommodate the connectors
-        # counter-clockwise
+        """
+        A hole to accommodate the connectors
+        counter-clockwise
+        """
         profile = [
             h.xyz(-0.1, -0.1),  # Start outside origin
             h.xyz(2.5, -0.1),   # Trim off sharp corner edge
@@ -139,8 +141,8 @@ class StorageGrid:
         holder = h.poly_to_face([
             h.xyz(),
             h.xyz(peg_radius, 0),
-            h.xyz(peg_radius, -peg_radius - extra),
-            h.xyz(-peg_radius - extra, -peg_radius - extra),
+            h.xyz(peg_radius, - peg_radius - extra),
+            h.xyz(-peg_radius - extra, - peg_radius - extra),
             h.xyz(-peg_radius - extra, peg_radius),
             h.xyz(0, peg_radius),
             h.xyz()
@@ -261,7 +263,7 @@ class StorageGrid:
             # Magnet holders on substractive mode
             if self.magnets:
                 magnet_hole = h.disk(self.mag_diameter/2 + 0.1, 2.4 + 0.8, h.xyz(z=1.2))
-                c = 10
+                c = 10 - (self.mag_diameter - 6)/2.0
                 for i in range(0, self.y_size):
                     y = i * self.spacing
                     for w in range(0, self.x_size):
@@ -364,6 +366,8 @@ class StorageGrid:
         self.top_width = 1.0
         self.x_size = 3
         self.y_size = 3
+        self.mag_diameter = 6
+        self.mag_height = 2
         self.corner_connectors = True
         self.is_substractive = False
         self.extra_bottom = 0

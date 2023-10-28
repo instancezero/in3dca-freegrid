@@ -304,6 +304,8 @@ class In3dGridUi(QtGui.QWidget):
         x = int(self.box_x.text())
         y = int(self.box_y.text())
         z_text = self.box_z.text()
+        mag_d = int(self.magnet_diameter.text())
+        mag_h = int(self.magnet_height.text())
         if "mm" in z_text:
             zz = z_text.split('mm')
             z = int("".join(zz))
@@ -322,7 +324,7 @@ class In3dGridUi(QtGui.QWidget):
                 alfa = 1
                 s_mm = ""
             size = str(x) + "x" + str(y) + "x" + str(int(alfa*z_)) + s_mm
-            Part.show(box.make(x, y, z_), "In3D_" + size + "_box")
+            Part.show(box.make(x, y, z_, mag_d, mag_h), "In3D_" + size + "_box")
             msg = "Created " + str(x) + "x" + str(y) + "x" + str(int(alfa*z_)) + s_mm + " box"
             if box.as_components:
                 msg += " as components"
@@ -339,8 +341,8 @@ class In3dGridUi(QtGui.QWidget):
         extra_bottom = int(self.extra_bottom.text())
         x = int(self.grid_x.text())
         y = int(self.grid_y.text())
-        mag_d = float(self.magnet_diameter.text())
-        mag_h = float(self.magnet_height.text())
+        mag_d = int(self.magnet_diameter.text())
+        mag_h = int(self.magnet_height.text())
         if x > 0 and y > 0:
             self.message.setText("Generating...")
             self.message.repaint()
