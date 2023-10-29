@@ -97,7 +97,7 @@ class In3dGridUi(QtGui.QWidget):
         form.addRow("Box Depth (y, 50mm units)", self.box_y)
         self.box_z = QtGui.QLineEdit()
         self.box_z.setMaxLength(7)
-        self.box_z.setText("1")
+        self.box_z.setText("5cm")
         form.addRow("Box Height (z, enter value and unit\n \
                         4cm, 1dm, 3in, 0.5ft)", self.box_z)
         self.box_divs_x = QtGui.QLineEdit()
