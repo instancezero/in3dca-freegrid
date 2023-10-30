@@ -98,8 +98,7 @@ class In3dGridUi(QtGui.QWidget):
         self.box_z = QtGui.QLineEdit()
         self.box_z.setMaxLength(7)
         self.box_z.setText("5cm")
-        form.addRow("Box Height (z, enter value and unit\n \
-                        4cm, 1dm, 3in, 0.5ft)", self.box_z)
+        form.addRow("Box Height (z, 10mm units or \nenter value and unit: 4cm, 1dm, 3in, 0.5ft)", self.box_z)
         self.box_divs_x = QtGui.QLineEdit()
         self.box_divs_x.setValidator(plus_int)
         self.box_divs_x.setMaxLength(3)
@@ -307,8 +306,11 @@ class In3dGridUi(QtGui.QWidget):
 
         # FreeCAD Quantity: https://wiki.freecad.org/Quantity
         #z = pq(self.box_z.text()).Value  # get the number (always internal system (mm/kg/s))
-        # Which is equivalent to:
-        z = pq(self.box_z.text()).getValueAs('mm')  # Translate the value
+        # Which is equivalent to line 315:
+        if self.box_z.text().isdigit():
+            z = 10 * int(self.box_z.text()) # 1 unit = 10[mm]
+        else:
+            z = pq(self.box_z.text()).getValueAs('mm')  # Translate the value
 
         if x > 0 and y > 0 and z >= 0:
             self.message.setText("Generating...")
