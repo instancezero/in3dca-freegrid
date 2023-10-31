@@ -87,7 +87,8 @@ The bigger the grid/box, the more complex the computations. Generating a 5x5 gri
 depending on the speed of your system. Be patient.
 
 Boxes have hollow bottoms, and need to be printed with supports. Prusa Slicer's "paint on" supports are great for
-getting the bottoms supported without generating needless supports around the outside.
+getting the bottoms supported without generating needless supports around the outside. Alternatively FreeGrid can
+generate floor support for you to reduce the length of the bridges.
 
 Longer parts can be subject to warping, so good bed adhesion is critical. A while back I switched to a PEI coated
 flexible steel bed. I can't say enough good things about that choice. Well worth the cost in saved time, tape, glue,
@@ -101,3 +102,17 @@ the way. Your slicer might want to add supports there, but it's not necessary.
 
 The magnets are entirely optional, but really help to keep things in place. Use 6x2mm magnets commonly available in
 packs of 100 or more. It's important to pick one magnet orientation for the grid and the opposite for the modules.
+It's possible to change the size of the magnet modifying the diameter and height, this also allows to make small
+adjustments to the dimensions when the 3D printer lacks of precision.
+
+## Dividers
+
+It's possible to create dividers parallel to both X and Y axis that split the inside evenly to create a grid
+inside of the box.
+
+## Substractive manufacturing for grids
+
+Originally the FreeGrid system was thought to be manufactured using an additive process: 3D printing. The problem
+is that the used material and time needed to complete a big grid can be exaggeratedly large. In order to address
+this problem we can make use of another manufacturing process as CNC machining. Now we can save some minutes and
+a few bucks if instead of plastic filament we use a wood/acrylic board to carve the grid shape.
