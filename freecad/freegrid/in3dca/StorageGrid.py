@@ -38,8 +38,7 @@ __Files__ = ''
 
 from FreeCAD import Placement, Rotation
 import Part
-from in3dca import h
-
+from freecad.freegrid.in3dca import h
 
 class StorageGrid:
     def __init__(self):
@@ -348,9 +347,6 @@ class StorageGrid:
                 Rotation(h.xyz(z=1.0), -90)
             )
             rails = rails.cut(cleanup_y)
-
-        # Move down the grid to make it not collide with boxes in the 3D view
-        rails = rails.translate(h.xyz(z=-3.2))
 
         return rails
 

@@ -37,10 +37,11 @@ __Communication__ = ''
 __Files__ = ''
 
 import copy
-import DraftVecUtils
 import FreeCAD
-from FreeCAD import Placement, Rotation
-from in3dca import h
+import DraftVecUtils
+# import FreeCAD
+from FreeCAD import Console, Placement, Rotation
+from freecad.freegrid.in3dca import h
 import math
 import Part
 
@@ -116,6 +117,7 @@ class BitCartridgeHolder:
 
 
 class StorageBox:
+    """ Class to manage the geometry of the Storage Box """
     def __init__(self):
         self.INSIDE_RIM_BOTTOM = 3.4
         self.INSIDE_RIM_WIDTH = 0.4
@@ -158,8 +160,8 @@ class StorageBox:
         self.y_size = 1
         self.ramp_radius = 10
 
-    # Create the outer frame for a box
-    def box_frame(self):
+    def box_frame(self) -> Part.Shape:
+        """ Create the outer frame for a box """
         x = self.size_x - 2 * self.corner_size
         y = self.size_y - 2 * self.corner_size
 
@@ -204,8 +206,8 @@ class StorageBox:
 
         return new_box
 
-    # Create a corner that connects two walls
-    def corner(self):
+    def corner(self) -> Part.Shape:
+        """ Create a corner that connects two walls """
         faces = []
         # Establish the z face and translate it to connect to the wall
         z_verticies = self.wall_profile()
@@ -240,7 +242,8 @@ class StorageBox:
         #        Part.show(corner, 'corner')
         return corner
 
-    def dividers(self):
+    def dividers(self) -> list:
+        """ Return a list of internal dividers """
         if self.divisions_x <= 1 and self.divisions_y <= 1:
             return []
 
@@ -260,6 +263,7 @@ class StorageBox:
             profile = h.poly_to_face(points, 1)
             divider = profile.extrude(h.xyz(y=self.size_y - 2 * self.WALL_THICKNESS))
             spacing = self.size_x / self.divisions_x
+            # Instead of copy.copy(), use FreeCAD's cloneObject method
             for i in range(1, self.divisions_x):
                 divider.Placement = Placement(h.xyz(spacing * i), Rotation())
                 dividers.append(copy.copy(divider))
@@ -278,6 +282,7 @@ class StorageBox:
             profile = h.poly_to_face(points, 1)
             divider = profile.extrude(h.xyz(x=self.size_x - 2 * self.WALL_THICKNESS))
             spacing = self.size_y / self.divisions_y
+            # Instead of copy.copy(), use FreeCAD's cloneObject method
             for i in range(1, self.divisions_y):
                 divider.Placement = Placement(h.xyz(0, spacing * i), Rotation())
                 dividers.append(copy.copy(divider))
@@ -353,8 +358,8 @@ class StorageBox:
 
         return floor
 
-    # Create a grip / label area across the back of the box
     def grip_object(self):
+        """ Create a grip / label area across the back of the box """
         # Build the grip profile in the YZ plane
         back_wall = self.size_y - self.WALL_THICKNESS
         depth = self.grip_depth
@@ -547,7 +552,8 @@ class StorageBox:
         holder = holder.cut(h.disk(mag_radius + 0.1, mag_height + 0.2))
         return holder
 
-    def make(self, depth=1, width=1, height=10.0, mag_d=6.0, mag_h=2.0, floor_thickness=None):
+    def make(self, depth=1, width=1, height=10.0, mag_d=6.0, mag_h=2.0,
+             floor_thickness=None) -> Part.Shape:
         if floor_thickness is not None:
             self.floor_thickness = floor_thickness
         if self.floor_thickness < self.MIN_FLOOR:
@@ -851,9 +857,11 @@ class StorageBox:
         return points
 
     def wall_profile(self, open_face=False):
-        # Generate a cross-section of the wall for a box. This profile will be extruded from
-        # corner to corner. If the face is open, then the top profile (designed to mate with
-        # a box above) is omitted.
+        """
+        Generate a cross-section of the wall for a box. This profile will be extruded from
+        corner to corner. If the face is open, then the top profile (designed to mate with
+        a box above) is omitted.
+        """
         diagonal_end = max(self.floor_thickness, self.MIN_FLOOR)
         profile = [
             h.xyz(self.corner_size, 0.0),  # Bottom left
