@@ -37,9 +37,7 @@ __Communication__ = ''
 __Files__ = ''
 
 import copy
-import FreeCAD
 import DraftVecUtils
-# import FreeCAD
 from FreeCAD import Console, Placement, Rotation
 from freecad.freegrid.in3dca import h
 import math
@@ -263,7 +261,6 @@ class StorageBox:
             profile = h.poly_to_face(points, 1)
             divider = profile.extrude(h.xyz(y=self.size_y - 2 * self.WALL_THICKNESS))
             spacing = self.size_x / self.divisions_x
-            # Instead of copy.copy(), use FreeCAD's cloneObject method
             for i in range(1, self.divisions_x):
                 divider.Placement = Placement(h.xyz(spacing * i), Rotation())
                 dividers.append(copy.copy(divider))
@@ -282,7 +279,6 @@ class StorageBox:
             profile = h.poly_to_face(points, 1)
             divider = profile.extrude(h.xyz(x=self.size_x - 2 * self.WALL_THICKNESS))
             spacing = self.size_y / self.divisions_y
-            # Instead of copy.copy(), use FreeCAD's cloneObject method
             for i in range(1, self.divisions_y):
                 divider.Placement = Placement(h.xyz(0, spacing * i), Rotation())
                 dividers.append(copy.copy(divider))
