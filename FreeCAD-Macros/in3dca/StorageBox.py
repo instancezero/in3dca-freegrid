@@ -36,9 +36,7 @@ __Requires__ = ''
 __Communication__ = ''
 __Files__ = ''
 
-import copy
 import DraftVecUtils
-import FreeCAD
 from FreeCAD import Placement, Rotation
 from in3dca import h
 import math
@@ -256,7 +254,7 @@ class StorageBox:
         spacing = self.size_x / self.divisions
         for i in range(1, self.divisions):
             divider.Placement = Placement(h.xyz(spacing * i), Rotation())
-            dividers.append(copy.copy(divider))
+            dividers.append(divider.copy())
         return dividers
 
     def floor(self, depth, width):
