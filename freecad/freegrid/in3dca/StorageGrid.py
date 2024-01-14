@@ -36,34 +36,20 @@ __Requires__ = ''
 __Communication__ = ''
 __Files__ = ''
 
-from FreeCAD import Placement, Rotation
 import Part
+from FreeCAD import Base, Placement, Rotation
 from freecad.freegrid.in3dca import h
 
-class StorageGrid:
-    def __init__(self):
-        self.bevel = 0.5
-        self.clearance = 0.3
-        self.gap = 0.1
-        self.magnet_floor_thickness = 2.0 + 1.2
-        self.magnets = True
-        self.spacing = 50
-        self.rail_height = 3.0
-        self.rail_width = 5.0
-        self.top_width = 1.0
-        self.x_size = 3
-        self.y_size = 3
-        self.mag_diameter = 6
-        self.mag_height = 2
-        self.corner_connectors = True
-        self.is_substractive = False
-        self.extra_bottom = 0
 
-    def connector_insert(self):
-        """
-        A hole to accommodate the connectors
-        counter-clockwise
-        """
+class StorageGrid:
+    """Class to manage the geometry of the Storage Grid."""
+    def __init__(self):
+        """Initialize the attributes of the StorageGrid object."""
+        self.reset()
+
+
+    def connector_insert(self) -> Part.Solid:
+        """Create a hole to accommodate the connectors, counter-clockwise."""
         profile = [
             h.xyz(-0.1, -0.1),  # Start outside origin
             h.xyz(2.5, -0.1),   # Trim off sharp corner edge
@@ -82,16 +68,11 @@ class StorageGrid:
         face = Part.Face(Part.makePolygon(profile))
         insert = face.extrude(h.xyz(z=1.95+self.extra_bottom))
         insert.Placement = Placement(h.xyz(z=-0.05-self.extra_bottom), Rotation())
-
         return insert
 
-    def connector_profile(self):
-        # counter-clockwise
-        profile = [
-        ]
-        return profile
 
-    def inner_rail_profile(self):
+    def inner_rail_profile(self) -> list[Base.Vector]:
+        """Create the profile used on the inner rails."""
         half = self.rail_width / 2.0
         half_top = self.top_width / 2.0
         lift = self.magnet_floor_thickness
@@ -117,7 +98,8 @@ class StorageGrid:
         ]
         return profile
 
-    def magnet_holder(self, mag_diameter, mag_height):
+
+    def magnet_holder(self, mag_diameter, mag_height) -> Part.Shape:
         """
         Creates a single corner magnet holder.
         The maximun height of this body is 3.2[mm] meaning that:
@@ -150,16 +132,20 @@ class StorageGrid:
         holder = holder.cut(h.disk(mag_radius + 0.1, height, h.xyz(z=floor_thickness)))
         return holder
 
-    def make(self, x=1, y=1, mag_d=6, mag_h=2, extra_bottom=0):
+
+    def make(self, x=1, y=1, mag_d=6, mag_h=2, extra_bottom=0) -> Part.Shape:
+        """Return the body of a grid including some default values, for testing."""
         self.x_size = x
         self.y_size = y
         self.mag_diameter = mag_d
         self.mag_height = mag_h
         self.extra_bottom = extra_bottom
         outer = self.rails()
-        return outer
+        return outer.removeSplitter()
 
-    def outer_rail_profile(self):
+
+    def outer_rail_profile(self) -> list[Base.Vector]:
+        """Create the profile used on the outer rails."""
         half_top = self.top_width / 2.0
         lift = self.magnet_floor_thickness
         # counter-clockwise from inside the bevel on the outer edge
@@ -175,7 +161,9 @@ class StorageGrid:
         ]
         return profile
 
-    def outer_rail_cleanup_face(self):
+
+    def outer_rail_cleanup_face(self) -> Part.Face:
+        """Create a face used to clean the corners."""
         profile = [
             h.xyz(0, z=self.bevel+self.gap),
             h.xyz(0, z=0),
@@ -184,17 +172,25 @@ class StorageGrid:
         ]
         return Part.Face(Part.makePolygon(profile))
 
-    def outer_rail_cleanup(self, len):
+
+    def outer_rail_cleanup(self, len) -> Part.Solid:
+        """Create a solid to clean an artifact left on the corners."""
         face = self.outer_rail_cleanup_face()
         cleanup = face.extrude(h.xyz(y=len))
         return cleanup
 
-    def rails(self):
-        # Get the profile
-        # extrude
-        # Transform to XZ plane
-        # Translate to start point (shift and rotate)
-        # repeat for 3 remaining sides.
+
+    def rails(self) -> Part.Shape:
+        """
+        Create the grid shape
+
+        Method:
+        - Get the profile
+        - Extrude
+        - Transform to XZ plane
+        - Translate to start point (shift and rotate)
+        - Repeat for 3 remaining sides.
+        """
         rail_length_x = self.x_size * self.spacing - 2 * self.gap
         rail_length_y = self.y_size * self.spacing - 2 * self.gap
         # Left rail
@@ -277,7 +273,7 @@ class StorageGrid:
                         rails = rails.cut(magnet_hole)
 
         else:
-            # Magnet holders on additive mode (original)
+            # NOTE: Magnet holders on additive mode (original)
             # Aparently the distance from the holder to the inmediate grid border is 14.1[mm]
             # The diameter of the magnet and the constanc 'c' play a role here
             # The holder separates from the grid border: (mag_diameter - 6mm)/2
@@ -347,10 +343,11 @@ class StorageGrid:
                 Rotation(h.xyz(z=1.0), -90)
             )
             rails = rails.cut(cleanup_y)
-
         return rails
 
+
     def reset(self):
+        """Reset the attributes of the StorageGrid object to their default values."""
         self.bevel = 0.5
         self.clearance = 0.3
         self.gap = 0.1
@@ -368,8 +365,9 @@ class StorageGrid:
         self.is_substractive = False
         self.extra_bottom = 0
 
+
     def self_test(self):
-        # Generate test grids
+        """Generate test grids."""
         start = h.xyz(z=-60)
         incr = 60
 
@@ -398,8 +396,9 @@ class StorageGrid:
         Part.show(g2x1, 'g2x1')
         start.x += 2 * incr
 
-    # Convenience method to facilitate data-driven generation.
+
     def set_param(self, name, value):
+        """Convenience method to facilitate data-driven generation."""
         # Set to make magnet holes
         if name == 'magnets':
             self.magnets = value

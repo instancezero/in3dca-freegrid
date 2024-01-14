@@ -36,11 +36,11 @@ __Requires__ = ''
 __Communication__ = ''
 __Files__ = ''
 
+import Part
 import DraftVecUtils
-from FreeCAD import Console, Placement, Rotation
+from FreeCAD import Base, Placement, Rotation
 from freecad.freegrid.in3dca import h
 import math
-import Part
 
 
 class BitCartridgeHolder:
@@ -114,51 +114,21 @@ class BitCartridgeHolder:
 
 
 class StorageBox:
-    """ Class to manage the geometry of the Storage Box """
+    """Class to manage the geometry of the Storage Box."""
     def __init__(self):
+        """Initialize the attributes of the StorageBox object."""
         self.INSIDE_RIM_BOTTOM = 3.4
         self.INSIDE_RIM_WIDTH = 0.4
         self.MIN_FLOOR = 4.8
         self.STACK_ADJUSTMENT = 2.3
         self.WALL_THICKNESS = 2.0
         self.SUPPORT_THICKNESS = 1.0
-        self.as_components = False
-        self.cells_x = 1
-        self.cells_y = 1
-        self.cells_z = 1
-        self.corner_size = 5.0
         self.floor_support = True
-        # Generate the front face
-        self.closed_front = True
-        # Number of areas within the box
-        self.divisions_x = 0
-        self.divisions_y = 0
-        self.divider_width = 1.2
-        self.floor_thickness = self.MIN_FLOOR
-        self.grip_depth = 0.0
-        # Magnet parameters
-        self.mag_diameter = 6
-        self.mag_height = 2
-        # Set to make magnet holes
-        self.magnets = True
-        # Set if box magnets are only in the far corners
-        self.magnets_corners_only = False
-        # Internal: size of the current box
-        self.size_x = 0
-        self.size_y = 0
-        self.size_z = 0
-        # Grid spacing
-        self.spacing = 50
-        # Rail width is a "half rail" width
-        self.rail_width = 5
-        self.ramp = False
-        self.unit_height = 10
-        self.x_size = 1
-        self.y_size = 1
-        self.ramp_radius = 10
+        self.reset()
+
 
     def box_frame(self) -> Part.Shape:
-        """ Create the outer frame for a box """
+        """Create the outer frame for a box."""
         x = self.size_x - 2 * self.corner_size
         y = self.size_y - 2 * self.corner_size
 
@@ -203,8 +173,9 @@ class StorageBox:
 
         return new_box
 
-    def corner(self) -> Part.Shape:
-        """ Create a corner that connects two walls """
+
+    def corner(self) -> Part.Solid:
+        """Create a corner that connects two walls."""
         faces = []
         # Establish the z face and translate it to connect to the wall
         z_verticies = self.wall_profile()
@@ -239,8 +210,9 @@ class StorageBox:
         #        Part.show(corner, 'corner')
         return corner
 
-    def dividers(self) -> list:
-        """ Return a list of internal dividers """
+
+    def dividers(self) -> list[Part.Solid]:
+        """Return a list of internal dividers."""
         if self.divisions_x <= 1 and self.divisions_y <= 1:
             return []
 
@@ -284,7 +256,9 @@ class StorageBox:
 
         return dividers
 
-    def floor(self, depth, width):
+
+    def floor(self, depth, width) -> Part.Shape:
+        """Create the shape of the floor."""
         s = self.spacing
         x = self.size_x - 2 * self.corner_size
         y = self.size_y - 2 * self.corner_size
@@ -353,8 +327,9 @@ class StorageBox:
 
         return floor
 
-    def grip_object(self):
-        """ Create a grip / label area across the back of the box """
+
+    def grip_object(self) -> Part.Shape:
+        """Create a grip/label area across the back of the box."""
         # Build the grip profile in the YZ plane
         back_wall = self.size_y - self.WALL_THICKNESS
         depth = self.grip_depth
@@ -386,7 +361,9 @@ class StorageBox:
 
         return grip
 
-    def inner_cut_profile(self):
+
+    def inner_cut_profile(self) -> list[Base.Vector]:
+        """Create the profile used to create the intersection cutter."""
         # counter-clockwise from left bottom bevel
         profile = [
             h.xyz(-3.0, z=0.0),
@@ -401,7 +378,9 @@ class StorageBox:
         ]
         return profile
 
-    def insert(self, width, depth):
+
+    def insert(self, width, depth) -> list[Base.Vector]:
+        """Create list of points to create the sketch."""
         if self.floor_thickness < self.MIN_FLOOR:
             self.floor_thickness = self.MIN_FLOOR
         self.cells_x = width
@@ -428,14 +407,17 @@ class StorageBox:
         ])
         return points
 
-    def insert_as_sketch(self, width, depth):
+
+    def insert_as_sketch(self, width, depth) -> Part.Feature:
+        """Insert a sketch of the inner space."""
         points = self.insert(width, depth)
         sketch = h.poly_to_sketch('box_' + str(self.cells_x) + " " + str(self.cells_y) + "_insert", points)
         sketch.Placement = Placement(h.xyz(z=self.floor_thickness), Rotation())
         return sketch
 
-    # Create an object to introduce clearance at floor intersections
-    def intersection(self):
+
+    def intersection(self) -> Part.Solid:
+        """Create an object to introduce clearance at floor intersections."""
         profile_master = self.inner_cut_profile()
 
         faces = []
@@ -515,10 +497,11 @@ class StorageBox:
         #   for f in faces:
         #       Part.show(f)
         inter = Part.makeSolid(Part.makeShell(faces))
-        #   Part.show(inter, 'inter')
+        # Part.show(inter, 'inter')
         return inter
 
-    def magnet_holder(self, mag_diameter, mag_height):
+
+    def magnet_holder(self, mag_diameter, mag_height) -> Part.Shape:
         """
         Creates a single corner magnet holder.
         The grid floor thickness must be 3.2[mm].
@@ -547,8 +530,10 @@ class StorageBox:
         holder = holder.cut(h.disk(mag_radius + 0.1, mag_height + 0.2))
         return holder
 
+
     def make(self, depth=1, width=1, height=10.0, mag_d=6.0, mag_h=2.0,
              floor_thickness=None) -> Part.Shape:
+        """Return the body of a box including some default values, for testing."""
         if floor_thickness is not None:
             self.floor_thickness = floor_thickness
         if self.floor_thickness < self.MIN_FLOOR:
@@ -619,8 +604,9 @@ class StorageBox:
         # Perform a refine operation on the result.
         return new_box.removeSplitter()
 
-    # Create a circular ramp across the front of the box
-    def ramp_object(self):
+
+    def ramp_object(self) -> Part.Shape:
+        """Create a circular ramp across the front of the box"""
         # Get a quarter circle
         points = h.arc(self.ramp_radius, 90, 10)
         # close the polygon
@@ -643,7 +629,9 @@ class StorageBox:
 
         return ramp
 
+
     def reset(self):
+        """Reset the attributes of the StorageBox object to their default values."""
         self.as_components = False
         self.cells_x = 1
         self.cells_y = 1
@@ -678,12 +666,15 @@ class StorageBox:
         self.y_size = 1
         self.ramp_radius = 10
 
+
     def self_test(self):
-        # Generate test objects. Naming is x, y, z, divisions, options (open, magnet corners, no magnets, etc,)
+        # Generate test objects. Naming is x, y, z, divisions,
+        # options (open, magnet corners, no magnets, etc,)
         self.self_test_1x1(h.xyz())
         self.self_test_1x1_features(h.xyz(y=60))
         self.self_test_1x2(h.xyz(y=120))
         self.self_test_sketch(h.xyz(y=-60))
+
 
     def self_test_1x1(self, origin):
         shift = 0
@@ -707,6 +698,7 @@ class StorageBox:
         b1x1x1p1_nm.Placement = Placement(origin.add(h.xyz(shift, 50, 10)), Rotation(h.xyz(1), 180))
         Part.show(b1x1x1p1_nm, 'b1x1x1p1_nm')
         shift += incr
+
 
     def self_test_1x1_features(self, origin):
         shift = 0
@@ -758,6 +750,7 @@ class StorageBox:
         Part.show(b1x1x2p1_ramp, 'b1x1x2p1_ramp')
         shift += incr
 
+
     def self_test_1x2(self, origin):
         shift = 0
         incr = 60
@@ -796,6 +789,7 @@ class StorageBox:
         Part.show(b1x2x1p1_nm, 'b1x2x1p1_nm')
         shift += incr
 
+
     def self_test_sketch(self, origin):
         shift = 0
         incr = 60
@@ -810,8 +804,9 @@ class StorageBox:
         s1x1_open.Placement = Placement(origin.add(h.xyz(shift)), Rotation())
         shift += incr
 
-    # Convenience method to facilitate data-driven generation.
+
     def set_param(self, name, value):
+        """Convenience method to facilitate data-driven generation."""
         if name == 'as_components':
             self.as_components = value
         elif name == 'closed_front':
@@ -830,9 +825,12 @@ class StorageBox:
         elif name == 'ramp':
             self.ramp = value
 
-    def top_profile(self, origin, reverse=True):
-        # Generate this clockwise, relative to the origin, which is the outside top of the box,
-        # inset by the spacing margin of 0.1. The profile ends at the bottom of the bottom rim bevel.
+
+    def top_profile(self, origin, reverse=True) -> list[Base.Vector]:
+        """
+        Generate this clockwise, relative to the origin, which is the outside top of the box,
+        inset by the spacing margin of 0.1. The profile ends at the bottom of the bottom rim bevel.
+        """
         width_at_rim = self.WALL_THICKNESS + self.INSIDE_RIM_WIDTH
         points = [
             h.xyz(0.1, -0.1).add(origin),
@@ -851,7 +849,8 @@ class StorageBox:
 
         return points
 
-    def wall_profile(self, open_face=False):
+
+    def wall_profile(self, open_face=False) -> list[Base.Vector]:
         """
         Generate a cross-section of the wall for a box. This profile will be extruded from
         corner to corner. If the face is open, then the top profile (designed to mate with
@@ -870,7 +869,7 @@ class StorageBox:
             profile.extend(self.top_profile(h.xyz(y=self.size_z)))
         profile.extend([
             h.xyz(0.1, 3.4),  # Down outer wall
-            h.xyz(2.5, 1),  # Bottom outer diagonal
+            h.xyz(2.5, 1),    # Bottom outer diagonal
             h.xyz(2.5, 0.5),  #
             h.xyz(3.0, 0.0),  # Chamfer
             h.xyz(self.corner_size, 0.0),  # Return to origin

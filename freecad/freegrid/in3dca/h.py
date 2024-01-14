@@ -47,7 +47,7 @@ import Sketcher
 
 def arc(radius: float = 10, degrees: float = 360, increment: float = 5,
         start_deg: float = 0) -> list:
-    """ Create a list of Vectors forming an arc """
+    """Create a list of Vectors forming an arc"""
     increment_rads = math.radians(increment)
     position_rads = math.radians(start_deg)
     increment_abs = math.fabs(increment)
@@ -58,6 +58,7 @@ def arc(radius: float = 10, degrees: float = 360, increment: float = 5,
         position_rads += increment_rads
         degrees -= increment_abs
     return points
+
 
 def disk(radius: float, depth: float, at=None) -> Part.Shape:
     """ Create a solid disk """
@@ -93,7 +94,7 @@ def get_edges_enclosed_by_box(base_shape: Part.Shape, origin: Base.Vector,
     return edge_list
 
 
-def poly_close(vec, to_origin=0):
+def poly_close(vec, to_origin=0) -> list[Base.Vector]:
     """
     Move a list of vertices to a new origin and if the list isn't a closed polygon,
     close it.
@@ -112,21 +113,23 @@ def poly_close(vec, to_origin=0):
     return moved
 
 
-def poly_rotate(list, degrees, axis):
-    """ Rotate a list of points """
+def poly_rotate(list, degrees, axis) -> list:
+    """Rotate a list of points"""
     for i, p in enumerate(list):
         list[i] = DraftVecUtils.rotate(p, math.radians(degrees), axis)
     return list
 
-def poly_to_face(points, close=0):
-    """ Convert polygon to face """
+
+def poly_to_face(points, close=0) -> Part.Face:
+    """Convert polygon to face"""
     if close != 0:
         points = poly_close(points)
 
     return Part.Face(Part.makePolygon(points))
 
-def poly_to_sketch(name, points, close=0):
-    """ Convert points to sketch """
+
+def poly_to_sketch(name, points, close=0) -> Part.Feature:
+    """Convert points to sketch"""
     if close != 0:
         points = poly_close(points)
 
@@ -146,12 +149,12 @@ def poly_to_sketch(name, points, close=0):
 
 
 def poly_translate(list, vector) -> list:
-    """ Translate a list of points """
+    """Translate a list of points"""
     for i, p in enumerate(list):
         list[i] = p.add(vector)
     return list
 
 
 def xyz(x=0.0, y=0.0, z=0.0) -> Base.Vector:
-    """ Make a Vector with optional arguments """
+    """Make a Vector with optional arguments"""
     return Base.Vector(x, y, z)
