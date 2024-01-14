@@ -15,10 +15,13 @@
 # * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
 # *                                                                         *
 # ***************************************************************************
+try:
+    import FreeCAD as App
+    import FreeCADGui as Gui
+except ImportError as e:
+    print(f"Failed to import module: {e}\nModule not loaded with FreeCAD")
 
 import os
-import FreeCAD as App
-import FreeCADGui as Gui
 from freecad.freegrid import ICONPATH
 
 try:
@@ -36,8 +39,8 @@ class FreeGridWorkbench(Gui.Workbench):
 
     MenuText = "FreeGrid"
     ToolTip = "FreeGrid 3D printed storage system"
-    Icon = os.path.join(ICONPATH, "template_resource.svg")
     commands = ["CreateStorageBox", "CreateStorageGrid"]
+    Icon = os.path.join(ICONPATH, "FreeGrid.svg")
 
     def Initialize(self):
         """
@@ -47,14 +50,13 @@ class FreeGridWorkbench(Gui.Workbench):
 
         # Add commmands to toolbar and menu
 
-        from .FreeGridCmd import CreateStorageBox
-        from .FreeGridCmd import CreateStorageGrid
+        from freecad.freegrid import commands
 
         self.appendToolbar("FreeGrid", self.commands)
         self.appendMenu("FreeGrid", self.commands)
 
-        Gui.addCommand('CreateStorageBox', CreateStorageBox())
-        Gui.addCommand('CreateStorageGrid', CreateStorageGrid())
+        Gui.addCommand('CreateStorageBox', commands.CreateStorageBox())
+        Gui.addCommand('CreateStorageGrid', commands.CreateStorageGrid())
 
         App.Console.PrintMessage("FreeGrid Workbench initialized\n")
 
@@ -62,14 +64,14 @@ class FreeGridWorkbench(Gui.Workbench):
         """
         Code which should be computed when a user switch to this workbench
         """
-        App.Console.PrintMessage("\nHola\n")
+        # App.Console.PrintMessage("Hola\n")
         pass
 
     def Deactivated(self):
         """
         Code which should be computed when this workbench is deactivated
         """
-        App.Console.PrintMessage("\nAdiós\n")
+        # App.Console.PrintMessage("Adiós\n")
         pass
 
     def ContextMenu(self, recipient):
