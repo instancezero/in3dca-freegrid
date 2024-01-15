@@ -4,7 +4,7 @@ import FreeCAD
 import FreeCADGui as Gui
 
 from freecad.freegrid import ICONPATH
-from freecad.freegrid.FreeGridCmd import BoxObject, GridObject
+from freecad.freegrid.FreeGridCmd import BoxObject, GridObject, Sketch
 
 
 class ViewProvider(object):
@@ -53,10 +53,7 @@ class ViewProvider(object):
 
 
 class BaseCommand(object):
-    """Base class to prepare all the commands in the GUI."""
-    NAME = ""
-    FREEGRID_FUNCTION = None
-
+    """Base class to prepare all the commands."""
     def __init__(self):
         pass
 
@@ -65,6 +62,34 @@ class BaseCommand(object):
             return False
         else:
             return True
+
+    def Activated(self):
+        pass
+
+    @property
+    def view(self):
+        """Get the active view in the FreeCAD GUI."""
+        return Gui.ActiveDocument.ActiveView
+
+    def toolTipWithIcon(self, icon_size: int = 125) -> str:
+        """Return an html formatted string to include an icon along the tooltip."""
+        return "<img src=" + self.Pixmap + " align=left width='" + str(icon_size) \
+                + "' height='" + str(icon_size) + "' type='svg/xml' />" \
+                + "<div align=center>" + self.ToolTip + "</div>"
+
+    def GetResources(self):
+        return {'Pixmap': self.Pixmap,
+                'MenuText': self.MenuText,
+                'ToolTip': self.toolTipWithIcon()}
+
+
+class BaseObjectCommand(BaseCommand):
+    """
+    Base class to prepare all the commands that create
+    a Storage object in the GUI.
+    """
+    NAME = ""
+    FREEGRID_FUNCTION = None
 
     def Activated(self):
         Gui.doCommandGui("import freecad.freegrid.commands")
@@ -98,19 +123,8 @@ class BaseCommand(object):
 
         return obj
 
-    def toolTipWithIcon(self, icon_size: int = 125) -> str:
-        """Return an html formatted string to include an icon along the tooltip."""
-        return "<img src=" + self.Pixmap + " align=left width='" + str(icon_size) \
-                + "' height='" + str(icon_size) + "' type='svg/xml' />" \
-                + "<div align=center>" + self.ToolTip + "</div>"
 
-    def GetResources(self):
-        return {'Pixmap': self.Pixmap,
-                'MenuText': self.MenuText,
-                'ToolTip': self.toolTipWithIcon()}
-
-
-class CreateStorageBox(BaseCommand):
+class CreateStorageBox(BaseObjectCommand):
     NAME = "StorageBox"
     FREEGRID_FUNCTION = lambda obj: BoxObject(obj)
     Pixmap = os.path.join(ICONPATH, 'box.svg')
@@ -118,7 +132,7 @@ class CreateStorageBox(BaseCommand):
     ToolTip = "Create a storage box"
 
 
-class CreateStorageGrid(BaseCommand):
+class CreateStorageGrid(BaseObjectCommand):
     NAME = "StorageGrid"
     FREEGRID_FUNCTION = lambda obj: GridObject(obj)
     Pixmap = os.path.join(ICONPATH, 'grid.svg')
@@ -126,9 +140,10 @@ class CreateStorageGrid(BaseCommand):
     ToolTip = "Create a storage grid"
 
 
-class CreateStorageSketch(BaseCommand):
-    NAME = "StorageSketch"
-    FREEGRID_FUNCTION = lambda obj: SketchObject(obj)
+class CreateSketch(BaseCommand):
     Pixmap = os.path.join(ICONPATH, 'sketch.svg')
     MenuText = 'Sketch'
     ToolTip = "Generate inner box profile"
+
+    def Activated(self):
+        Sketch(self.view)

@@ -1,9 +1,14 @@
+import os
 import sys
 
 import Part
 import FreeCAD
+import FreeCADGui as Gui
+
+from PySide import QtGui
 from FreeCAD import Base, Placement, Rotation
 
+from freecad.freegrid import UIPATH
 from freecad.freegrid.in3dca import StorageBox, StorageGrid
 
 
@@ -184,3 +189,37 @@ class GridObject(StorageObject):
         obj.Shape = self.generate_grid(obj)
         obj.Placement = Placement(Base.Vector(0.0, 0.0, -3.2), Rotation())
         obj.Label = self.descriptionStr(obj)
+
+
+class Sketch():
+    """Generate a sketch using a dockable user interface."""
+
+    # TODO: If a StorageObject is selected, get their width and depth
+    # and make the sketch of that size instead of displaying the UI.
+
+    def __init__(self, view):
+        self.view = view
+
+        plus_int = QtGui.QIntValidator()
+        plus_int.setBottom(1)
+
+        self.form = Gui.PySideUic.loadUi(os.path.join(UIPATH, "sketch.ui"))
+        self.form.inside_sketch_button.clicked.connect(self.createSketch)
+        self.form.sketch_x.setValidator(plus_int)
+        self.form.sketch_x.setMaxLength(3)
+        self.form.sketch_x.setText("1")
+        self.form.sketch_y.setValidator(plus_int)
+        self.form.sketch_y.setMaxLength(3)
+        self.form.sketch_y.setText("1")
+
+        Gui.Control.showDialog(self)
+
+    def createSketch(self):
+        box = StorageBox.StorageBox()
+        x = int(self.form.sketch_x.text())
+        y = int(self.form.sketch_y.text())
+        box.closed_front = not self.form.sketch_open_front.isChecked()
+        box.insert_as_sketch(x, y)
+
+        FreeCAD.ActiveDocument.recompute()
+        Gui.Control.closeDialog()
