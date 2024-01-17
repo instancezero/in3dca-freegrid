@@ -54,11 +54,17 @@ class StorageGrid:
         self.top_width = 1.0
         self.x_size = 3
         self.y_size = 3
+        self.mag_diameter = 6
+        self.mag_height = 2
         self.corner_connectors = True
+        self.is_substractive = False
+        self.extra_bottom = 0
 
     def connector_insert(self):
-        # A hole to accommodate the connectors
-        # counter-clockwise
+        """
+        A hole to accommodate the connectors
+        counter-clockwise
+        """
         profile = [
             h.xyz(-0.1, -0.1),  # Start outside origin
             h.xyz(2.5, -0.1),   # Trim off sharp corner edge
@@ -75,8 +81,8 @@ class StorageGrid:
             h.xyz(-0.1, -0.1),  # close the polygon
         ]
         face = Part.Face(Part.makePolygon(profile))
-        insert = face.extrude(h.xyz(z=1.95))
-        insert.Placement = Placement(h.xyz(z=-0.05), Rotation())
+        insert = face.extrude(h.xyz(z=1.95+self.extra_bottom))
+        insert.Placement = Placement(h.xyz(z=-0.05-self.extra_bottom), Rotation())
 
         return insert
 
@@ -112,26 +118,45 @@ class StorageGrid:
         ]
         return profile
 
-    def magnet_holder(self, mag_diameter):
-        height = 2.2
+    def magnet_holder(self, mag_diameter, mag_height):
+        """
+        Creates a single corner magnet holder.
+        The maximun height of this body is 3.2[mm] meaning that:
+        the height of the magnet plus the height of the floor in which
+        the magnet is glued sums 3.2mm.
+        floor_thickness + mag_diameter = 3.2[mm]
+
+        The initial (arbitrary) square holder size is 13.4[mm], i.e.
+        2 * peg_radius + extra = 13.4mm
+
+        As of the current constants:
+        - the maximun magnet diameter is 10[mm], 11[mm] don't fit
+        - the maximun magnet height is 3[mm] (and 0.2[mm] of floor)
+        """
+        height = mag_height + 0.2 # Height of the magnet cutter
         mag_radius = mag_diameter / 2.0
         peg_radius = mag_radius + 1.2
+        floor_thickness = 3.2 - mag_height
+        extra = 13.4 - 2 * peg_radius
         holder = h.poly_to_face([
             h.xyz(),
             h.xyz(peg_radius, 0),
-            h.xyz(peg_radius, -peg_radius - 5),
-            h.xyz(-peg_radius - 5, -peg_radius - 5),
-            h.xyz(-peg_radius - 5, peg_radius),
+            h.xyz(peg_radius, - peg_radius - extra),
+            h.xyz(-peg_radius - extra, - peg_radius - extra),
+            h.xyz(-peg_radius - extra, peg_radius),
             h.xyz(0, peg_radius),
             h.xyz()
         ]).extrude(h.xyz(z=2.4))
         holder = holder.fuse(h.disk(mag_radius + 1.2, self.magnet_floor_thickness))
-        holder = holder.cut(h.disk(mag_radius + 0.1, height, h.xyz(z=1.2)))
+        holder = holder.cut(h.disk(mag_radius + 0.1, height, h.xyz(z=floor_thickness)))
         return holder
 
-    def make(self, x=1, y=1):
+    def make(self, x=1, y=1, mag_d=6, mag_h=2, extra_bottom=0):
         self.x_size = x
         self.y_size = y
+        self.mag_diameter = mag_d
+        self.mag_height = mag_h
+        self.extra_bottom = extra_bottom
         outer = self.rails()
         return outer
 
@@ -185,6 +210,7 @@ class StorageGrid:
             Rotation(h.xyz(z=1.0), 180)
         )
         rails = rails.fuse(new_rail)
+
         # Bottom rail
         new_rail = face.extrude(h.xyz(y=rail_length_x))
         new_rail.Placement = Placement(
@@ -221,40 +247,75 @@ class StorageGrid:
             )
             rails = rails.fuse(new_rail)
 
-        # Magnet holders
-        if self.magnets:
-            holder = self.magnet_holder(6)
-            c = 10
-            for i in range(0, self.y_size):
-                y = i * self.spacing
-                for w in range(0, self.x_size):
-                    x = w * self.spacing
-                    holder.Placement = Placement(h.xyz(x + c, y + c), Rotation())
-                    rails = rails.fuse(holder)
-                    holder.Placement = Placement(h.xyz(x + self.spacing - c, y + c), Rotation(h.xyz(z=1), 90))
-                    rails = rails.fuse(holder)
-                    holder.Placement = Placement(h.xyz(x + c, y + self.spacing - c), Rotation(h.xyz(z=1), 270))
-                    rails = rails.fuse(holder)
-                    holder.Placement = Placement(h.xyz(x + self.spacing - c, y + self.spacing - c), Rotation(h.xyz(z=1), 180))
-                    rails = rails.fuse(holder)
+        # Extra material under the grid, to simulate a thick wood piece
+        if self.is_substractive:
+            base = h.poly_to_face([
+                h.xyz(self.gap, self.gap, - self.extra_bottom),
+                h.xyz(self.spacing * self.x_size - 2 * self.gap, 0, - self.extra_bottom),
+                h.xyz(self.spacing * self.x_size - 2 * self.gap,
+                      self.spacing * self.y_size - 2 * self.gap, - self.extra_bottom),
+                h.xyz(0, self.spacing * self.y_size - 2 * self.gap, - self.extra_bottom),
+                h.xyz(self.gap, self.gap, - self.extra_bottom),
+            ]).extrude(h.xyz(z=self.extra_bottom + 2.4 + 0.8))
+            # Part.show(base, 'base')
+            rails = rails.fuse(base)
+
+            # Magnet holders on substractive mode
+            if self.magnets:
+                magnet_hole = h.disk(self.mag_diameter/2 + 0.1, 2.4 + 0.8, h.xyz(z=1.2))
+                c = 10 - (self.mag_diameter - 6)/2.0
+                for i in range(0, self.y_size):
+                    y = i * self.spacing
+                    for w in range(0, self.x_size):
+                        x = w * self.spacing
+                        magnet_hole.Placement = Placement(h.xyz(x + c, y + c), Rotation())
+                        rails = rails.cut(magnet_hole)
+                        magnet_hole.Placement = Placement(h.xyz(x + self.spacing - c, y + c), Rotation(h.xyz(z=1), 90))
+                        rails = rails.cut(magnet_hole)
+                        magnet_hole.Placement = Placement(h.xyz(x + c, y + self.spacing - c), Rotation(h.xyz(z=1), 270))
+                        rails = rails.cut(magnet_hole)
+                        magnet_hole.Placement = Placement(h.xyz(x + self.spacing - c, y + self.spacing - c), Rotation(h.xyz(z=1), 180))
+                        rails = rails.cut(magnet_hole)
+
+        else:
+            # Magnet holders on additive mode (original)
+            # Aparently the distance from the holder to the inmediate grid border is 14.1[mm]
+            # The diameter of the magnet and the constanc 'c' play a role here
+            # The holder separates from the grid border: (mag_diameter - 6mm)/2
+            if self.magnets:
+                holder = self.magnet_holder(self.mag_diameter, self.mag_height)
+                c = 10 - (self.mag_diameter - 6)/2.0
+                for i in range(0, self.y_size):
+                    y = i * self.spacing
+                    for w in range(0, self.x_size):
+                        x = w * self.spacing
+                        holder.Placement = Placement(h.xyz(x + c, y + c), Rotation())
+                        rails = rails.fuse(holder)
+                        holder.Placement = Placement(h.xyz(x + self.spacing - c, y + c), Rotation(h.xyz(z=1), 90))
+                        rails = rails.fuse(holder)
+                        holder.Placement = Placement(h.xyz(x + c, y + self.spacing - c), Rotation(h.xyz(z=1), 270))
+                        rails = rails.fuse(holder)
+                        holder.Placement = Placement(h.xyz(x + self.spacing - c, y + self.spacing - c), Rotation(h.xyz(z=1), 180))
+                        rails = rails.fuse(holder)
 
         if self.corner_connectors:
             # Cut spaces for the connectors
+            zz = -0.05 - self.extra_bottom
             insert = self.connector_insert()
-            insert.Placement = Placement(h.xyz(z=-0.05), Rotation())
+            insert.Placement = Placement(h.xyz(z=zz), Rotation())
             rails = rails.cut(insert)
             insert.Placement = Placement(
-                h.xyz(self.x_size * self.spacing, 0, -0.05),
+                h.xyz(self.x_size * self.spacing, 0, zz),
                 Rotation(h.xyz(z=1.0), 90)
             )
             rails = rails.cut(insert)
             insert.Placement = Placement(
-                h.xyz(self.x_size * self.spacing, self.y_size * self.spacing, -0.05),
+                h.xyz(self.x_size * self.spacing, self.y_size * self.spacing, zz),
                 Rotation(h.xyz(z=1.0), 180)
             )
             rails = rails.cut(insert)
             insert.Placement = Placement(
-                h.xyz(0, self.y_size * self.spacing, -0.05),
+                h.xyz(0, self.y_size * self.spacing, zz),
                 Rotation(h.xyz(z=1.0), 270)
             )
             rails = rails.cut(insert)
@@ -288,6 +349,9 @@ class StorageGrid:
             )
             rails = rails.cut(cleanup_y)
 
+        # Move down the grid to make it not collide with boxes in the 3D view
+        rails = rails.translate(h.xyz(z=-3.2))
+
         return rails
 
     def reset(self):
@@ -302,6 +366,11 @@ class StorageGrid:
         self.top_width = 1.0
         self.x_size = 3
         self.y_size = 3
+        self.mag_diameter = 6
+        self.mag_height = 2
+        self.corner_connectors = True
+        self.is_substractive = False
+        self.extra_bottom = 0
 
     def self_test(self):
         # Generate test grids
@@ -340,3 +409,5 @@ class StorageGrid:
             self.magnets = value
         if name == 'corner_connectors':
             self.corner_connectors = value
+        if name == 'is_substractive':
+            self.is_substractive = value

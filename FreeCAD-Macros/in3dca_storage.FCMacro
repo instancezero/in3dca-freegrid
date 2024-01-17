@@ -46,6 +46,8 @@ from in3dca import StorageGrid, StorageBox
 
 from PySide import QtCore, QtGui
 
+pq = FreeCAD.Units.parseQuantity
+
 try:
     _encoding = QtGui.QApplication.UnicodeUTF8
 
@@ -59,7 +61,8 @@ except AttributeError:
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
-    _fromUtf8 = lambda s: s
+    def _fromUtf8(s):
+        return s
 
 
 class In3dGridUi(QtGui.QWidget):
@@ -93,15 +96,19 @@ class In3dGridUi(QtGui.QWidget):
         self.box_y.setText("1")
         form.addRow("Box Depth (y, 50mm units)", self.box_y)
         self.box_z = QtGui.QLineEdit()
-        self.box_z.setValidator(plus_int)
-        self.box_z.setMaxLength(3)
-        self.box_z.setText("1")
-        form.addRow("Box Height (z, 10mm units)", self.box_z)
-        self.box_divs = QtGui.QLineEdit()
-        self.box_divs.setValidator(plus_int)
-        self.box_divs.setMaxLength(3)
-        self.box_divs.setText("1")
-        form.addRow("Number of divisions", self.box_divs)
+        self.box_z.setMaxLength(7)
+        self.box_z.setText("5cm")
+        form.addRow("Box Height (z, 10mm units or \nenter value and unit: 4cm, 1dm, 3in, 0.5ft)", self.box_z)
+        self.box_divs_x = QtGui.QLineEdit()
+        self.box_divs_x.setValidator(plus_int)
+        self.box_divs_x.setMaxLength(3)
+        self.box_divs_x.setText("1")
+        form.addRow("Number of divisions along the X axis", self.box_divs_x)
+        self.box_divs_y = QtGui.QLineEdit()
+        self.box_divs_y.setValidator(plus_int)
+        self.box_divs_y.setMaxLength(3)
+        self.box_divs_y.setText("1")
+        form.addRow("Number of divisions along the Y axis", self.box_divs_y)
         self.box_open_front = QtGui.QCheckBox("Leave front of box open")
         self.box_open_front.setChecked(False)
         form.addRow(self.box_open_front)
@@ -112,10 +119,9 @@ class In3dGridUi(QtGui.QWidget):
         self.box_grip.setChecked(True)
         form.addRow(self.box_grip)
         self.box_grip_depth = QtGui.QLineEdit()
-        self.box_grip_depth.setValidator(QtGui.QIntValidator())
-        self.box_grip_depth.setMaxLength(3)
-        self.box_grip_depth.setText("15")
-        form.addRow("Depth of grip (mm)", self.box_grip_depth)
+        self.box_grip_depth.setMaxLength(5)
+        self.box_grip_depth.setText("15mm")
+        form.addRow("Depth of grip", self.box_grip_depth)
         self.floor_support = QtGui.QCheckBox("Add integral floor support")
         self.floor_support.setChecked(True)
         form.addRow(self.floor_support)
@@ -138,6 +144,14 @@ class In3dGridUi(QtGui.QWidget):
         self.corner_connectors = QtGui.QCheckBox("Space for locking connectors at outside corners")
         self.corner_connectors.setChecked(True)
         form.addRow(self.corner_connectors)
+        self.is_substractive = QtGui.QCheckBox("Create a grid suitable for substractive manufacturing")
+        self.is_substractive.setChecked(False)
+        form.addRow(self.is_substractive)
+        self.extra_bottom = QtGui.QLineEdit()
+        self.extra_bottom.setMaxLength(5)
+        self.extra_bottom.setText("16mm")
+        self.extra_bottom.setEnabled(False)
+        form.addRow("Extra thickness under grid", self.extra_bottom)
         self.grid_tab.setLayout(form)
 
         # Tab 2: Sketch options
@@ -166,16 +180,26 @@ class In3dGridUi(QtGui.QWidget):
         # Magnet options in a group
         self.opt_magnet_group = QtGui.QGroupBox("Options for magnet mounts")
 
-        grid = QtGui.QVBoxLayout()
+        grid = QtGui.QFormLayout()
         grid.setSpacing(10)
+
+        self.magnet_diameter = QtGui.QLineEdit()
+        self.magnet_diameter.setMaxLength(5)
+        self.magnet_diameter.setText("6mm")
+        grid.addRow("Diameter of the magnet", self.magnet_diameter)
+
+        self.magnet_height = QtGui.QLineEdit()
+        self.magnet_height.setMaxLength(5)
+        self.magnet_height.setText("2mm")
+        grid.addRow("Height of the magnet", self.magnet_height)
 
         self.opt_magnets_all = QtGui.QRadioButton("At all box/grid intersections")
         self.opt_magnets_all.setChecked(True)
-        grid.addWidget(self.opt_magnets_all)
+        grid.addRow(self.opt_magnets_all)
         self.opt_magnets_box = QtGui.QRadioButton("Box corners only / all grid intersections")
-        grid.addWidget(self.opt_magnets_box)
+        grid.addRow(self.opt_magnets_box)
         self.opt_magnets_none = QtGui.QRadioButton("No magnet mounts")
-        grid.addWidget(self.opt_magnets_none)
+        grid.addRow(self.opt_magnets_none)
 
         self.opt_magnet_group.setLayout(grid)
         self.global_opts.addWidget(self.opt_magnet_group)
@@ -214,79 +238,25 @@ class In3dGridUi(QtGui.QWidget):
         self.box_grip.clicked.connect(self.box_grip_click)
         self.floor_support.clicked.connect(self.floor_support_click)
         self.box_open_front.clicked.connect(self.box_open_front_click)
-        self.apply_button.clicked.connect(self.start_button_click)
-        self.close_button.clicked.connect(self.close_button_click)
         self.inside_sketch_button.clicked.connect(self.inside_sketch_button_click)
         self.corner_connectors.clicked.connect(self.corner_connectors_click)
+        self.is_substractive.clicked.connect(self.is_substractive_click)
 
         self.ok_button.clicked.connect(self.ok_button_click)
+        self.apply_button.clicked.connect(self.start_button_click)
+        self.close_button.clicked.connect(self.close_button_click)
+
         self.show()
 
     def box_grip_click(self, state):
         self.box_grip_depth.setEnabled(state)
 
     def floor_support_click(self, state):
-        self.floor_support.setEnabled(state)
+        self.floor_support.setChecked(state)
 
     def box_open_front_click(self, state):
         if state:
             self.box_ramp.setChecked(False)
-
-    def close_button_click(self):
-        self.hide()
-
-    def generate_box(self):
-        # We are creating a box
-        box = StorageBox.StorageBox()
-        box.as_components = self.opt_as_objects.isChecked()
-        box.closed_front = not self.box_open_front.isChecked()
-        depth = int(self.box_grip_depth.text())
-        box.divisions = int(self.box_divs.text())
-        if box.divisions < 1:
-            box.divisions = 1
-        if self.box_grip.isChecked() and depth > 0:
-            box.grip_depth = depth
-        if self.opt_magnets_none.isChecked():
-            box.magnets = False
-            box.magnets_corners_only = True
-        else:
-            box.magnets = True
-            box.magnets_corners_only = self.opt_magnets_box.isChecked()
-        box.ramp = self.box_ramp.isChecked()
-        box.floor_support = self.floor_support.isChecked()
-
-        x = int(self.box_x.text())
-        y = int(self.box_y.text())
-        z = int(self.box_z.text())
-        if x > 0 and y > 0 and z >= 0:
-            self.message.setText("Generating...")
-            self.message.repaint()
-            size = str(x) + "x" + str(y) + "x" + str(z)
-            Part.show(box.make(x, y, z), "In3D_" + size + "_box")
-            msg = "Created " + str(x) + "x" + str(y) + "x" + str(z) + " box"
-            if box.as_components:
-                msg += " as components"
-            msg += "."
-            self.message.setText(msg)
-        else:
-            self.message.setText("At least one box size is too small.")
-
-    def generate_grid(self):
-        grid = StorageGrid.StorageGrid()
-        grid.magnets = not self.opt_magnets_none.isChecked()
-        grid.corner_connectors = self.corner_connectors.isChecked()
-        x = int(self.grid_x.text())
-        y = int(self.grid_y.text())
-        if x > 0 and y > 0:
-            self.message.setText("Generating...")
-            self.message.repaint()
-            size = str(x) + "x" + str(y)
-            Part.show(grid.make(x, y), "In3D_" + size + "_grid")
-            msg = "Created " + str(x) + "x" + str(y) + " grid."
-            self.message.setText(msg)
-        else:
-            self.message.setText("Grid sizes must be greater than zero.")
-
 
     def inside_sketch_button_click(self):
         box = StorageBox.StorageBox()
@@ -300,7 +270,80 @@ class In3dGridUi(QtGui.QWidget):
             self.message.setText("Sizes must be greater than zero.")
 
     def corner_connectors_click(self, state):
-        self.corner_connectors.setEnabled(state)
+        self.corner_connectors.setChecked(state)
+
+    def is_substractive_click(self, state):
+        self.is_substractive.setChecked(state)
+        self.extra_bottom.setEnabled(state)
+
+    def generate_box(self):
+        # We are creating a box
+        box = StorageBox.StorageBox()
+        box.as_components = self.opt_as_objects.isChecked()
+        box.closed_front = not self.box_open_front.isChecked()
+        depth = pq(self.box_grip_depth.text()).getValueAs('mm')
+        box.divisions_x = int(self.box_divs_x.text())
+        box.divisions_y = int(self.box_divs_y.text())
+        if box.divisions_x < 1:
+            box.divisions_x = 1
+        if box.divisions_y < 1:
+            box.divisions_y = 1
+        if self.box_grip.isChecked() and depth > 0:
+            box.grip_depth = depth
+        if self.opt_magnets_none.isChecked():
+            box.magnets = False
+            box.magnets_corners_only = True
+        else:
+            box.magnets = True
+            box.magnets_corners_only = self.opt_magnets_box.isChecked()
+        box.ramp = self.box_ramp.isChecked()
+        box.floor_support = self.floor_support.isChecked()
+
+        x = int(self.box_x.text())
+        y = int(self.box_y.text())
+        mag_d = pq(self.magnet_diameter.text()).getValueAs('mm')
+        mag_h = pq(self.magnet_height.text()).getValueAs('mm')
+
+        # FreeCAD Quantity: https://wiki.freecad.org/Quantity
+        #z = pq(self.box_z.text()).Value  # get the number (always internal system (mm/kg/s))
+        # Which is equivalent to line 315:
+        if self.box_z.text().isdigit():
+            z = 10 * int(self.box_z.text()) # 1 unit = 10[mm]
+        else:
+            z = pq(self.box_z.text()).getValueAs('mm')  # Translate the value
+
+        if x > 0 and y > 0 and z >= 0:
+            self.message.setText("Generating...")
+            self.message.repaint()
+            size = str(x) + "x" + str(y) + "x" + str(z) + "mm"
+            Part.show(box.make(x, y, z, mag_d, mag_h), "In3D_" + size + "_box")
+            msg = "Created " + str(x) + "x" + str(y) + "x" + str(z) + "mm box"
+            if box.as_components:
+                msg += " as components"
+            msg += "."
+            self.message.setText(msg)
+        else:
+            self.message.setText("At least one box size is too small.")
+
+    def generate_grid(self):
+        grid = StorageGrid.StorageGrid()
+        grid.magnets = not self.opt_magnets_none.isChecked()
+        grid.corner_connectors = self.corner_connectors.isChecked()
+        grid.is_substractive = self.is_substractive.isChecked()
+        extra_bottom = pq(self.extra_bottom.text()).getValueAs('mm')
+        x = int(self.grid_x.text())
+        y = int(self.grid_y.text())
+        mag_d = pq(self.magnet_diameter.text()).getValueAs('mm')
+        mag_h = pq(self.magnet_height.text()).getValueAs('mm')
+        if x > 0 and y > 0:
+            self.message.setText("Generating...")
+            self.message.repaint()
+            size = str(x) + "x" + str(y)
+            Part.show(grid.make(x, y, mag_d, mag_h, extra_bottom), "In3D_" + size + "_grid")
+            msg = "Created " + str(x) + "x" + str(y) + " grid."
+            self.message.setText(msg)
+        else:
+            self.message.setText("Grid sizes must be greater than zero.")
 
     def ok_button_click(self):
         self.start_button_click()
@@ -315,5 +358,8 @@ class In3dGridUi(QtGui.QWidget):
             self.generate_grid()
         elif self.tabs.currentIndex() == 2:
             pass
+
+    def close_button_click(self):
+        self.hide()
 
 gui = In3dGridUi()

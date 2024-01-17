@@ -130,10 +130,14 @@ class StorageBox:
         # Generate the front face
         self.closed_front = True
         # Number of areas within the box
-        self.divisions = 0
+        self.divisions_x = 0
+        self.divisions_y = 0
         self.divider_width = 1.2
         self.floor_thickness = self.MIN_FLOOR
         self.grip_depth = 0.0
+        # Magnet parameters
+        self.mag_diameter = 6
+        self.mag_height = 2
         # Set to make magnet holes
         self.magnets = True
         # Set if box magnets are only in the far corners
@@ -235,26 +239,47 @@ class StorageBox:
         return corner
 
     def dividers(self):
-        if self.divisions <= 1:
+        if self.divisions_x <= 1 and self.divisions_y <= 1:
             return []
-        offset = self.divider_width / 2.0
-        # Create the divider profile in the XZ plane, clockwise from top left
-        # when looking toward +Y
-        points = [
-            h.xyz(-offset, self.WALL_THICKNESS, self.size_z - self.INSIDE_RIM_BOTTOM),
-            h.xyz(offset, self.WALL_THICKNESS, self.size_z - self.INSIDE_RIM_BOTTOM),
-            h.xyz(offset, self.WALL_THICKNESS, self.floor_thickness + 1.0),
-            h.xyz(offset + 1.0, self.WALL_THICKNESS, self.floor_thickness),
-            h.xyz(-offset - 1.0, self.WALL_THICKNESS, self.floor_thickness),
-            h.xyz(-offset, self.WALL_THICKNESS, self.floor_thickness + 1.0),
-        ]
-        profile = h.poly_to_face(points, 1)
-        divider = profile.extrude(h.xyz(y=self.size_y - 2 * self.WALL_THICKNESS))
+
         dividers = []
-        spacing = self.size_x / self.divisions
-        for i in range(1, self.divisions):
-            divider.Placement = Placement(h.xyz(spacing * i), Rotation())
-            dividers.append(divider.copy())
+        offset = self.divider_width / 2.0
+        # Create the x divider profile in the XZ plane, clockwise from top left
+        # when looking toward +Y
+        if self.divisions_x > 1:
+            points = [
+                h.xyz(-offset, self.WALL_THICKNESS, self.size_z - self.INSIDE_RIM_BOTTOM),
+                h.xyz(offset, self.WALL_THICKNESS, self.size_z - self.INSIDE_RIM_BOTTOM),
+                h.xyz(offset, self.WALL_THICKNESS, self.floor_thickness + 1.0),
+                h.xyz(offset + 1.0, self.WALL_THICKNESS, self.floor_thickness),
+                h.xyz(-offset - 1.0, self.WALL_THICKNESS, self.floor_thickness),
+                h.xyz(-offset, self.WALL_THICKNESS, self.floor_thickness + 1.0),
+            ]
+            profile = h.poly_to_face(points, 1)
+            divider = profile.extrude(h.xyz(y=self.size_y - 2 * self.WALL_THICKNESS))
+            spacing = self.size_x / self.divisions_x
+            for i in range(1, self.divisions_x):
+                divider.Placement = Placement(h.xyz(spacing * i), Rotation())
+                dividers.append(divider.copy())
+
+        # Create the y divider profile in the YZ plane, clockwise from top left
+        # when looking toward +X
+        if self.divisions_y > 1:
+            points = [
+                h.xyz(self.WALL_THICKNESS, -offset, self.size_z - self.INSIDE_RIM_BOTTOM),
+                h.xyz(self.WALL_THICKNESS, offset, self.size_z - self.INSIDE_RIM_BOTTOM),
+                h.xyz(self.WALL_THICKNESS, offset, self.floor_thickness + 1.0),
+                h.xyz(self.WALL_THICKNESS, offset + 1.0, self.floor_thickness),
+                h.xyz(self.WALL_THICKNESS, -offset - 1.0, self.floor_thickness),
+                h.xyz(self.WALL_THICKNESS, -offset, self.floor_thickness + 1.0),
+            ]
+            profile = h.poly_to_face(points, 1)
+            divider = profile.extrude(h.xyz(x=self.size_x - 2 * self.WALL_THICKNESS))
+            spacing = self.size_y / self.divisions_y
+            for i in range(1, self.divisions_y):
+                divider.Placement = Placement(h.xyz(0, spacing * i), Rotation())
+                dividers.append(divider.copy())
+
         return dividers
 
     def floor(self, depth, width):
@@ -299,8 +324,8 @@ class StorageBox:
 
         if self.magnets and self.floor_thickness >= 2.2 + 1.2:
             # Holders for magnets
-            holder = self.magnet_holder(6)
-            c = 10
+            holder = self.magnet_holder(self.mag_diameter, self.mag_height)
+            c = 10 - (self.mag_diameter - 6)/2.0
             if self.magnets_corners_only:
                 holder.Placement = Placement(h.xyz(c, c), Rotation())
                 floor = floor.fuse(holder)
@@ -491,23 +516,36 @@ class StorageBox:
         #   Part.show(inter, 'inter')
         return inter
 
-    def magnet_holder(self, mag_diameter):
+    def magnet_holder(self, mag_diameter, mag_height):
+        """
+        Creates a single corner magnet holder.
+        The grid floor thickness must be 3.2[mm].
+
+        The limit square holder size is 11.2[mm].
+        The available space is less than the grid.
+
+        As of the current constants:
+        - the maximun magnet diameter is 7[mm], 8[mm] don't fit
+        - the maximun magnet height is 3[mm] (and 0.2[mm] of floor)
+        """
         mag_radius = mag_diameter / 2.0
         peg_radius = mag_radius + 1.2
+        extra = 11.2 - 2 * peg_radius
         holder = h.poly_to_face([
             h.xyz(),
             h.xyz(peg_radius, 0),
-            h.xyz(peg_radius, -peg_radius),
-            h.xyz(-peg_radius, -peg_radius),
-            h.xyz(-peg_radius, peg_radius),
+            h.xyz(peg_radius, - peg_radius - extra),
+            h.xyz(-peg_radius - extra + 2, - peg_radius - extra), # Cut corner
+            h.xyz(-peg_radius - extra , - peg_radius - extra + 2),
+            h.xyz(-peg_radius - extra, peg_radius),
             h.xyz(0, peg_radius),
             h.xyz()
         ]).extrude(h.xyz(z=self.floor_thickness-0.01))
         holder = holder.fuse(h.disk(mag_radius + 1.2, self.floor_thickness-0.01))
-        holder = holder.cut(h.disk(mag_radius + 0.1, 2.2))
+        holder = holder.cut(h.disk(mag_radius + 0.1, mag_height + 0.2))
         return holder
 
-    def make(self, depth=1, width=1, height=1, floor_thickness=None):
+    def make(self, depth=1, width=1, height=10.0, mag_d=6.0, mag_h=2.0, floor_thickness=None):
         if floor_thickness is not None:
             self.floor_thickness = floor_thickness
         if self.floor_thickness < self.MIN_FLOOR:
@@ -518,8 +556,11 @@ class StorageBox:
         self.size_y = width * self.spacing
         if height < 0:
             height = 0
-        self.cells_z = height
-        self.size_z = height * self.unit_height + self.STACK_ADJUSTMENT
+        # self.cells_z = height # unit deprecated
+        # height is already in mm
+        self.size_z = height + self.STACK_ADJUSTMENT
+        self.mag_diameter = mag_d
+        self.mag_height = mag_h
 
         new_box = self.box_frame()
 
@@ -608,10 +649,14 @@ class StorageBox:
         # Generate the front face
         self.closed_front = True
         # Number of areas within the box
-        self.divisions = 0
+        self.divisions_x = 0
+        self.divisions_y = 0
         self.divider_width = 1.2
         self.floor_thickness = self.MIN_FLOOR
         self.grip_depth = 0.0
+        # Magnet parameters
+        self.mag_diameter = 6
+        self.mag_height = 2
         # Set to make magnet holes
         self.magnets = True
         # Set if box magnets are only in the far corners
@@ -679,21 +724,24 @@ class StorageBox:
         shift += incr
 
         self.reset()
-        self.divisions = 2
+        self.divisions_x = 2
+        self.divisions_y = 1
         b1x1x1d2 = self.make()
         b1x1x1d2.Placement = Placement(origin.add(h.xyz(shift)), Rotation())
         Part.show(b1x1x1d2, 'b1x1x1d2')
         shift += incr
 
         self.reset()
-        self.divisions = 3
+        self.divisions_x = 3
+        self.divisions_y = 1
         b1x1x3d3 = self.make(1, 1, 3)
         b1x1x3d3.Placement = Placement(origin.add(h.xyz(shift)), Rotation())
         Part.show(b1x1x3d3, 'b1x1x1d3')
         shift += incr
 
         self.reset()
-        self.divisions = 3
+        self.divisions_x = 3
+        self.divisions_y = 1
         self.grip_depth = 15
         b1x1x3d3_grip = self.make(1, 1, 3)
         b1x1x3d3_grip.Placement = Placement(origin.add(h.xyz(shift)), Rotation())
@@ -717,7 +765,8 @@ class StorageBox:
         shift += incr
 
         self.reset()
-        self.divisions = 2
+        self.divisions_x = 2
+        self.divisions_y = 1
         b1x2x1p2 = self.make(1, 2)
         b1x2x1p2.Placement = Placement(origin.add(h.xyz(shift)), Rotation())
         Part.show(b1x2x1p2, 'b1x2x1p2')
@@ -764,8 +813,10 @@ class StorageBox:
             self.as_components = value
         elif name == 'closed_front':
             self.closed_front = value
-        elif name == 'divisions':
-            self.divisions = value
+        elif name == 'divisions_x':
+            self.divisions_x = value
+        elif name == 'divisions_y':
+            self.divisions_y = value
         elif name == 'grip_depth':
             self.grip_depth = value
         # Set to make magnet holes
