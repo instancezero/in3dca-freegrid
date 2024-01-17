@@ -36,9 +36,7 @@ __Requires__ = ''
 __Communication__ = ''
 __Files__ = ''
 
-import copy
 import DraftVecUtils
-import FreeCAD
 from FreeCAD import Placement, Rotation
 from in3dca import h
 import math
@@ -262,7 +260,7 @@ class StorageBox:
             spacing = self.size_x / self.divisions_x
             for i in range(1, self.divisions_x):
                 divider.Placement = Placement(h.xyz(spacing * i), Rotation())
-                dividers.append(copy.copy(divider))
+                dividers.append(divider.copy())
 
         # Create the y divider profile in the YZ plane, clockwise from top left
         # when looking toward +X
@@ -280,7 +278,7 @@ class StorageBox:
             spacing = self.size_y / self.divisions_y
             for i in range(1, self.divisions_y):
                 divider.Placement = Placement(h.xyz(0, spacing * i), Rotation())
-                dividers.append(copy.copy(divider))
+                dividers.append(divider.copy())
 
         return dividers
 
