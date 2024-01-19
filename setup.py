@@ -14,8 +14,7 @@ setup(name='freecad.freegrid',
                 'pyfreegrid'],
       maintainer="hasecllu",
       maintainer_email="hasecilu@tuta.io",
-      url="",
-      description="This project contains FreeCAD macros for \
-                   generating FreeGrid storage system components.",
-      install_requires=['numpy'],
+      url="https://github.com/instancezero/in3dca-freegrid/tree/WorkBench",
+      description="A simple tools workbench for generating\
+      FreeGrid storage system components.",
       include_package_data=True)

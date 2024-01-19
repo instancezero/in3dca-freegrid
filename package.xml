@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<package format="1" xmlns="https://wiki.freecad.org/Package_Metadata">
+  <name>FreeGrid Workbench</name>
+  <description>A simple tools workbench for generating FreeGrid storage system components.</description>
+  <tag>storage</tag>
+  <tag>parametric</tag>
+  <tag>3dprinting</tag>
+  <version>2.0.0</version>
+  <date>2024-01-15</date>
+  <author>Alan Langford</author>
+  <maintainer email="">Alan Langford</maintainer>
+  <maintainer email="">Michael K Johnson</maintainer>
+  <maintainer email="hasecilu@tuta.io">hasecilu</maintainer>
+  <license file="LICENSE">AGPL-3.0 license</license>
+  <pythonmin>3.6.0</pythonmin>
+  <url type="repository" branch="WorkBench">https://github.com/instancezero/in3dca-freegrid</url>
+  <url type="readme">https://github.com/instancezero/in3dca-freegrid/blob/WorkBench/README.md</url>
+  <icon>freecad/freegrid/resources/icons/FreeGrid.svg</icon>
+
+  <content>
+    <workbench>
+      <classname>FreeGridWorkbench</classname>
+    </workbench>
+  </content>
+
+</package>
