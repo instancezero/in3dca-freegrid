@@ -8,6 +8,7 @@ import FreeCADGui as Gui
 from PySide import QtGui
 from FreeCAD import Base, Placement, Rotation
 
+from TranslateUtils import translate
 from freecad.freegrid import UIPATH
 from freecad.freegrid.in3dca import StorageBox, StorageGrid
 
@@ -49,14 +50,15 @@ class StorageObject:
     """Base class for all objects."""
     def __init__(self, obj):
         """ Initialize common properties """
-        obj.addProperty("App::PropertyInteger", "width", "Size",
-                        "Number of 50[mm] units in x direction").width = 1
-        obj.addProperty("App::PropertyInteger", "depth", "Size",
-                        "Number of 50[mm] units in y direction").depth = 1
+        obj.addProperty("App::PropertyInteger", "width", "Size", translate(
+            "StoragePropDesc", "Number of 50[mm] units in x direction")).width = 1
+        obj.addProperty("App::PropertyInteger", "depth", "Size", translate(
+            "StoragePropDesc", "Number of 50[mm] units in y direction")).depth = 1
         obj.addProperty("App::PropertyLength", "magnetDiameter", "Magnet mount",
-                        "Diameter of the magnet").magnetDiameter = "6mm"
+            translate("StoragePropDesc", "Diameter of the magnet")
+                        ).magnetDiameter = "6mm"
         obj.addProperty("App::PropertyLength", "magnetHeight", "Magnet mount",
-                        "Height of the magnet").magnetHeight = "2mm"
+            translate("StoragePropDesc", "Height of the magnet")).magnetHeight = "2mm"
 
 
     def descriptionStr(self, obj):
@@ -84,25 +86,31 @@ class BoxObject(StorageObject):
         super().__init__(obj)
         self.storageType = "StorageBox"
         obj.Proxy = self
-        obj.addProperty("App::PropertyLength", "height", "Size",
-                        "Height (in z direction), enter value and unit\n\
-                        example: 4cm, 1dm, 3in, 0.5ft)").height = "5cm"
+        obj.addProperty("App::PropertyLength", "height", "Size", translate(
+            "StoragePropDesc", "Height (in z direction), enter value and unit\n"\
+            + "example: 4cm, 1dm, 3in, 0.5ft")).height = "5cm"
         obj.addProperty("App::PropertyInteger", "divisionsX", "Internal divisions",
-                        "Number of divisions along the X axis)").divisionsX = 1
+            translate("StoragePropDesc", "Number of divisions along the X axis")
+                        ).divisionsX = 1
         obj.addProperty("App::PropertyInteger", "divisionsY", "Internal divisions",
-                        "Number of divisions along the Y axis)").divisionsY = 1
+            translate("StoragePropDesc", "Number of divisions along the Y axis")
+                        ).divisionsY = 1
         obj.addProperty("App::PropertyBool", "boxOpenFront", "Box features",
-                        "Leave front of box open").boxOpenFront = False
+            translate("StoragePropDesc", "Leave front of box open")
+                        ).boxOpenFront = False
         obj.addProperty("App::PropertyBool", "boxRamp", "Box features",
-                        "Add scoop inside front of box").boxRamp = True
+            translate("StoragePropDesc", "Add scoop inside front of box")
+                        ).boxRamp = True
         obj.addProperty("App::PropertyBool", "boxGrip", "Box features",
-                        "Add grip/label area at rear of box").boxGrip = True
+            translate("StoragePropDesc", "Add grip/label area at rear of box")
+                        ).boxGrip = True
         obj.addProperty("App::PropertyLength", "boxGripDepth", "Box features",
-                        "Depth of grip (mm)").boxGripDepth = "15mm"
+            translate("StoragePropDesc", "Depth of grip (mm)")).boxGripDepth = "15mm"
         obj.addProperty("App::PropertyBool", "floorSupport", "Box features",
-                        "Add integral floor support").floorSupport = True
+            translate("StoragePropDesc", "Add integral floor support")
+                        ).floorSupport = True
         obj.addProperty("App::PropertyEnumeration", "magnetOption", "Magnet mount",
-                        "Options to add magnets").magnetOption = \
+            translate("StoragePropDesc", "Options to add magnets")).magnetOption = \
                         ["allIntersections", "cornersOnly", "noMagnets"]
         obj.magnetOption = "allIntersections"
 
@@ -155,15 +163,19 @@ class GridObject(StorageObject):
         self.storageType = "StorageGrid"
         obj.Proxy = self
         obj.addProperty("App::PropertyBool", "cornerConnectors", "Grid features",
-                        "Space for locking connectors at outside corners"
+            translate("StoragePropDesc",
+                      "Space for locking connectors at outside corners")
                         ).cornerConnectors = True
         obj.addProperty("App::PropertyBool", "isSubstractive", "Grid features",
-                        "Create a grid suitable for substractive manufacturing"
+            translate("StoragePropDesc",
+                      "Create a grid suitable for substractive manufacturing")
                         ).isSubstractive = False
         obj.addProperty("App::PropertyLength", "extraBottom", "Grid features",
-                        "Extra thickness under grid (mm)").extraBottom = "16mm"
+            translate("StoragePropDesc", "Extra thickness under grid (mm)")
+                        ).extraBottom = "16mm"
         obj.addProperty("App::PropertyBool", "includeMagnet", "Magnet mount",
-                        "Include magnets receptacles").includeMagnet = True
+            translate("StoragePropDesc", "Include magnets receptacles")
+                        ).includeMagnet = True
 
 
     def generate_grid(self, obj) -> Part.Shape:

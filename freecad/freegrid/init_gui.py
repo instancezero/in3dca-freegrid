@@ -22,7 +22,8 @@ except ImportError as e:
     print(f"Failed to import module: {e}\nModule not loaded with FreeCAD")
 
 import os
-from freecad.freegrid import ICONPATH
+from TranslateUtils import translate
+from freecad.freegrid import ICONPATH, TRANSLATIONSPATH
 
 try:
     from FreeCADGui import Workbench
@@ -38,7 +39,7 @@ class FreeGridWorkbench(Gui.Workbench):
     """
 
     MenuText = "FreeGrid"
-    ToolTip = "FreeGrid 3D printed storage system"
+    ToolTip = translate("InitGui", "FreeGrid 3D printed storage system")
     Icon = os.path.join(ICONPATH, "FreeGrid.svg")
 
     commands = [
@@ -53,6 +54,10 @@ class FreeGridWorkbench(Gui.Workbench):
         here is the place to import all the commands
         """
 
+        # Add translations path
+        Gui.addLanguagePath(TRANSLATIONSPATH)
+        Gui.updateLocale()
+
         # Add commmands to toolbar and menu
 
         from freecad.freegrid import commands
@@ -64,7 +69,8 @@ class FreeGridWorkbench(Gui.Workbench):
         Gui.addCommand('CreateStorageGrid', commands.CreateStorageGrid())
         Gui.addCommand('CreateSketch', commands.CreateSketch())
 
-        App.Console.PrintMessage("FreeGrid Workbench initialized\n")
+        App.Console.PrintMessage(translate("InitGui", "FreeGrid Workbench initialized")\
+            + "\n")
 
     def Activated(self):
         """

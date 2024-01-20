@@ -3,6 +3,7 @@ import os
 import FreeCAD
 import FreeCADGui as Gui
 
+from TranslateUtils import translate
 from freecad.freegrid import ICONPATH
 from freecad.freegrid.FreeGridCmd import BoxObject, GridObject, Sketch
 
@@ -127,23 +128,23 @@ class BaseObjectCommand(BaseCommand):
 class CreateStorageBox(BaseObjectCommand):
     NAME = "StorageBox"
     FREEGRID_FUNCTION = lambda obj: BoxObject(obj)
-    Pixmap = os.path.join(ICONPATH, 'box.svg')
-    MenuText = 'Storage box'
-    ToolTip = "Create a storage box"
+    Pixmap = os.path.join(ICONPATH, "box.svg")
+    MenuText = translate("Commands", "Storage box")
+    ToolTip = translate("Commands", "Create a storage box")
 
 
 class CreateStorageGrid(BaseObjectCommand):
     NAME = "StorageGrid"
     FREEGRID_FUNCTION = lambda obj: GridObject(obj)
-    Pixmap = os.path.join(ICONPATH, 'grid.svg')
-    MenuText = 'Storage grid'
-    ToolTip = "Create a storage grid"
+    Pixmap = os.path.join(ICONPATH, "grid.svg")
+    MenuText = translate("Commands", "Storage grid")
+    ToolTip = translate("Commands", "Create a storage grid")
 
 
 class CreateSketch(BaseCommand):
-    Pixmap = os.path.join(ICONPATH, 'sketch.svg')
-    MenuText = 'Sketch'
-    ToolTip = "Generate inner box profile"
+    Pixmap = os.path.join(ICONPATH, "sketch.svg")
+    MenuText = translate("Commands", "Sketch")
+    ToolTip = translate("Commands", "Generate inner box profile")
 
     def Activated(self):
         Sketch(self.view)
