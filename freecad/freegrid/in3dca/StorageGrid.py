@@ -243,7 +243,7 @@ class StorageGrid:
             rails = rails.fuse(new_rail)
 
         # Extra material under the grid, to simulate a thick wood piece
-        if self.is_substractive:
+        if self.is_subtractive:
             base = h.poly_to_face([
                 h.xyz(self.gap, self.gap, - self.extra_bottom),
                 h.xyz(self.spacing * self.x_size - 2 * self.gap, 0, - self.extra_bottom),
@@ -255,7 +255,7 @@ class StorageGrid:
             # Part.show(base, 'base')
             rails = rails.fuse(base)
 
-            # Magnet holders on substractive mode
+            # Magnet holders on subtractive mode
             if self.magnets:
                 magnet_hole = h.disk(self.mag_diameter/2 + 0.1, 2.4 + 0.8, h.xyz(z=1.2))
                 c = 10 - (self.mag_diameter - 6)/2.0
@@ -362,7 +362,7 @@ class StorageGrid:
         self.mag_diameter = 6
         self.mag_height = 2
         self.corner_connectors = True
-        self.is_substractive = False
+        self.is_subtractive = False
         self.extra_bottom = 0
 
 
@@ -404,5 +404,5 @@ class StorageGrid:
             self.magnets = value
         if name == 'corner_connectors':
             self.corner_connectors = value
-        if name == 'is_substractive':
-            self.is_substractive = value
+        if name == 'is_subtractive':
+            self.is_subtractive = value

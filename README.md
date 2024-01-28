@@ -110,7 +110,7 @@ adjustments to the dimensions when the 3D printer lacks of precision.
 It's possible to create dividers parallel to both X and Y axis that split the inside evenly to create a grid
 inside of the box.
 
-## Substractive manufacturing for grids
+## Subtractive manufacturing for grids
 
 Originally the FreeGrid system was thought to be manufactured using an additive process: 3D printing. The problem
 is that the used material and time needed to complete a big grid can be exaggeratedly large. In order to address

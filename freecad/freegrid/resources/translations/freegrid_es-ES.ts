@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="es-ES" sourcelanguage="en">
+<TS version="2.1" language="es_ES" sourcelanguage="en">
 <context>
     <name>FreeGridGui::SketchParameters</name>
     <message>
@@ -151,8 +151,8 @@ ejemplo: 4cm, 1dm, 3in, 0.5ft</translation>
     </message>
     <message>
         <location filename="../../FreeGridCmd.py" line="169"/>
-        <source>Create a grid suitable for substractive manufacturing</source>
-        <translation>Crear una rejilla adecuada para manufactura substractiva</translation>
+        <source>Create a grid suitable for subtractive manufacturing</source>
+        <translation>Crear una rejilla adecuada para manufactura sustractiva</translation>
     </message>
     <message>
         <location filename="../../FreeGridCmd.py" line="171"/>

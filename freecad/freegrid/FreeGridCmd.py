@@ -20,7 +20,7 @@ storage_box_parameters = {
     "magnetDiameter", "magnetHeight", "magnetOption"
 }
 storage_grid_parameters = {
-    "width", "depth", "cornerConnectors", "isSubstractive",
+    "width", "depth", "cornerConnectors", "isSubtractive",
     "extraBottom",
     "magnetDiameter", "magnetHeight", "includeMagnet"
 }
@@ -166,10 +166,10 @@ class GridObject(StorageObject):
             translate("StoragePropDesc",
                       "Space for locking connectors at outside corners")
                         ).cornerConnectors = True
-        obj.addProperty("App::PropertyBool", "isSubstractive", "Grid features",
+        obj.addProperty("App::PropertyBool", "isSubtractive", "Grid features",
             translate("StoragePropDesc",
-                      "Create a grid suitable for substractive manufacturing")
-                        ).isSubstractive = False
+                      "Create a grid suitable for subtractive manufacturing")
+                        ).isSubtractive = False
         obj.addProperty("App::PropertyLength", "extraBottom", "Grid features",
             translate("StoragePropDesc", "Extra thickness under grid (mm)")
                         ).extraBottom = "16mm"
@@ -186,7 +186,7 @@ class GridObject(StorageObject):
         y = max(1, obj.depth)
         # Features
         grid.corner_connectors = obj.cornerConnectors
-        grid.is_substractive = obj.isSubstractive
+        grid.is_subtractive = obj.isSubtractive
         extra_bottom = max(0, obj.extraBottom.getValueAs('mm'))
         # Magnets
         mag_d = min(max(1, obj.magnetDiameter.getValueAs('mm')), 6.9)
