@@ -607,17 +607,23 @@ class StorageBox:
 
     def ramp_object(self) -> Part.Shape:
         """Create a circular ramp across the front of the box"""
+        # When 'size_z' is less than 17mm make the ramp_radius smaller
+        if self.size_z < 17:
+            # TODO: define the minor value to be worth it to add th ramp
+            self.ramp_radius = max(2, self.size_z - 6.3)
         # Get a quarter circle
         points = h.arc(self.ramp_radius, 90, 10)
         # close the polygon
         points.extend([h.xyz(self.ramp_radius, self.ramp_radius), h.xyz(0, self.ramp_radius)])
         ramp_face = h.poly_to_face(points)
         ramp = ramp_face.extrude(h.xyz(z=self.size_x - self.WALL_THICKNESS))
-        ramp.Placement = Placement(h.xyz(1, 12.0, 14.8), Rotation(h.xyz(1, -1, 1), 240))
+        ramp.Placement = Placement(h.xyz(1, 2.0 + self.ramp_radius, 4.8 + self.ramp_radius),
+                                   Rotation(h.xyz(1, -1, 1), 240))
         trim = self.corner_size + 0.5
         corner_poly = h.poly_to_face([
             h.xyz(), h.xyz(trim), h.xyz(y=trim), h.xyz()
         ])
+        Part.show(ramp, 'rampa despues')
         ramp = ramp.cut(corner_poly.extrude(h.xyz(z=self.size_z)))
         corner_poly = h.poly_to_face([
             h.xyz(self.size_x - trim),
@@ -833,12 +839,19 @@ class StorageBox:
         """
         width_at_rim = self.WALL_THICKNESS + self.INSIDE_RIM_WIDTH
         points = [
-            h.xyz(0.1, -0.1).add(origin),
-            h.xyz(1.1, -0.1).add(origin),
-            h.xyz(width_at_rim, -(width_at_rim - 1.0)).add(origin),
-            h.xyz(width_at_rim, -self.INSIDE_RIM_BOTTOM).add(origin),
-            h.xyz(self.WALL_THICKNESS, -self.INSIDE_RIM_BOTTOM - self.INSIDE_RIM_WIDTH).add(origin),
+            h.xyz(0.1, -0.1).add(origin), # Top left
+            h.xyz(1.1, -0.1).add(origin), # Top right
+            # h.xyz(width_at_rim, -(width_at_rim - 1.0)).add(origin), # Right up
+            # h.xyz(width_at_rim, -self.INSIDE_RIM_BOTTOM).add(origin), # Right down
+            # h.xyz(self.WALL_THICKNESS, -self.INSIDE_RIM_BOTTOM - self.INSIDE_RIM_WIDTH).add(origin),
         ]
+        if self.size_z > 1.3:
+            points.append(h.xyz(width_at_rim, -(width_at_rim - 1.0)).add(origin)) # Right up
+        if self.size_z > 3.3 :
+            points.append(h.xyz(width_at_rim, -self.INSIDE_RIM_BOTTOM).add(origin)) # Right down
+        if self.size_z > 6.3 :
+            points.append(h.xyz(self.WALL_THICKNESS, -self.INSIDE_RIM_BOTTOM - self.INSIDE_RIM_WIDTH).add(origin))
+
         if reverse:
             points.reverse()
 
@@ -857,21 +870,23 @@ class StorageBox:
         a box above) is omitted.
         """
         diagonal_end = max(self.floor_thickness, self.MIN_FLOOR)
+        # Create from bottom right anti-clockwise
         profile = [
-            h.xyz(self.corner_size, 0.0),  # Bottom left
+            h.xyz(self.corner_size, 0.0),  # Bottom right
             h.xyz(self.corner_size, self.floor_thickness),  # Inside top of floor
             h.xyz(self.MIN_FLOOR, self.floor_thickness),  # to start of inner diagonal
             h.xyz(self.WALL_THICKNESS, diagonal_end),  # End of inner diagonal
         ]
-        if open_face or self.cells_z == 0:
+        if open_face or self.size_z == 0:
             profile.append(h.xyz(0.1, diagonal_end))
         else:
             profile.extend(self.top_profile(h.xyz(y=self.size_z)))
+        Part.show(h.poly_to_face(profile), 'profile')
         profile.extend([
             h.xyz(0.1, 3.4),  # Down outer wall
             h.xyz(2.5, 1),    # Bottom outer diagonal
-            h.xyz(2.5, 0.5),  #
-            h.xyz(3.0, 0.0),  # Chamfer
-            h.xyz(self.corner_size, 0.0),  # Return to origin
+            h.xyz(2.5, 0.5),  # Start chamfer
+            h.xyz(3.0, 0.0),  # End chamfer
+            h.xyz(self.corner_size, 0.0),  # Return to origin, right
         ])
         return profile

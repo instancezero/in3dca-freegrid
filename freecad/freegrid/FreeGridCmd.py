@@ -121,7 +121,7 @@ class BoxObject(StorageObject):
         # Size
         x = max(1, obj.width)
         y = max(1, obj.depth)
-        z = max(10, obj.height.getValueAs('mm'))
+        z = max(0, obj.height.getValueAs('mm'))
         # dividers = divisions - 1
         box.divisions_x = max(1, obj.divisionsX)
         box.divisions_y = max(1, obj.divisionsY)
