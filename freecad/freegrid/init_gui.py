@@ -29,29 +29,28 @@ try:
     from FreeCADGui import Workbench
 except ImportError as e:
     App.Console.PrintWarning(
-        "you are using the FreeGridWorkbench with an old version of FreeCAD (<0.16)")
+        "You are using the FreeGridWorkbench with an old version of FreeCAD (<0.16)"
+    )
     App.Console.PrintWarning(
-        "the class Workbench is loaded, although not imported: magic")
+        "The class Workbench is loaded, although not imported: magic"
+    )
+
 
 class FreeGridWorkbench(Gui.Workbench):
     """
-    A FreeCAD Workbench that creates parametric storage solutions
+    A FreeCAD Workbench that creates parametric storage solutions.
     """
 
     MenuText = "FreeGrid"
     ToolTip = translate("InitGui", "FreeGrid 3D printed storage system")
     Icon = os.path.join(ICONPATH, "FreeGrid.svg")
 
-    commands = [
-        "CreateStorageBox",
-        "CreateStorageGrid",
-        "CreateSketch"
-    ]
+    commands = ["CreateStorageBox", "CreateStorageGrid", "CreateSketch"]
 
     def Initialize(self):
         """
-        This function is called at the first activation of the workbench.
-        here is the place to import all the commands
+        This function is called at the first activation of the workbench,
+        here is the place to import all the commands.
         """
 
         # Add translations path
@@ -65,23 +64,24 @@ class FreeGridWorkbench(Gui.Workbench):
         self.appendToolbar("FreeGrid", self.commands)
         self.appendMenu("FreeGrid", self.commands)
 
-        Gui.addCommand('CreateStorageBox', commands.CreateStorageBox())
-        Gui.addCommand('CreateStorageGrid', commands.CreateStorageGrid())
-        Gui.addCommand('CreateSketch', commands.CreateSketch())
+        Gui.addCommand("CreateStorageBox", commands.CreateStorageBox())
+        Gui.addCommand("CreateStorageGrid", commands.CreateStorageGrid())
+        Gui.addCommand("CreateSketch", commands.CreateSketch())
 
-        App.Console.PrintMessage(translate("InitGui", "FreeGrid Workbench initialized")\
-            + "\n")
+        App.Console.PrintMessage(
+            translate("InitGui", "FreeGrid Workbench initialized") + "\n"
+        )
 
     def Activated(self):
         """
-        Code which should be computed when a user switch to this workbench
+        Code which should be computed when a user switch to this workbench.
         """
         # App.Console.PrintMessage("Hola\n")
         pass
 
     def Deactivated(self):
         """
-        Code which should be computed when this workbench is deactivated
+        Code which should be computed when this workbench is deactivated.
         """
         # App.Console.PrintMessage("Adiós\n")
         pass
@@ -89,7 +89,7 @@ class FreeGridWorkbench(Gui.Workbench):
     def ContextMenu(self, recipient):
         """
         This is executed whenever the user right-clicks on screen
-        "recipient" will be either "view" or "tree"
+        "recipient" will be either "view" or "tree".
         """
         self.appendContextMenu(
             "FreeGrid", self.commands
@@ -97,5 +97,6 @@ class FreeGridWorkbench(Gui.Workbench):
 
     def GetClassName(self):
         return "Gui::PythonWorkbench"
+
 
 Gui.addWorkbench(FreeGridWorkbench())

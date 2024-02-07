@@ -13,6 +13,7 @@ class ViewProvider(object):
     Base class for defining the visual representation and behavior of
     FreeCAD objects in the GUI.
     """
+
     def __init__(self, obj, icon_fn=None):
         # Set this object to the proxy object of the actual view provider
         obj.Proxy = self
@@ -32,7 +33,8 @@ class ViewProvider(object):
         self._check_attr()
         return self.icon_fn
 
-    if (FreeCAD.Version()[0]+'.'+FreeCAD.Version()[1]) >= '0.22':
+    if (FreeCAD.Version()[0] + "." + FreeCAD.Version()[1]) >= "0.22":
+
         def dumps(self):
             #        return {'ObjectName' : self.Object.Name}
             return None
@@ -40,9 +42,11 @@ class ViewProvider(object):
         def loads(self, state):
             if state is not None:
                 import FreeCAD
+
                 doc = FreeCAD.ActiveDocument  # crap
-                self.Object = doc.getObject(state['ObjectName'])
+                self.Object = doc.getObject(state["ObjectName"])
     else:
+
         def __getstate__(self):
             #        return {'ObjectName' : self.Object.Name}
             return None
@@ -50,11 +54,12 @@ class ViewProvider(object):
         def __setstate__(self, state):
             if state is not None:
                 doc = FreeCAD.ActiveDocument  # crap
-                self.Object = doc.getObject(state['ObjectName'])
+                self.Object = doc.getObject(state["ObjectName"])
 
 
 class BaseCommand(object):
     """Base class to prepare all the commands."""
+
     def __init__(self):
         pass
 
@@ -74,14 +79,25 @@ class BaseCommand(object):
 
     def toolTipWithIcon(self, icon_size: int = 125) -> str:
         """Return an html formatted string to include an icon along the tooltip."""
-        return "<img src=" + self.Pixmap + " align=left width='" + str(icon_size) \
-                + "' height='" + str(icon_size) + "' type='svg/xml' />" \
-                + "<div align=center>" + self.ToolTip + "</div>"
+        return (
+            "<img src="
+            + self.Pixmap
+            + " align=left width='"
+            + str(icon_size)
+            + "' height='"
+            + str(icon_size)
+            + "' type='svg/xml' />"
+            + "<div align=center>"
+            + self.ToolTip
+            + "</div>"
+        )
 
     def GetResources(self):
-        return {'Pixmap': self.Pixmap,
-                'MenuText': self.MenuText,
-                'ToolTip': self.toolTipWithIcon()}
+        return {
+            "Pixmap": self.Pixmap,
+            "MenuText": self.MenuText,
+            "ToolTip": self.toolTipWithIcon(),
+        }
 
 
 class BaseObjectCommand(BaseCommand):
@@ -89,13 +105,15 @@ class BaseObjectCommand(BaseCommand):
     Base class to prepare all the commands that create
     a Storage object in the GUI.
     """
+
     NAME = ""
     FREEGRID_FUNCTION = None
 
     def Activated(self):
         Gui.doCommandGui("import freecad.freegrid.commands")
-        Gui.doCommandGui("freecad.freegrid.commands.{}.create()".format(
-            self.__class__.__name__))
+        Gui.doCommandGui(
+            "freecad.freegrid.commands.{}.create()".format(self.__class__.__name__)
+        )
         FreeCAD.ActiveDocument.recompute()
         Gui.SendMsgToActiveView("ViewFit")
 
@@ -107,7 +125,9 @@ class BaseObjectCommand(BaseCommand):
             part = Gui.ActiveDocument.ActiveView.getActiveObject("part")
 
             if body:
-                obj = FreeCAD.ActiveDocument.addObject("PartDesign::FeaturePython", cls.NAME)
+                obj = FreeCAD.ActiveDocument.addObject(
+                    "PartDesign::FeaturePython", cls.NAME
+                )
             else:
                 obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", cls.NAME)
 
