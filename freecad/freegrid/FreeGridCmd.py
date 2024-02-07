@@ -1,5 +1,6 @@
 import os
 import sys
+import random
 
 import Part
 import FreeCAD
@@ -60,6 +61,7 @@ class StorageObject:
         obj.addProperty("App::PropertyLength", "magnetHeight", "Magnet mount",
             translate("StoragePropDesc", "Height of the magnet")).magnetHeight = "2mm"
 
+        self.just_created = True
 
     def descriptionStr(self, obj):
         """Return the designation of the storage object."""
@@ -153,6 +155,10 @@ class BoxObject(StorageObject):
         """Create the requested storage box object."""
         obj.Shape = self.generate_box(obj)
         obj.Label = self.descriptionStr(obj)
+        if self.just_created:
+            self.just_created = False
+            random_colors = tuple(random.random() for _ in range(3))
+            obj.ViewObject.ShapeColor = random_colors
 
 
 class GridObject(StorageObject):
@@ -201,6 +207,10 @@ class GridObject(StorageObject):
         obj.Shape = self.generate_grid(obj)
         obj.Placement = Placement(Base.Vector(0.0, 0.0, -3.2), Rotation())
         obj.Label = self.descriptionStr(obj)
+        if self.just_created:
+            self.just_created = False
+            random_colors = tuple(random.random() for _ in range(3))
+            obj.ViewObject.ShapeColor = random_colors
 
 
 class Sketch():
