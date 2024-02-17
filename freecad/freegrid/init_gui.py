@@ -45,7 +45,7 @@ class FreeGridWorkbench(Gui.Workbench):
     ToolTip = translate("InitGui", "FreeGrid 3D printed storage system")
     Icon = os.path.join(ICONPATH, "FreeGrid.svg")
 
-    commands = ["CreateStorageBox", "CreateStorageGrid", "CreateSketch"]
+    commands = ["FreeGrid_StorageBox", "FreeGrid_StorageGrid", "FreeGrid_Sketch"]
 
     def Initialize(self):
         """
@@ -64,9 +64,9 @@ class FreeGridWorkbench(Gui.Workbench):
         self.appendToolbar("FreeGrid", self.commands)
         self.appendMenu("FreeGrid", self.commands)
 
-        Gui.addCommand("CreateStorageBox", commands.CreateStorageBox())
-        Gui.addCommand("CreateStorageGrid", commands.CreateStorageGrid())
-        Gui.addCommand("CreateSketch", commands.CreateSketch())
+        Gui.addCommand("FreeGrid_StorageBox", commands.CreateStorageBox())
+        Gui.addCommand("FreeGrid_StorageGrid", commands.CreateStorageGrid())
+        Gui.addCommand("FreeGrid_Sketch", commands.CreateSketch())
 
         App.Console.PrintMessage(
             translate("InitGui", "FreeGrid Workbench initialized") + "\n"
