@@ -14,6 +14,7 @@
   <license file="LICENSE">AGPL-3.0 license</license>
   <pythonmin>3.6.0</pythonmin>
   <url type="repository" branch="WorkBench">https://github.com/instancezero/in3dca-freegrid</url>
+  <url type="bugtracker">https://github.com/instancezero/in3dca-freegrid/issues</url>
   <url type="readme">https://github.com/instancezero/in3dca-freegrid/blob/WorkBench/README.md</url>
   <icon>freecad/freegrid/resources/icons/FreeGrid.svg</icon>
 
