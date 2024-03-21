@@ -23,7 +23,7 @@ except ImportError as e:
 
 import os
 from TranslateUtils import translate
-from freecad.freegrid import ICONPATH, TRANSLATIONSPATH
+from freecad.freegrid import ICONPATH, TRANSLATIONSPATH, __version__
 
 # Add translations path
 Gui.addLanguagePath(TRANSLATIONSPATH)
@@ -48,7 +48,7 @@ except ImportError as e:
     )
 
 
-class FreeGridWorkbench(Gui.Workbench):
+class FreeGridWorkbench(Workbench):
     """
     A FreeCAD Workbench that creates parametric storage solutions.
     """
@@ -68,6 +68,8 @@ class FreeGridWorkbench(Gui.Workbench):
         # Add commmands to toolbar and menu
 
         from freecad.freegrid import commands
+
+        Gui.addIconPath(ICONPATH)
 
         self.appendToolbar("FreeGrid", self.commands)
         self.appendMenu("FreeGrid", self.commands)

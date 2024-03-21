@@ -39,6 +39,7 @@ class StorageObject:
     def __init__(self, obj):
         """Initialize common properties."""
         self.just_created = True
+        self.storageType = ""
         obj.addProperty(
             "App::PropertyInteger",
             "width",
@@ -67,6 +68,7 @@ class StorageObject:
     def descriptionStr(self, obj):
         """Return the designation of the storage object."""
         h = ""
+        # FIXME: Make it work with inches
         if self.storageType == "StorageBox":
             h = "x{:.1f}mm".format(obj.height.Value)
         return self.storageType + "_" + str(obj.width) + "x" + str(obj.depth) + h
@@ -95,7 +97,7 @@ class BoxObject(StorageObject):
             translate(
                 "StoragePropDesc",
                 "Height (in z direction), enter value and unit\n"
-                + "example: 4cm, 1dm, 3in, 0.5ft",
+                "example: 4cm, 1dm, 3in, 0.5ft",
             ),
         ).height = "5cm"
         obj.addProperty(

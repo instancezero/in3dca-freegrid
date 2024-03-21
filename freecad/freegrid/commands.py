@@ -81,7 +81,7 @@ class BaseCommand(object):
         """Return an html formatted string to include an icon along the tooltip."""
         return (
             "<img src="
-            + self.Pixmap
+            + os.path.join(ICONPATH, self.Pixmap)
             + " align=left width='"
             + str(icon_size)
             + "' height='"
@@ -124,7 +124,9 @@ class BaseObjectCommand(BaseCommand):
         if doc is None:
             doc = FreeCAD.newDocument()
 
-        doc.openTransaction(translate("Commands", "Create {}", "Transaction").format(cls.NAME))
+        doc.openTransaction(
+            translate("Commands", "Create {}", "Transaction").format(cls.NAME)
+        )
 
         if FreeCAD.GuiUp:
             body = Gui.ActiveDocument.ActiveView.getActiveObject("pdbody")
@@ -156,7 +158,7 @@ class BaseObjectCommand(BaseCommand):
 class CreateStorageBox(BaseObjectCommand):
     NAME = "StorageBox"
     FREEGRID_FUNCTION = lambda obj: BoxObject(obj)
-    Pixmap = os.path.join(ICONPATH, "box.svg")
+    Pixmap = "box.svg"
     MenuText = translate("Commands", "Storage box")
     ToolTip = translate("Commands", "Create a storage box")
 
@@ -164,13 +166,13 @@ class CreateStorageBox(BaseObjectCommand):
 class CreateStorageGrid(BaseObjectCommand):
     NAME = "StorageGrid"
     FREEGRID_FUNCTION = lambda obj: GridObject(obj)
-    Pixmap = os.path.join(ICONPATH, "grid.svg")
+    Pixmap = "grid.svg"
     MenuText = translate("Commands", "Storage grid")
     ToolTip = translate("Commands", "Create a storage grid")
 
 
 class CreateSketch(BaseCommand):
-    Pixmap = os.path.join(ICONPATH, "sketch.svg")
+    Pixmap = "sketch.svg"
     MenuText = translate("Commands", "Sketch")
     ToolTip = translate("Commands", "Generate inner box profile")
 
