@@ -25,14 +25,26 @@ import os
 from TranslateUtils import translate
 from freecad.freegrid import ICONPATH, TRANSLATIONSPATH
 
+# Add translations path
+Gui.addLanguagePath(TRANSLATIONSPATH)
+Gui.updateLocale()
+
 try:
     from FreeCADGui import Workbench
 except ImportError as e:
     App.Console.PrintWarning(
-        "You are using the FreeGridWorkbench with an old version of FreeCAD (<0.16)"
+        translate(
+            "InitGui",
+            "You are using the FreeGridWorkbench with an old version of FreeCAD (<0.16)",
+            "Logger",
+        )
     )
     App.Console.PrintWarning(
-        "The class Workbench is loaded, although not imported: magic"
+        translate(
+            "InitGui",
+            "The class Workbench is loaded, although not imported: magic",
+            "Logger",
+        )
     )
 
 
@@ -42,7 +54,7 @@ class FreeGridWorkbench(Gui.Workbench):
     """
 
     MenuText = "FreeGrid"
-    ToolTip = translate("InitGui", "FreeGrid 3D printed storage system")
+    ToolTip = translate("InitGui", "Parametric 3D printed storage system")
     Icon = os.path.join(ICONPATH, "FreeGrid.svg")
 
     commands = ["FreeGrid_StorageBox", "FreeGrid_StorageGrid", "FreeGrid_Sketch"]
@@ -52,10 +64,6 @@ class FreeGridWorkbench(Gui.Workbench):
         This function is called at the first activation of the workbench,
         here is the place to import all the commands.
         """
-
-        # Add translations path
-        Gui.addLanguagePath(TRANSLATIONSPATH)
-        Gui.updateLocale()
 
         # Add commmands to toolbar and menu
 
@@ -69,7 +77,10 @@ class FreeGridWorkbench(Gui.Workbench):
         Gui.addCommand("FreeGrid_Sketch", commands.CreateSketch())
 
         App.Console.PrintMessage(
-            translate("InitGui", "FreeGrid Workbench initialized") + "\n"
+            translate("InitGui", "FreeGrid Workbench initialized v{}", "Logger").format(
+                __version__
+            )
+            + "\n"
         )
 
     def Activated(self):

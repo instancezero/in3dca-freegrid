@@ -1,36 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="es_ES" sourcelanguage="en">
-<context>
-    <name>FreeGridGui::SketchParameters</name>
-    <message>
-        <location filename="../ui/sketch.ui" line="14"/>
-        <source>Sketch size</source>
-        <translation>Tamaño de boceto</translation>
-    </message>
-    <message>
-        <location filename="../ui/sketch.ui" line="25"/>
-        <source>width</source>
-        <translation>ancho</translation>
-    </message>
-    <message>
-        <location filename="../ui/sketch.ui" line="39"/>
-        <source>Create sketch</source>
-        <translation>Crear boceto</translation>
-    </message>
-    <message>
-        <location filename="../ui/sketch.ui" line="63"/>
-        <source>depth</source>
-        <translation>profundidad</translation>
-    </message>
-    <message>
-        <location filename="../ui/sketch.ui" line="73"/>
-        <source>Include open front</source>
-        <translation>Incluir frente abierto</translation>
-    </message>
-</context>
+<TS version="2.1" language="es-ES" sourcelanguage="en">
 <context>
     <name>Commands</name>
+    <message>
+        <location filename="../../commands.py" line="127"/>
+        <source>Create {}</source>
+        <comment>Transaction</comment>
+        <translation>Crear {}</translation>
+    </message>
     <message>
         <location filename="../../commands.py" line="132"/>
         <source>Storage box</source>
@@ -54,7 +32,7 @@
     <message>
         <location filename="../../commands.py" line="146"/>
         <source>Sketch</source>
-        <translation>Boceto</translation>
+        <translation>Croquis</translation>
     </message>
     <message>
         <location filename="../../commands.py" line="147"/>
@@ -63,16 +41,56 @@
     </message>
 </context>
 <context>
-    <name>InitGui</name>
+    <name>FreeGridGui::SketchParameters</name>
     <message>
-        <location filename="../../init_gui.py" line="42"/>
-        <source>FreeGrid 3D printed storage system</source>
-        <translation>FreeGrid sistema de almacenamiento impreso en 3D</translation>
+        <location filename="../ui/sketch.ui" line="14"/>
+        <source>Sketch size</source>
+        <translation>Tamaño de croquis</translation>
     </message>
     <message>
-        <location filename="../../init_gui.py" line="72"/>
-        <source>FreeGrid Workbench initialized</source>
-        <translation>Entorno de trabajo FreeGrid inicializado</translation>
+        <location filename="../ui/sketch.ui" line="25"/>
+        <source>width</source>
+        <translation>ancho</translation>
+    </message>
+    <message>
+        <location filename="../ui/sketch.ui" line="39"/>
+        <source>Create sketch</source>
+        <translation>Crear croquis</translation>
+    </message>
+    <message>
+        <location filename="../ui/sketch.ui" line="63"/>
+        <source>depth</source>
+        <translation>profundidad</translation>
+    </message>
+    <message>
+        <location filename="../ui/sketch.ui" line="73"/>
+        <source>Include open front</source>
+        <translation>Incluir frente abierto</translation>
+    </message>
+</context>
+<context>
+    <name>InitGui</name>
+    <message>
+        <location filename="../../init_gui.py" line="36"/>
+        <source>You are using the FreeGridWorkbench with an old version of FreeCAD (&lt;0.16)</source>
+        <comment>Logger</comment>
+        <translation>Está utilizando el entorno de trabajo FreeGrid con una versión antigua de FreeCAD (&lt;0.16)</translation>
+    </message>
+    <message>
+        <location filename="../../init_gui.py" line="43"/>
+        <source>The class Workbench is loaded, although not imported: magic</source>
+        <comment>Logger</comment>
+        <translation>La clase Workbench se cargó pero no se importó: magia</translation>
+    </message>
+    <message>
+        <location filename="../../init_gui.py" line="57"/>
+        <source>Parametric 3D printed storage system</source>
+        <translation>Sistema de almacenamiento impreso en 3D paramétrico</translation>
+    </message>
+    <message>
+        <location filename="../../init_gui.py" line="80"/>
+        <source>FreeGrid Workbench initialized v{}</source>
+        <translation>Entorno de trabajo FreeGrid inicializado v{}</translation>
     </message>
 </context>
 <context>
