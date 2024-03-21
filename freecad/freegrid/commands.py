@@ -120,6 +120,12 @@ class BaseObjectCommand(BaseCommand):
     @classmethod
     def create(cls):
         """Create the generic object that will be converted to storage object."""
+        doc = FreeCAD.ActiveDocument
+        if doc is None:
+            doc = FreeCAD.newDocument()
+
+        doc.openTransaction(translate("Commands", "Create {}", "Transaction").format(cls.NAME))
+
         if FreeCAD.GuiUp:
             body = Gui.ActiveDocument.ActiveView.getActiveObject("pdbody")
             part = Gui.ActiveDocument.ActiveView.getActiveObject("part")
@@ -141,6 +147,8 @@ class BaseObjectCommand(BaseCommand):
         else:
             obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", cls.NAME)
             cls.FREEGRID_FUNCTION(obj)
+
+        doc.commitTransaction()
 
         return obj
 
