@@ -5,7 +5,7 @@ import FreeCADGui as Gui
 
 from TranslateUtils import translate
 from freecad.freegrid import ICONPATH
-from freecad.freegrid.FreeGridCmd import BoxObject, GridObject, Sketch
+from freecad.freegrid.FreeGridCmd import BoxObject, GridObject, SketchViaUI
 
 
 class ViewProvider(object):
@@ -177,4 +177,4 @@ class CreateSketch(BaseCommand):
     ToolTip = translate("Commands", "Generate inner box profile")
 
     def Activated(self):
-        Sketch(self.view)
+        SketchViaUI()

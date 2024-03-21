@@ -261,35 +261,35 @@ class GridObject(StorageObject):
             obj.ViewObject.ShapeColor = random_colors
 
 
-class Sketch:
-    """Generate a sketch using a dockable user interface."""
+class SketchViaUI:
+    """
+    Generate a sketch of an NxM storage box using a dockable user interface.
+    Attributes:
+    view: The view to which the sketch UI is attached.
+    form: The PySide UI form representing the sketch UI.
+    """
 
     # TODO: If a StorageObject is selected, get their width and depth
     # and make the sketch of that size instead of displaying the UI.
 
-    def __init__(self, view):
-        self.view = view
-
-        plus_int = QtGui.QIntValidator()
-        plus_int.setBottom(1)
-
+    def __init__(self):
         self.form = Gui.PySideUic.loadUi(os.path.join(UIPATH, "sketch.ui"))
-        self.form.inside_sketch_button.clicked.connect(self.createSketch)
-        self.form.sketch_x.setValidator(plus_int)
-        self.form.sketch_x.setMaxLength(3)
-        self.form.sketch_x.setText("1")
-        self.form.sketch_y.setValidator(plus_int)
-        self.form.sketch_y.setMaxLength(3)
-        self.form.sketch_y.setText("1")
+        self.form.sketch_x.setRange(1, 50)
+        self.form.sketch_x.setValue(1)
+        self.form.sketch_y.setRange(1, 50)
+        self.form.sketch_y.setValue(1)
 
         Gui.Control.showDialog(self)
 
-    def createSketch(self):
+    def accept(self):
+        """Generate the sketch and close the dialog. (OK button)."""
         box = StorageBox.StorageBox()
-        x = int(self.form.sketch_x.text())
-        y = int(self.form.sketch_y.text())
         box.closed_front = not self.form.sketch_open_front.isChecked()
-        box.insert_as_sketch(x, y)
+        box.insert_as_sketch(self.form.sketch_x.value(), self.form.sketch_y.value())
 
         FreeCAD.ActiveDocument.recompute()
+        Gui.Control.closeDialog()
+
+    def reject(self):
+        """Close the dialog without generating the sketch. (Close button)."""
         Gui.Control.closeDialog()
