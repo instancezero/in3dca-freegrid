@@ -269,9 +269,6 @@ class SketchViaUI:
     form: The PySide UI form representing the sketch UI.
     """
 
-    # TODO: If a StorageObject is selected, get their width and depth
-    # and make the sketch of that size instead of displaying the UI.
-
     def __init__(self):
         self.form = Gui.PySideUic.loadUi(os.path.join(UIPATH, "sketch.ui"))
         self.form.sketch_x.setRange(1, 50)

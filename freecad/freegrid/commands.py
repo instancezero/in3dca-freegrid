@@ -5,6 +5,7 @@ import FreeCADGui as Gui
 
 from TranslateUtils import translate
 from freecad.freegrid import ICONPATH
+from freecad.freegrid.in3dca import StorageBox
 from freecad.freegrid.FreeGridCmd import BoxObject, GridObject, SketchViaUI
 
 
@@ -177,4 +178,19 @@ class CreateSketch(BaseCommand):
     ToolTip = translate("Commands", "Generate inner box profile")
 
     def Activated(self):
-        SketchViaUI()
+        try:
+            selection = Gui.Selection.getSelection()
+            if len(selection) == 1:
+                obj = selection[0]
+                if isinstance(obj.Proxy, BoxObject):
+                    # Use  depth and width values from selected StorageBox
+                    box = StorageBox.StorageBox()
+                    box.closed_front = not obj.boxOpenFront
+                    box.insert_as_sketch(obj.width, obj.depth)
+                    FreeCAD.ActiveDocument.recompute()
+                else:
+                    raise TypeError("Selected object is not a StorageBox.")
+            else:
+                SketchViaUI()
+        except Exception as e:
+            FreeCAD.Console.PrintError(f"Error: {str(e)}\n")
