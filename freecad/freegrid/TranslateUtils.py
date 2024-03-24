@@ -1,36 +1,24 @@
-# ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2020 kbwbe                                              *
-# *                                                                         *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
-
 import FreeCAD
-
 
 if FreeCAD.GuiUp:
     from PySide.QtCore import QT_TRANSLATE_NOOP
-    from DraftGui import translate
+    from FreeCAD.Qt import translate
 else:
 
-    def QT_TRANSLATE_NOOP(context, text):
-        return text
+    def QT_TRANSLATE_NOOP(context: str, source_text: str) -> str:
+        """Dummy function to mark strings for translation without actually translating them."""
+        return source_text
 
-    def translate(context, text):
-        return text
+    def translate(context: str, source_text: str, disambiguation: str = None) -> str:
+        """
+        Translate a text string.
+
+        Arguments:
+            context: The context in which the text appears.
+            source_text: The text to translate.
+            disambiguation (optional): A comment for the translator.
+
+        Returns:
+            str: The translated text.
+        """
+        return source_text

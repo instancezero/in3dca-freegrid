@@ -6,7 +6,7 @@ import FreeCADGui as Gui
 from TranslateUtils import translate
 from freecad.freegrid import ICONPATH
 from freecad.freegrid.in3dca import StorageBox
-from freecad.freegrid.FreeGridCmd import BoxObject, GridObject, SketchViaUI
+from freecad.freegrid.FreeGridCmd import StorageBoxObject, StorageGridObject, SketchUI
 
 
 class ViewProvider(object):
@@ -158,7 +158,7 @@ class BaseObjectCommand(BaseCommand):
 
 class CreateStorageBox(BaseObjectCommand):
     NAME = "StorageBox"
-    FREEGRID_FUNCTION = lambda obj: BoxObject(obj)
+    FREEGRID_FUNCTION = lambda obj: StorageBoxObject(obj)
     Pixmap = "box.svg"
     MenuText = translate("Commands", "Storage box")
     ToolTip = translate("Commands", "Create a storage box")
@@ -166,7 +166,7 @@ class CreateStorageBox(BaseObjectCommand):
 
 class CreateStorageGrid(BaseObjectCommand):
     NAME = "StorageGrid"
-    FREEGRID_FUNCTION = lambda obj: GridObject(obj)
+    FREEGRID_FUNCTION = lambda obj: StorageGridObject(obj)
     Pixmap = "grid.svg"
     MenuText = translate("Commands", "Storage grid")
     ToolTip = translate("Commands", "Create a storage grid")
@@ -182,7 +182,7 @@ class CreateSketch(BaseCommand):
             selection = Gui.Selection.getSelection()
             if len(selection) == 1:
                 obj = selection[0]
-                if isinstance(obj.Proxy, BoxObject):
+                if isinstance(obj.Proxy, StorageBoxObject):
                     # Use  depth and width values from selected StorageBox
                     box = StorageBox.StorageBox()
                     box.closed_front = not obj.boxOpenFront
@@ -191,6 +191,6 @@ class CreateSketch(BaseCommand):
                 else:
                     raise TypeError("Selected object is not a StorageBox.")
             else:
-                SketchViaUI()
+                SketchUI()
         except Exception as e:
             FreeCAD.Console.PrintError(f"Error: {str(e)}\n")

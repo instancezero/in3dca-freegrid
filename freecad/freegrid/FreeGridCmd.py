@@ -43,26 +43,34 @@ class StorageObject:
         obj.addProperty(
             "App::PropertyInteger",
             "width",
-            "Size",
-            translate("StoragePropDesc", "Number of 50[mm] units in x direction"),
+            translate("StorageObject", "Size", "Property group"),
+            translate(
+                "StorageObject",
+                "Number of 50[mm] units in x direction",
+                "Property tooltip",
+            ),
         ).width = 1
         obj.addProperty(
             "App::PropertyInteger",
             "depth",
-            "Size",
-            translate("StoragePropDesc", "Number of 50[mm] units in y direction"),
+            translate("StorageObject", "Size", "Property group"),
+            translate(
+                "StorageObject",
+                "Number of 50[mm] units in y direction",
+                "Property tooltip",
+            ),
         ).depth = 1
         obj.addProperty(
             "App::PropertyLength",
             "magnetDiameter",
-            "Magnet mount",
-            translate("StoragePropDesc", "Diameter of the magnet"),
+            translate("StorageObject", "Magnet mount", "Property group"),
+            translate("StorageObject", "Diameter of the magnet", "Property tooltip"),
         ).magnetDiameter = "6mm"
         obj.addProperty(
             "App::PropertyLength",
             "magnetHeight",
-            "Magnet mount",
-            translate("StoragePropDesc", "Height of the magnet"),
+            translate("StorageObject", "Magnet mount", "Property group"),
+            translate("StorageObject", "Height of the magnet", "Property tooltip"),
         ).magnetHeight = "2mm"
 
     def descriptionStr(self, obj):
@@ -82,7 +90,7 @@ class StorageObject:
         return getattr(self, param) != value
 
 
-class BoxObject(StorageObject):
+class StorageBoxObject(StorageObject):
     """Generate the Storage Box shape."""
 
     def __init__(self, obj):
@@ -93,60 +101,79 @@ class BoxObject(StorageObject):
         obj.addProperty(
             "App::PropertyLength",
             "height",
-            "Size",
+            translate("StorageBoxObject", "Size", "Property group"),
             translate(
-                "StoragePropDesc",
+                "StorageBoxObject",
                 "Height (in z direction), enter value and unit\n"
                 "example: 4cm, 1dm, 3in, 0.5ft",
+                "Property tooltip",
             ),
         ).height = "5cm"
         obj.addProperty(
             "App::PropertyInteger",
             "divisionsX",
-            "Internal divisions",
-            translate("StoragePropDesc", "Number of divisions along the X axis"),
+            translate("StorageBoxObject", "Internal divisions", "Property group"),
+            translate(
+                "StorageBoxObject",
+                "Number of divisions along the X axis",
+                "Property tooltip",
+            ),
         ).divisionsX = 1
         obj.addProperty(
             "App::PropertyInteger",
             "divisionsY",
-            "Internal divisions",
-            translate("StoragePropDesc", "Number of divisions along the Y axis"),
+            translate("StorageBoxObject", "Internal divisions", "Property group"),
+            translate(
+                "StorageBoxObject",
+                "Number of divisions along the Y axis",
+                "Property tooltip",
+            ),
         ).divisionsY = 1
         obj.addProperty(
             "App::PropertyBool",
             "boxOpenFront",
-            "Box features",
-            translate("StoragePropDesc", "Leave front of box open"),
+            translate("StorageBoxObject", "Box features", "Property group"),
+            translate(
+                "StorageBoxObject", "Leave front of box open", "Property tooltip"
+            ),
         ).boxOpenFront = False
         obj.addProperty(
             "App::PropertyBool",
             "boxRamp",
-            "Box features",
-            translate("StoragePropDesc", "Add scoop inside front of box"),
+            translate("StorageBoxObject", "Box features", "Property group"),
+            translate(
+                "StorageBoxObject", "Add scoop inside front of box", "Property tooltip"
+            ),
         ).boxRamp = True
         obj.addProperty(
             "App::PropertyBool",
             "boxGrip",
-            "Box features",
-            translate("StoragePropDesc", "Add grip/label area at rear of box"),
+            translate("StorageBoxObject", "Box features", "Property group"),
+            translate(
+                "StorageBoxObject",
+                "Add grip/label area at rear of box",
+                "Property tooltip",
+            ),
         ).boxGrip = True
         obj.addProperty(
             "App::PropertyLength",
             "boxGripDepth",
-            "Box features",
-            translate("StoragePropDesc", "Depth of grip (mm)"),
+            translate("StorageBoxObject", "Box features", "Property group"),
+            translate("StorageBoxObject", "Depth of grip (mm)", "Property tooltip"),
         ).boxGripDepth = "15mm"
         obj.addProperty(
             "App::PropertyBool",
             "floorSupport",
-            "Box features",
-            translate("StoragePropDesc", "Add integral floor support"),
+            translate("StorageBoxObject", "Box features", "Property group"),
+            translate(
+                "StorageBoxObject", "Add integral floor support", "Property tooltip"
+            ),
         ).floorSupport = True
         obj.addProperty(
             "App::PropertyEnumeration",
             "magnetOption",
-            "Magnet mount",
-            translate("StoragePropDesc", "Options to add magnets"),
+            translate("StorageBoxObject", "Magnet mount", "Property group"),
+            translate("StorageBoxObject", "Options to add magnets", "Property tooltip"),
         ).magnetOption = ["allIntersections", "cornersOnly", "noMagnets"]
         obj.magnetOption = "allIntersections"
 
@@ -193,7 +220,7 @@ class BoxObject(StorageObject):
             obj.ViewObject.ShapeColor = random_colors
 
 
-class GridObject(StorageObject):
+class StorageGridObject(StorageObject):
     """Generate the Storage Grid shape."""
 
     def __init__(self, obj):
@@ -206,31 +233,40 @@ class GridObject(StorageObject):
         obj.addProperty(
             "App::PropertyBool",
             "cornerConnectors",
-            "Grid features",
+            translate("StorageGridObject", "Grid features", "Property group"),
             translate(
-                "StoragePropDesc", "Space for locking connectors at outside corners"
+                "StorageGridObject",
+                "Space for locking connectors at outside corners",
+                "Property tooltip",
             ),
         ).cornerConnectors = True
         obj.addProperty(
             "App::PropertyBool",
             "isSubtractive",
-            "Grid features",
+            translate("StorageGridObject", "Grid features", "Property group"),
             translate(
-                "StoragePropDesc",
+                "StorageGridObject",
                 "Create a grid suitable for subtractive manufacturing",
+                "Property tooltip",
             ),
         ).isSubtractive = False
         obj.addProperty(
             "App::PropertyLength",
             "extraBottom",
-            "Grid features",
-            translate("StoragePropDesc", "Extra thickness under grid (mm)"),
+            translate("StorageGridObject", "Grid features", "Property group"),
+            translate(
+                "StorageGridObject",
+                "Extra thickness under grid (mm)",
+                "Property tooltip",
+            ),
         ).extraBottom = "16mm"
         obj.addProperty(
             "App::PropertyBool",
             "includeMagnet",
-            "Magnet mount",
-            translate("StoragePropDesc", "Include magnets receptacles"),
+            translate("StorageGridObject", "Magnet mount", "Property group"),
+            translate(
+                "StorageGridObject", "Include magnets receptacles", "Property tooltip"
+            ),
         ).includeMagnet = True
 
     def generate_grid(self, obj) -> Part.Shape:
@@ -261,7 +297,7 @@ class GridObject(StorageObject):
             obj.ViewObject.ShapeColor = random_colors
 
 
-class SketchViaUI:
+class SketchUI:
     """
     Generate a sketch of an NxM storage box using a dockable user interface.
     Attributes:

@@ -67,43 +67,45 @@ is_locale_supported() {
 	return 1
 }
 
-update_locale() {
-	local locale="$1"
-	local u=${locale:+_} # Conditional underscore
-
+get_strings() {
 	# Get translatable strings from Qt Designer files
 	lupdate ../ui/sketch.ui -ts uifiles.ts -no-obsolete
 	# Get translatable strings from Python file(s)
-	# pylupdate5 -verbose ../../*.py -ts pyfiles.ts
+	# pylupdate5 ../../*.py -ts pyfiles.ts -verbose
 	pylupdate6 ../../*.py -ts pyfiles.ts -no-obsolete
 	# Join strings from Qt Designer and Python files into a single temp file
 	lconvert -i pyfiles.ts uifiles.ts -o _${WB}.ts -sort-contexts -no-obsolete
+}
+
+update_locale() {
+	local locale="$1"
+	local u=${locale:+_} # Conditional underscore
 
 	# NOTE: Execute the right commands depending on:
 	# - if the file already exists and
 	# - if it's a locale file or the main, agnostic one
 	if [ ! -f "${WB}${u}${locale}.ts" ]; then
+		echo -e "\033[1;34m\n\t<<< Creating '${WB}${u}${locale}.ts' file >>>\n\033[m"
+		get_strings
 		if [ "$locale" == "" ]; then
 			lconvert -i _${WB}.ts -o ${WB}.ts
 		else
-			lconvert -source-language en -target-language $locale \
+			lconvert -source-language en -target-language "${locale//-/_}" \
 				-i _${WB}.ts -o ${WB}_${locale}.ts
 		fi
-		echo -e "\033[1;34m\n\t<<< '${WB}${u}${locale}.ts' file created >>>\n\033[m"
 	else
+		echo -e "\033[1;34m\n\t<<< Updating '${WB}${u}${locale}.ts' file >>>\n\033[m"
+		get_strings
 		if [ "$locale" == "" ]; then
 			lconvert -i _${WB}.ts ${WB}.ts -o ${WB}.ts
 		else
-			lconvert -source-language en -target-language $locale \
+			lconvert -source-language en -target-language "${locale//-/_}" \
 				-i _${WB}.ts ${WB}_${locale}.ts -o ${WB}_${locale}.ts
 		fi
-		echo -e "\033[1;34m\n\t<<< '${WB}${u}${locale}.ts' file updated >>>\n\033[m"
 	fi
 
 	# Delete files that are no longer needed
-	rm pyfiles.ts
-	rm uifiles.ts
-	rm -f _${WB}.ts
+	rm -f pyfiles.ts uifiles.ts _${WB}.ts
 }
 
 release_locale() {
