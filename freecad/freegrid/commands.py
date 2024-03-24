@@ -2,11 +2,11 @@ import os
 
 import FreeCAD
 import FreeCADGui as Gui
+from freecad.freegrid import ICONPATH
+from freecad.freegrid.FreeGridCmd import SketchUI, StorageBoxObject, StorageGridObject
+from freecad.freegrid.in3dca import StorageBox
 
 from TranslateUtils import translate
-from freecad.freegrid import ICONPATH
-from freecad.freegrid.in3dca import StorageBox
-from freecad.freegrid.FreeGridCmd import StorageBoxObject, StorageGridObject, SketchUI
 
 
 class ViewProvider(object):
@@ -46,6 +46,7 @@ class ViewProvider(object):
 
                 doc = FreeCAD.ActiveDocument  # crap
                 self.Object = doc.getObject(state["ObjectName"])
+
     else:
 
         def __getstate__(self):
@@ -112,9 +113,7 @@ class BaseObjectCommand(BaseCommand):
 
     def Activated(self):
         Gui.doCommandGui("import freecad.freegrid.commands")
-        Gui.doCommandGui(
-            "freecad.freegrid.commands.{}.create()".format(self.__class__.__name__)
-        )
+        Gui.doCommandGui("freecad.freegrid.commands.{}.create()".format(self.__class__.__name__))
         FreeCAD.ActiveDocument.recompute()
         Gui.SendMsgToActiveView("ViewFit")
 
@@ -125,18 +124,14 @@ class BaseObjectCommand(BaseCommand):
         if doc is None:
             doc = FreeCAD.newDocument()
 
-        doc.openTransaction(
-            translate("Commands", "Create {}", "Transaction").format(cls.NAME)
-        )
+        doc.openTransaction(translate("Commands", "Create {}", "Transaction").format(cls.NAME))
 
         if FreeCAD.GuiUp:
             body = Gui.ActiveDocument.ActiveView.getActiveObject("pdbody")
             part = Gui.ActiveDocument.ActiveView.getActiveObject("part")
 
             if body:
-                obj = FreeCAD.ActiveDocument.addObject(
-                    "PartDesign::FeaturePython", cls.NAME
-                )
+                obj = FreeCAD.ActiveDocument.addObject("PartDesign::FeaturePython", cls.NAME)
             else:
                 obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", cls.NAME)
 

@@ -21,20 +21,20 @@ Helper functions for FreeCad
 *******************************************************************************
 """
 
-__Name__ = 'Helper functions for FreeCad'
-__Comment__ = ''
+__Name__ = "Helper functions for FreeCad"
+__Comment__ = ""
 __Author__ = "Alan Langford <prints@in3d.ca>"
-__Version__ = 'See CHANGELOG'
-__Date__ = ''
-__License__ = 'GNU AGPLv3+'
-__Web__ = 'https://in3d.ca'
-__Wiki__ = ''
-__Icon__ = ''
-__Help__ = ''
-__Status__ = ''
-__Requires__ = ''
-__Communication__ = ''
-__Files__ = ''
+__Version__ = "See CHANGELOG"
+__Date__ = ""
+__License__ = "GNU AGPLv3+"
+__Web__ = "https://in3d.ca"
+__Wiki__ = ""
+__Icon__ = ""
+__Help__ = ""
+__Status__ = ""
+__Requires__ = ""
+__Communication__ = ""
+__Files__ = ""
 
 import copy
 import DraftVecUtils
@@ -45,23 +45,23 @@ import Part
 import Sketcher
 
 
-def arc(radius: float = 10, degrees: float = 360, increment: float = 5,
-        start_deg: float = 0) -> list:
+def arc(
+    radius: float = 10, degrees: float = 360, increment: float = 5, start_deg: float = 0
+) -> list:
     """Create a list of Vectors forming an arc"""
     increment_rads = math.radians(increment)
     position_rads = math.radians(start_deg)
     increment_abs = math.fabs(increment)
     points = []
     while degrees >= 0:
-        points.append(xyz(radius * math.sin(position_rads),
-                          radius * math.cos(position_rads)))
+        points.append(xyz(radius * math.sin(position_rads), radius * math.cos(position_rads)))
         position_rads += increment_rads
         degrees -= increment_abs
     return points
 
 
 def disk(radius: float, depth: float, at=None) -> Part.Shape:
-    """ Create a solid disk """
+    """Create a solid disk"""
     if at is None:
         at = xyz()
     wire = Part.Wire(Part.makeCircle(radius, at))
@@ -69,9 +69,9 @@ def disk(radius: float, depth: float, at=None) -> Part.Shape:
     return face.extrude(xyz(0, 0, depth))
 
 
-def get_edges_enclosed_by_box(base_shape: Part.Shape, origin: Base.Vector,
-                              size: Base.Vector, fully_enclosed=True, show=False
-                              ) -> list:
+def get_edges_enclosed_by_box(
+    base_shape: Part.Shape, origin: Base.Vector, size: Base.Vector, fully_enclosed=True, show=False
+) -> list:
     """
     Get all edges of the base shape inside a box defined by origin and size
     If fully_enclosed is set, both edge endpoints must be in the box. If not,
@@ -80,7 +80,7 @@ def get_edges_enclosed_by_box(base_shape: Part.Shape, origin: Base.Vector,
     enclosure = FreeCAD.BoundBox(origin, origin.add(size))
     if show:
         box = Part.show(Part.makeBox(size.x, size.y, size.z, origin))
-        box.ViewObject.DisplayMode = 'Wireframe'
+        box.ViewObject.DisplayMode = "Wireframe"
     edge_list = []
     # Note, the isInside() method is misnamed. Actual function is "contains"
     for i, edge in enumerate(base_shape.Edges):
@@ -88,8 +88,9 @@ def get_edges_enclosed_by_box(base_shape: Part.Shape, origin: Base.Vector,
             if enclosure.isInside(edge.BoundBox):
                 edge_list.append(i)
         else:
-            if enclosure.isInside(edge.Vertexes[0].Point) \
-                or enclosure.isInside(edge.Vertexes[1].Point):
+            if enclosure.isInside(edge.Vertexes[0].Point) or enclosure.isInside(
+                edge.Vertexes[1].Point
+            ):
                 edge_list.append(i)
     return edge_list
 
@@ -103,12 +104,10 @@ def poly_close(vec, to_origin=0) -> list[Base.Vector]:
         to_origin = xyz()
     moved = []
     for point in vec:
-        moved.append(xyz(point.x + to_origin.x, point.y + to_origin.y,
-                         point.z + to_origin.z))
+        moved.append(xyz(point.x + to_origin.x, point.y + to_origin.y, point.z + to_origin.z))
 
     last = len(moved) - 1
-    if moved[0].x != moved[last].x or moved[0].y != moved[last].y \
-        or moved[0].z != moved[last].z:
+    if moved[0].x != moved[last].x or moved[0].y != moved[last].y or moved[0].z != moved[last].z:
         moved.append(copy.copy(moved[0]))
     return moved
 
@@ -134,16 +133,16 @@ def poly_to_sketch(name, points, close=0) -> Part.Feature:
         points = poly_close(points)
 
     doc = FreeCAD.ActiveDocument
-    sketch = doc.addObject('Sketcher::SketchObject', name)
+    sketch = doc.addObject("Sketcher::SketchObject", name)
     last_index = len(points) - 1
     for i in range(last_index):
         sketch.addGeometry(Part.LineSegment(points[i], points[i + 1]))
         if i:
-            sketch.addConstraint(Sketcher.Constraint('Coincident', i - 1, 2, i, 1))
-        sketch.addConstraint(Sketcher.Constraint('DistanceX', i, 1, points[i].x))
-        sketch.addConstraint(Sketcher.Constraint('DistanceY', i, 1, points[i].y))
-    sketch.addConstraint(Sketcher.Constraint('Coincident', last_index - 1, 2, 0, 1))
-    sketch.MapMode = 'FlatFace'
+            sketch.addConstraint(Sketcher.Constraint("Coincident", i - 1, 2, i, 1))
+        sketch.addConstraint(Sketcher.Constraint("DistanceX", i, 1, points[i].x))
+        sketch.addConstraint(Sketcher.Constraint("DistanceY", i, 1, points[i].y))
+    sketch.addConstraint(Sketcher.Constraint("Coincident", last_index - 1, 2, 0, 1))
+    sketch.MapMode = "FlatFace"
     doc.recompute()
     return sketch
 

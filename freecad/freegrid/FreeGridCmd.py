@@ -1,36 +1,15 @@
 import os
-import sys
 import random
+import sys
 
-import Part
 import FreeCAD
 import FreeCADGui as Gui
-
-from PySide import QtGui
+import Part
 from FreeCAD import Base, Placement, Rotation
-
-from TranslateUtils import translate
 from freecad.freegrid import UIPATH
 from freecad.freegrid.in3dca import StorageBox, StorageGrid
 
-
-def FSShowError():
-    """Show traceback of system error."""
-    lastErr = sys.exc_info()
-    tb = lastErr[2]
-    tbnext = tb
-    x = 10
-    while tbnext is not None and x > 0:
-        FreeCAD.Console.PrintError(
-            "At "
-            + tbnext.tb_frame.f_code.co_filename
-            + " Line "
-            + str(tbnext.tb_lineno)
-            + "\n"
-        )
-        tbnext = tbnext.tb_next
-        x = x - 1
-    FreeCAD.Console.PrintError(str(lastErr[1]) + ": " + lastErr[1].__doc__ + "\n")
+from TranslateUtils import translate
 
 
 class StorageObject:
@@ -104,8 +83,7 @@ class StorageBoxObject(StorageObject):
             translate("StorageBoxObject", "Size", "Property group"),
             translate(
                 "StorageBoxObject",
-                "Height (in z direction), enter value and unit\n"
-                "example: 4cm, 1dm, 3in, 0.5ft",
+                "Height (in z direction), enter value and unit\n" "example: 4cm, 1dm, 3in, 0.5ft",
                 "Property tooltip",
             ),
         ).height = "5cm"
@@ -133,17 +111,13 @@ class StorageBoxObject(StorageObject):
             "App::PropertyBool",
             "boxOpenFront",
             translate("StorageBoxObject", "Box features", "Property group"),
-            translate(
-                "StorageBoxObject", "Leave front of box open", "Property tooltip"
-            ),
+            translate("StorageBoxObject", "Leave front of box open", "Property tooltip"),
         ).boxOpenFront = False
         obj.addProperty(
             "App::PropertyBool",
             "boxRamp",
             translate("StorageBoxObject", "Box features", "Property group"),
-            translate(
-                "StorageBoxObject", "Add scoop inside front of box", "Property tooltip"
-            ),
+            translate("StorageBoxObject", "Add scoop inside front of box", "Property tooltip"),
         ).boxRamp = True
         obj.addProperty(
             "App::PropertyBool",
@@ -165,9 +139,7 @@ class StorageBoxObject(StorageObject):
             "App::PropertyBool",
             "floorSupport",
             translate("StorageBoxObject", "Box features", "Property group"),
-            translate(
-                "StorageBoxObject", "Add integral floor support", "Property tooltip"
-            ),
+            translate("StorageBoxObject", "Add integral floor support", "Property tooltip"),
         ).floorSupport = True
         obj.addProperty(
             "App::PropertyEnumeration",
@@ -264,9 +236,7 @@ class StorageGridObject(StorageObject):
             "App::PropertyBool",
             "includeMagnet",
             translate("StorageGridObject", "Magnet mount", "Property group"),
-            translate(
-                "StorageGridObject", "Include magnets receptacles", "Property tooltip"
-            ),
+            translate("StorageGridObject", "Include magnets receptacles", "Property tooltip"),
         ).includeMagnet = True
 
     def generate_grid(self, obj) -> Part.Shape:

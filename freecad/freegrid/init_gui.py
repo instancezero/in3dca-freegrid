@@ -79,9 +79,7 @@ class FreeGridWorkbench(Workbench):
         Gui.addCommand("FreeGrid_Sketch", commands.CreateSketch())
 
         App.Console.PrintMessage(
-            translate("InitGui", "FreeGrid Workbench initialized v{}", "Logger").format(
-                __version__
-            )
+            translate("InitGui", "FreeGrid Workbench initialized v{}", "Logger").format(__version__)
             + "\n"
         )
 
@@ -104,9 +102,7 @@ class FreeGridWorkbench(Workbench):
         This is executed whenever the user right-clicks on screen
         "recipient" will be either "view" or "tree".
         """
-        self.appendContextMenu(
-            "FreeGrid", self.commands
-        )  # add commands to the context menu
+        self.appendContextMenu("FreeGrid", self.commands)  # add commands to the context menu
 
     def GetClassName(self):
         return "Gui::PythonWorkbench"
