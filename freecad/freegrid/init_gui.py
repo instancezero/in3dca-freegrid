@@ -16,30 +16,32 @@
 # *                                                                         *
 # ***************************************************************************
 try:
-    import FreeCAD as App
-    import FreeCADGui as Gui
+    import FreeCAD
+    import FreeCADGui
 except ImportError as e:
     print(f"Failed to import module: {e}\nModule not loaded with FreeCAD")
 
 import os
+
+from freecad.freegrid import ICONPATH, TRANSLATIONSPATH, UIPATH, __version__
+
 from TranslateUtils import translate
-from freecad.freegrid import ICONPATH, TRANSLATIONSPATH, __version__
 
 # Add translations path
-Gui.addLanguagePath(TRANSLATIONSPATH)
-Gui.updateLocale()
+FreeCADGui.addLanguagePath(TRANSLATIONSPATH)
+FreeCADGui.updateLocale()
 
 try:
     from FreeCADGui import Workbench
 except ImportError as e:
-    App.Console.PrintWarning(
+    FreeCAD.Console.PrintWarning(
         translate(
             "InitGui",
             "You are using the FreeGridWorkbench with an old version of FreeCAD (<0.16)",
             "Logger",
         )
     )
-    App.Console.PrintWarning(
+    FreeCAD.Console.PrintWarning(
         translate(
             "InitGui",
             "The class Workbench is loaded, although not imported: magic",
@@ -57,7 +59,13 @@ class FreeGridWorkbench(Workbench):
     ToolTip = translate("InitGui", "Parametric 3D printed storage system")
     Icon = os.path.join(ICONPATH, "FreeGrid.svg")
 
-    commands = ["FreeGrid_StorageBox", "FreeGrid_StorageGrid", "FreeGrid_Sketch"]
+    commands = [
+        "FreeGrid_StorageBox",
+        "FreeGrid_StorageGrid",
+        "FreeGrid_Sketch",
+        "Separator",
+        "FreeGrid_PreferencesPage",
+    ]
 
     def Initialize(self):
         """
@@ -69,16 +77,18 @@ class FreeGridWorkbench(Workbench):
 
         from freecad.freegrid import commands
 
-        Gui.addIconPath(ICONPATH)
-
         self.appendToolbar("FreeGrid", self.commands)
         self.appendMenu("FreeGrid", self.commands)
 
-        Gui.addCommand("FreeGrid_StorageBox", commands.CreateStorageBox())
-        Gui.addCommand("FreeGrid_StorageGrid", commands.CreateStorageGrid())
-        Gui.addCommand("FreeGrid_Sketch", commands.CreateSketch())
+        FreeCADGui.addCommand("FreeGrid_StorageBox", commands.CreateStorageBox())
+        FreeCADGui.addCommand("FreeGrid_StorageGrid", commands.CreateStorageGrid())
+        FreeCADGui.addCommand("FreeGrid_Sketch", commands.CreateSketch())
+        FreeCADGui.addCommand("FreeGrid_PreferencesPage", commands.OpenPreferencePage())
 
-        App.Console.PrintMessage(
+        FreeCADGui.addIconPath(ICONPATH)
+        FreeCADGui.addPreferencePage(os.path.join(UIPATH, "preferences.ui"), "FreeGrid")
+
+        FreeCAD.Console.PrintMessage(
             translate("InitGui", "FreeGrid Workbench initialized v{}", "Logger").format(__version__)
             + "\n"
         )
@@ -87,14 +97,14 @@ class FreeGridWorkbench(Workbench):
         """
         Code which should be computed when a user switch to this workbench.
         """
-        # App.Console.PrintMessage("Hola\n")
+        # FreeCAD.Console.PrintMessage("Hola\n")
         pass
 
     def Deactivated(self):
         """
         Code which should be computed when this workbench is deactivated.
         """
-        # App.Console.PrintMessage("Adiós\n")
+        # FreeCAD.Console.PrintMessage("Adiós\n")
         pass
 
     def ContextMenu(self, recipient):
@@ -108,4 +118,4 @@ class FreeGridWorkbench(Workbench):
         return "Gui::PythonWorkbench"
 
 
-Gui.addWorkbench(FreeGridWorkbench())
+FreeCADGui.addWorkbench(FreeGridWorkbench())

@@ -8,6 +8,8 @@ from freecad.freegrid.in3dca import StorageBox
 
 from TranslateUtils import translate
 
+paramFreeGrid = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/FreeGrid")
+
 
 class ViewProvider(object):
     """
@@ -80,25 +82,30 @@ class BaseCommand(object):
         return Gui.ActiveDocument.ActiveView
 
     def toolTipWithIcon(self, icon_size: int = 125) -> str:
-        """Return an html formatted string to include an icon along the tooltip."""
-        return (
-            "<img src="
-            + os.path.join(ICONPATH, self.Pixmap)
-            + " align=left width='"
-            + str(icon_size)
-            + "' height='"
-            + str(icon_size)
-            + "' type='svg/xml' />"
-            + "<div align=center>"
-            + self.ToolTip
-            + "</div>"
-        )
+        """Return an html formatted string to include the command's icon along the tooltip."""
+        if paramFreeGrid.GetBool("tooltipPicture", True):
+            tt = (
+                "<img src="
+                + os.path.join(ICONPATH, self.pixmap)
+                + " align=left width='"
+                + str(icon_size)
+                + "' height='"
+                + str(icon_size)
+                + "' type='svg/xml' />"
+                + "<div align=center>"
+                + self.toolTip
+                + "</div>"
+            )
+        else:
+            tt = self.toolTip
+
+        return tt
 
     def GetResources(self):
         return {
-            "Pixmap": self.Pixmap,
-            "MenuText": self.MenuText,
-            "ToolTip": self.toolTipWithIcon(),
+            "Pixmap": self.pixmap,
+            "MenuText": self.menuText,
+            "ToolTip": self.toolTipWithIcon(paramFreeGrid.GetInt("iconTooltipSize", 125)),
         }
 
 
@@ -135,7 +142,7 @@ class BaseObjectCommand(BaseCommand):
             else:
                 obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", cls.NAME)
 
-            ViewProvider(obj.ViewObject, cls.Pixmap)
+            ViewProvider(obj.ViewObject, cls.pixmap)
             cls.FREEGRID_FUNCTION(obj)
 
             if body:
@@ -154,23 +161,23 @@ class BaseObjectCommand(BaseCommand):
 class CreateStorageBox(BaseObjectCommand):
     NAME = "StorageBox"
     FREEGRID_FUNCTION = lambda obj: StorageBoxObject(obj)
-    Pixmap = "box.svg"
-    MenuText = translate("Commands", "Storage box")
-    ToolTip = translate("Commands", "Create a storage box")
+    pixmap = "box.svg"
+    menuText = translate("Commands", "Storage box")
+    toolTip = translate("Commands", "Create a storage box")
 
 
 class CreateStorageGrid(BaseObjectCommand):
     NAME = "StorageGrid"
     FREEGRID_FUNCTION = lambda obj: StorageGridObject(obj)
-    Pixmap = "grid.svg"
-    MenuText = translate("Commands", "Storage grid")
-    ToolTip = translate("Commands", "Create a storage grid")
+    pixmap = "grid.svg"
+    menuText = translate("Commands", "Storage grid")
+    toolTip = translate("Commands", "Create a storage grid")
 
 
 class CreateSketch(BaseCommand):
-    Pixmap = "sketch.svg"
-    MenuText = translate("Commands", "Sketch")
-    ToolTip = translate("Commands", "Generate inner box profile")
+    pixmap = "sketch.svg"
+    menuText = translate("Commands", "Sketch")
+    toolTip = translate("Commands", "Generate inner box profile")
 
     def Activated(self):
         try:
@@ -189,3 +196,15 @@ class CreateSketch(BaseCommand):
                 SketchUI()
         except Exception as e:
             FreeCAD.Console.PrintError(f"Error: {str(e)}\n")
+
+
+class OpenPreferencePage(BaseCommand):
+    pixmap = "preferences_page.svg"
+    menuText = translate("Commands", "Preferences page")
+    toolTip = translate("Commands", "Open the FreeGrid preferences page")
+
+    def IsActive(self):
+        return True
+
+    def Activated(self):
+        Gui.showPreferences("FreeGrid")
