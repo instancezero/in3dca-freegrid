@@ -266,9 +266,9 @@ class StorageGridObject(StorageObject):
     def execute(self, obj):
         """Create the requested storage grid object."""
         obj.Shape = self.generate_grid(obj)
-        obj.Placement = Placement(Base.Vector(0.0, 0.0, -3.2), Rotation())
         obj.Label = self.descriptionStr(obj)
         if self.just_created:
+            obj.Placement = Placement(Base.Vector(0.0, 0.0, -3.2), Rotation())
             self.just_created = False
             if paramFreeGrid.GetBool("randomColor", True):
                 random_color = tuple(random.random() for _ in range(3))
