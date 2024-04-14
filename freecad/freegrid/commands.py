@@ -2,7 +2,8 @@ import os
 
 import FreeCAD
 import FreeCADGui as Gui
-from freecad.freegrid import ICONPATH
+from PySide import QtGui
+from freecad.freegrid import ICONPATH, IMGPATH, UIPATH
 from freecad.freegrid.FreeGridCmd import SketchUI, StorageBoxObject, StorageGridObject
 from freecad.freegrid.in3dca import StorageBox
 
@@ -208,3 +209,20 @@ class OpenPreferencePage(BaseCommand):
 
     def Activated(self):
         Gui.showPreferences("FreeGrid")
+
+
+class About(BaseCommand):
+    pixmap = "about.svg"
+    menuText = translate("Commands", "About FreeGrid")
+    toolTip = translate("Commands", "Show information about FreeGrid")
+
+    def IsActive(self):
+        return True
+
+    def Activated(self):
+        self.dialog = Gui.PySideUic.loadUi(os.path.join(UIPATH, "about.ui"))
+        # TODO: make a good rendered banner
+        banner = QtGui.QPixmap(os.path.join(IMGPATH, "banner.png"))
+        self.dialog.picture.setPixmap(banner.scaledToHeight(300))
+        self.dialog.closeButton.clicked.connect(self.dialog.close)
+        self.dialog.exec_()

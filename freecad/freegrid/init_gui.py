@@ -15,6 +15,8 @@
 # * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
 # *                                                                         *
 # ***************************************************************************
+# TODO: create a Wiki page
+
 try:
     import FreeCAD
     import FreeCADGui
@@ -65,6 +67,7 @@ class FreeGridWorkbench(Workbench):
         "FreeGrid_Sketch",
         "Separator",
         "FreeGrid_PreferencesPage",
+        "FreeGrid_About",
     ]
 
     def Initialize(self):
@@ -84,6 +87,7 @@ class FreeGridWorkbench(Workbench):
         FreeCADGui.addCommand("FreeGrid_StorageGrid", commands.CreateStorageGrid())
         FreeCADGui.addCommand("FreeGrid_Sketch", commands.CreateSketch())
         FreeCADGui.addCommand("FreeGrid_PreferencesPage", commands.OpenPreferencePage())
+        FreeCADGui.addCommand("FreeGrid_About", commands.About())
 
         FreeCADGui.addIconPath(ICONPATH)
         FreeCADGui.addPreferencePage(os.path.join(UIPATH, "preferences.ui"), "FreeGrid")
