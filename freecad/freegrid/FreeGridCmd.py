@@ -1,15 +1,18 @@
 import os
 import random
-import sys
 
 import FreeCAD
-import FreeCADGui as Gui
+import FreeCADGui
 import Part
 from FreeCAD import Base, Placement, Rotation
 from freecad.freegrid import UIPATH
 from freecad.freegrid.in3dca import StorageBox, StorageGrid
 
 from TranslateUtils import translate
+
+# NOTE: The variables used in the FreeGrid preference page are automatically saved because the UI file uses
+# the FreeCAD custom `Gui::Pref*` Qt widgets. In the code you only need to read the values.
+paramFreeGrid = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/FreeGrid")
 
 
 class StorageObject:
@@ -25,7 +28,7 @@ class StorageObject:
             translate("StorageObject", "Size", "Property group"),
             translate(
                 "StorageObject",
-                "Number of 50[mm] units in x direction",
+                "Number of 50[mm] units in X direction",
                 "Property tooltip",
             ),
         ).width = 1
@@ -35,7 +38,7 @@ class StorageObject:
             translate("StorageObject", "Size", "Property group"),
             translate(
                 "StorageObject",
-                "Number of 50[mm] units in y direction",
+                "Number of 50[mm] units in Y direction",
                 "Property tooltip",
             ),
         ).depth = 1
@@ -44,13 +47,13 @@ class StorageObject:
             "magnetDiameter",
             translate("StorageObject", "Magnet mount", "Property group"),
             translate("StorageObject", "Diameter of the magnet", "Property tooltip"),
-        ).magnetDiameter = "6mm"
+        ).magnetDiameter = paramFreeGrid.GetString("magnetDiameter", "6mm")
         obj.addProperty(
             "App::PropertyLength",
             "magnetHeight",
             translate("StorageObject", "Magnet mount", "Property group"),
             translate("StorageObject", "Height of the magnet", "Property tooltip"),
-        ).magnetHeight = "2mm"
+        ).magnetHeight = paramFreeGrid.GetString("magnetHeight", "2mm")
 
     def descriptionStr(self, obj):
         """Return the designation of the storage object."""
@@ -76,17 +79,20 @@ class StorageBoxObject(StorageObject):
         """Initialize storage box object, add properties."""
         super().__init__(obj)
         self.storageType = "StorageBox"
+        obj.depth = paramFreeGrid.GetInt("boxDepth", 1)
+        obj.width = paramFreeGrid.GetInt("boxWidth", 1)
         obj.Proxy = self
+        # TODO: check if it works when default system is imperial
         obj.addProperty(
             "App::PropertyLength",
             "height",
             translate("StorageBoxObject", "Size", "Property group"),
             translate(
                 "StorageBoxObject",
-                "Height (in z direction), enter value and unit\n" "example: 4cm, 1dm, 3in, 0.5ft",
+                "Height (in Z direction), enter value and unit\n" "example: 4cm, 1dm, 3in, 0.5ft",
                 "Property tooltip",
             ),
-        ).height = "5cm"
+        ).height = paramFreeGrid.GetString("boxHeight", "50mm")
         obj.addProperty(
             "App::PropertyInteger",
             "divisionsX",
@@ -96,7 +102,7 @@ class StorageBoxObject(StorageObject):
                 "Number of divisions along the X axis",
                 "Property tooltip",
             ),
-        ).divisionsX = 1
+        ).divisionsX = paramFreeGrid.GetInt("divisionsX", 1)
         obj.addProperty(
             "App::PropertyInteger",
             "divisionsY",
@@ -106,19 +112,19 @@ class StorageBoxObject(StorageObject):
                 "Number of divisions along the Y axis",
                 "Property tooltip",
             ),
-        ).divisionsY = 1
+        ).divisionsY = paramFreeGrid.GetInt("divisionsY", 1)
         obj.addProperty(
             "App::PropertyBool",
             "boxOpenFront",
             translate("StorageBoxObject", "Box features", "Property group"),
             translate("StorageBoxObject", "Leave front of box open", "Property tooltip"),
-        ).boxOpenFront = False
+        ).boxOpenFront = paramFreeGrid.GetBool("boxOpenFront", False)
         obj.addProperty(
             "App::PropertyBool",
             "boxRamp",
             translate("StorageBoxObject", "Box features", "Property group"),
             translate("StorageBoxObject", "Add scoop inside front of box", "Property tooltip"),
-        ).boxRamp = True
+        ).boxRamp = paramFreeGrid.GetBool("boxRamp", True)
         obj.addProperty(
             "App::PropertyBool",
             "boxGrip",
@@ -128,19 +134,19 @@ class StorageBoxObject(StorageObject):
                 "Add grip/label area at rear of box",
                 "Property tooltip",
             ),
-        ).boxGrip = True
+        ).boxGrip = paramFreeGrid.GetBool("boxGrip", True)
         obj.addProperty(
             "App::PropertyLength",
             "boxGripDepth",
             translate("StorageBoxObject", "Box features", "Property group"),
             translate("StorageBoxObject", "Depth of grip (mm)", "Property tooltip"),
-        ).boxGripDepth = "15mm"
+        ).boxGripDepth = paramFreeGrid.GetString("boxGripDepth", "15mm")
         obj.addProperty(
             "App::PropertyBool",
             "floorSupport",
             translate("StorageBoxObject", "Box features", "Property group"),
             translate("StorageBoxObject", "Add integral floor support", "Property tooltip"),
-        ).floorSupport = True
+        ).floorSupport = paramFreeGrid.GetBool("floorSupport", True)
         obj.addProperty(
             "App::PropertyEnumeration",
             "magnetOption",
@@ -188,8 +194,9 @@ class StorageBoxObject(StorageObject):
         obj.Label = self.descriptionStr(obj)
         if self.just_created:
             self.just_created = False
-            random_colors = tuple(random.random() for _ in range(3))
-            obj.ViewObject.ShapeColor = random_colors
+            if paramFreeGrid.GetBool("randomColor", True):
+                random_color = tuple(random.random() for _ in range(3))
+                obj.ViewObject.ShapeColor = random_color
 
 
 class StorageGridObject(StorageObject):
@@ -200,8 +207,8 @@ class StorageGridObject(StorageObject):
         super().__init__(obj)
         self.storageType = "StorageGrid"
         obj.Proxy = self
-        obj.depth = 2
-        obj.width = 3
+        obj.depth = paramFreeGrid.GetInt("gridDepth", 2)
+        obj.width = paramFreeGrid.GetInt("gridWidth", 3)
         obj.addProperty(
             "App::PropertyBool",
             "cornerConnectors",
@@ -211,7 +218,7 @@ class StorageGridObject(StorageObject):
                 "Space for locking connectors at outside corners",
                 "Property tooltip",
             ),
-        ).cornerConnectors = True
+        ).cornerConnectors = paramFreeGrid.GetBool("cornerConnectors", True)
         obj.addProperty(
             "App::PropertyBool",
             "isSubtractive",
@@ -234,10 +241,10 @@ class StorageGridObject(StorageObject):
         ).extraBottom = "16mm"
         obj.addProperty(
             "App::PropertyBool",
-            "includeMagnet",
+            "includeMagnets",
             translate("StorageGridObject", "Magnet mount", "Property group"),
-            translate("StorageGridObject", "Include magnets receptacles", "Property tooltip"),
-        ).includeMagnet = True
+            translate("StorageGridObject", "Include magnet receptacles", "Property tooltip"),
+        ).includeMagnets = paramFreeGrid.GetBool("includeMagnets", True)
 
     def generate_grid(self, obj) -> Part.Shape:
         """Create a grid using the object properties as parameters."""
@@ -252,7 +259,7 @@ class StorageGridObject(StorageObject):
         # Magnets
         mag_d = min(max(1, obj.magnetDiameter.getValueAs("mm")), 6.9)
         mag_h = min(max(0.2, obj.magnetHeight.getValueAs("mm")), 3.4)
-        grid.magnets = obj.includeMagnet
+        grid.magnets = obj.includeMagnets
 
         return grid.make(x, y, mag_d, mag_h, extra_bottom)
 
@@ -263,8 +270,9 @@ class StorageGridObject(StorageObject):
         obj.Label = self.descriptionStr(obj)
         if self.just_created:
             self.just_created = False
-            random_colors = tuple(random.random() for _ in range(3))
-            obj.ViewObject.ShapeColor = random_colors
+            if paramFreeGrid.GetBool("randomColor", True):
+                random_color = tuple(random.random() for _ in range(3))
+                obj.ViewObject.ShapeColor = random_color
 
 
 class SketchUI:
@@ -276,13 +284,13 @@ class SketchUI:
     """
 
     def __init__(self):
-        self.form = Gui.PySideUic.loadUi(os.path.join(UIPATH, "sketch.ui"))
+        self.form = FreeCADGui.PySideUic.loadUi(os.path.join(UIPATH, "sketch.ui"))
         self.form.sketch_x.setRange(1, 50)
         self.form.sketch_x.setValue(1)
         self.form.sketch_y.setRange(1, 50)
         self.form.sketch_y.setValue(1)
 
-        Gui.Control.showDialog(self)
+        FreeCADGui.Control.showDialog(self)
 
     def accept(self):
         """Generate the sketch and close the dialog. (OK button)."""
@@ -291,8 +299,8 @@ class SketchUI:
         box.insert_as_sketch(self.form.sketch_x.value(), self.form.sketch_y.value())
 
         FreeCAD.ActiveDocument.recompute()
-        Gui.Control.closeDialog()
+        FreeCADGui.Control.closeDialog()
 
     def reject(self):
         """Close the dialog without generating the sketch. (Close button)."""
-        Gui.Control.closeDialog()
+        FreeCADGui.Control.closeDialog()
