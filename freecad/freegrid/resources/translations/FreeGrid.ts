@@ -39,6 +39,95 @@
         <source>Generate inner box profile</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../../commands.py" line="204"/>
+        <source>Preferences page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../commands.py" line="205"/>
+        <source>Open the FreeGrid preferences page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../commands.py" line="216"/>
+        <source>About FreeGrid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../commands.py" line="217"/>
+        <source>Show information about FreeGrid</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>FreeGridGui::AboutDialog</name>
+    <message>
+        <location filename="../ui/about.ui" line="14"/>
+        <source>About</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/about.ui" line="33"/>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/about.ui" line="46"/>
+        <source>About FreeGrid Workbench</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/about.ui" line="73"/>
+        <source>Version:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/about.ui" line="100"/>
+        <source>Description:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/about.ui" line="119"/>
+        <source>A simple tools workbench for generating
+FreeGrid storage system components.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/about.ui" line="134"/>
+        <source>Macro author:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/about.ui" line="161"/>
+        <source>Workbench author:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/about.ui" line="188"/>
+        <source>Maintainers:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/about.ui" line="217"/>
+        <source>License:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/about.ui" line="230"/>
+        <source>AGPL-3.0 license</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/about.ui" line="245"/>
+        <source>Forum thread</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/about.ui" line="264"/>
+        <source>Repository</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>FreeGridGui::SketchParameters</name>
@@ -60,6 +149,175 @@
     <message>
         <location filename="../ui/sketch.ui" line="85"/>
         <source>Include open front</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>FreeGridGui::preferencesFreeGrid</name>
+    <message>
+        <location filename="../ui/preferences.ui" line="14"/>
+        <location filename="../ui/preferences.ui" line="168"/>
+        <source>General</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/preferences.ui" line="20"/>
+        <source>Grid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/preferences.ui" line="31"/>
+        <location filename="../ui/preferences.ui" line="303"/>
+        <source>Default width</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/preferences.ui" line="57"/>
+        <location filename="../ui/preferences.ui" line="329"/>
+        <source>Number of 50[mm] units in X direction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/preferences.ui" line="60"/>
+        <location filename="../ui/preferences.ui" line="112"/>
+        <location filename="../ui/preferences.ui" line="332"/>
+        <location filename="../ui/preferences.ui" line="390"/>
+        <source> unit(s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/preferences.ui" line="83"/>
+        <location filename="../ui/preferences.ui" line="361"/>
+        <source>Default depth</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/preferences.ui" line="109"/>
+        <location filename="../ui/preferences.ui" line="387"/>
+        <source>Number of 50[mm] units in Y direction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/preferences.ui" line="130"/>
+        <source>Add space for locking connectors at outside corners</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/preferences.ui" line="149"/>
+        <source>Include magnet receptacles</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/preferences.ui" line="174"/>
+        <source>This setting is different from the Part Design/Part setting</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/preferences.ui" line="177"/>
+        <source>Assign random color to new objects</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/preferences.ui" line="193"/>
+        <source>Command&apos;s icon is showed in the tooltip (need restart)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/preferences.ui" line="196"/>
+        <source>Show picture on command&apos;s tooltips</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/preferences.ui" line="217"/>
+        <source>Size of icon on the tooltip</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/preferences.ui" line="243"/>
+        <source>Icon size (need restart)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/preferences.ui" line="292"/>
+        <source>Box</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/preferences.ui" line="419"/>
+        <location filename="../ui/preferences.ui" line="798"/>
+        <source>Default height</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/preferences.ui" line="445"/>
+        <location filename="../ui/preferences.ui" line="643"/>
+        <source>Height (in Z direction), enter value and unit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/preferences.ui" line="468"/>
+        <source>Number of divisions along the X axis</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/preferences.ui" line="494"/>
+        <location filename="../ui/preferences.ui" line="546"/>
+        <source>dividers = divisions - 1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/preferences.ui" line="520"/>
+        <source>Number of divisions along the Y axis</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/preferences.ui" line="567"/>
+        <source>Leave front of box open</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/preferences.ui" line="580"/>
+        <source>Add scoop inside front of box</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/preferences.ui" line="596"/>
+        <source>Add grip/label area at rear of box</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/preferences.ui" line="617"/>
+        <source>Depth of grip</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/preferences.ui" line="664"/>
+        <source>Add integral floor support</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/preferences.ui" line="685"/>
+        <source>Options to add magnets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/preferences.ui" line="741"/>
+        <source>Magnet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/preferences.ui" line="752"/>
+        <source>Default diameter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/preferences.ui" line="772"/>
+        <source>Magnet&apos;s diamter at creation time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/preferences.ui" line="818"/>
+        <source>Magnet&apos;s height at creation time</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -98,8 +356,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="105"/>
-        <source>Height (in z direction), enter value and unit
+        <location filename="../../FreeGridCmd.py" line="90"/>
+        <source>Height (in Z direction), enter value and unit
 example: 4cm, 1dm, 3in, 0.5ft</source>
         <comment>Property tooltip</comment>
         <translation type="unfinished"></translation>
@@ -137,12 +395,6 @@ example: 4cm, 1dm, 3in, 0.5ft</source>
         <location filename="../../FreeGridCmd.py" line="134"/>
         <source>Leave front of box open</source>
         <comment>Property tooltip</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../FreeGridCmd.py" line="104"/>
-        <source>Height (in z direction), enter value and unit
-example: 4cm, 1dm, 3in, 0.5ft</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -217,8 +469,8 @@ example: 4cm, 1dm, 3in, 0.5ft</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="257"/>
-        <source>Include magnets receptacles</source>
+        <location filename="../../FreeGridCmd.py" line="246"/>
+        <source>Include magnet receptacles</source>
         <comment>Property tooltip</comment>
         <translation type="unfinished"></translation>
     </message>
@@ -233,20 +485,15 @@ example: 4cm, 1dm, 3in, 0.5ft</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="47"/>
-        <source>Number of 50[mm] units in x direction</source>
+        <location filename="../../FreeGridCmd.py" line="29"/>
+        <source>Number of 50[mm] units in X direction</source>
         <comment>Property tooltip</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="57"/>
-        <source>Number of 50[mm] units in y direction</source>
+        <location filename="../../FreeGridCmd.py" line="39"/>
+        <source>Number of 50[mm] units in Y direction</source>
         <comment>Property tooltip</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../FreeGridCmd.py" line="57"/>
-        <source>Number of 50[mm] units in y direction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

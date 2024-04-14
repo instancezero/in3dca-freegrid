@@ -69,7 +69,7 @@ is_locale_supported() {
 
 get_strings() {
 	# Get translatable strings from Qt Designer files
-	lupdate ../ui/sketch.ui -ts uifiles.ts -no-obsolete
+	lupdate ../ui/*.ui -ts uifiles.ts -no-obsolete
 	# Get translatable strings from Python file(s)
 	# pylupdate5 ../../*.py -ts pyfiles.ts -verbose
 	pylupdate6 ../../*.py -ts pyfiles.ts -no-obsolete
