@@ -97,7 +97,7 @@ class StorageGrid:
         ]
         return profile
 
-    def magnet_holder(self, mag_diameter, mag_height) -> Part.Shape:
+    def magnet_holder(self, mag_diameter: float, mag_height: float) -> Part.Shape:
         """
         Creates a single corner magnet holder.
         The maximun height of this body is 3.2[mm] meaning that:
@@ -132,7 +132,9 @@ class StorageGrid:
         holder = holder.cut(h.disk(mag_radius + 0.1, height, h.xyz(z=floor_thickness)))
         return holder
 
-    def make(self, x=1, y=1, mag_d=6, mag_h=2, extra_bottom=0) -> Part.Shape:
+    def make(
+        self, x: int = 1, y: int = 1, mag_d: float = 6, mag_h: float = 2, extra_bottom: float = 0
+    ) -> Part.Shape:
         """Return the body of a grid including some default values, for testing."""
         self.x_size = x
         self.y_size = y
@@ -171,7 +173,7 @@ class StorageGrid:
         ]
         return Part.Face(Part.makePolygon(profile))
 
-    def outer_rail_cleanup(self, len) -> Part.Solid:
+    def outer_rail_cleanup(self, len: float) -> Part.Solid:
         """Create a solid to clean an artifact left on the corners."""
         face = self.outer_rail_cleanup_face()
         cleanup = face.extrude(h.xyz(y=len))
@@ -393,7 +395,7 @@ class StorageGrid:
         Part.show(g2x1, "g2x1")
         start.x += 2 * incr
 
-    def set_param(self, name, value):
+    def set_param(self, name: str, value):
         """Convenience method to facilitate data-driven generation."""
         # Set to make magnet holes
         if name == "magnets":

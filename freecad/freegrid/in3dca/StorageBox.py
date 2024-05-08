@@ -38,6 +38,7 @@ __Files__ = ""
 
 import Part
 import DraftVecUtils
+from typing import List, Optional
 from FreeCAD import Base, Placement, Rotation
 from freecad.freegrid.in3dca import h
 import math
@@ -81,7 +82,8 @@ class BitCartridgeHolder:
         for x in range(count_x):
             for y in range(count_y):
                 hole.Placement = Placement(
-                    h.xyz(offset_x + x * (size + 2), offset_y + y * (size + 2)), Rotation()
+                    h.xyz(offset_x + x * (size + 2), offset_y + y * (size + 2)),
+                    Rotation(),
                 )
                 insert = insert.cut(hole)
 
@@ -149,7 +151,8 @@ class StorageBox:
 
         right = wall_face.extrude(h.xyz(z=y))
         right.Placement = Placement(
-            h.xyz(x=self.size_x, y=self.corner_size), Rotation(h.xyz(0.0, 1.0, 1.0), 180)
+            h.xyz(x=self.size_x, y=self.corner_size),
+            Rotation(h.xyz(0.0, 1.0, 1.0), 180),
         )
         new_box = new_box.fuse(right)
 
@@ -167,7 +170,8 @@ class StorageBox:
             new_box = new_box.fuse(x_ledge)
 
         x_wall.Placement = Placement(
-            h.xyz(x + self.corner_size, self.size_y), Rotation(h.xyz(-1.0, 1.0, 1.0), 240)
+            h.xyz(x + self.corner_size, self.size_y),
+            Rotation(h.xyz(-1.0, 1.0, 1.0), 240),
         )
         new_box = new_box.fuse(x_wall)
 
@@ -207,14 +211,20 @@ class StorageBox:
         faces.append(h.poly_to_face(x_verticies))
 
         # Fill in the inside triangle
-        faces.append(h.poly_to_face([x_verticies[1], x_verticies[2], z_verticies[2]], 1))
+        faces.append(h.poly_to_face([x_verticies[1], x_verticies[2], z_verticies[2]], True))
 
         # connect the wall faces on a diagonal
         last_vertex = len(z_verticies) - 1
         for i in range(2, last_vertex - 1):
             faces.append(
                 h.poly_to_face(
-                    [x_verticies[i], x_verticies[i + 1], z_verticies[i + 1], z_verticies[i]], 1
+                    [
+                        x_verticies[i],
+                        x_verticies[i + 1],
+                        z_verticies[i + 1],
+                        z_verticies[i],
+                    ],
+                    True,
                 )
             )
 
@@ -226,7 +236,7 @@ class StorageBox:
                     x_verticies[last_vertex - 1],
                     z_verticies[last_vertex - 1],
                 ],
-                1,
+                True,
             )
         )
 
@@ -237,13 +247,20 @@ class StorageBox:
         #        Part.show(corner, 'corner')
         return corner
 
-    def dividers(self) -> list[Part.Solid]:
+    def dividers(self) -> List[Part.Solid]:
         """Return a list of internal dividers."""
         if self.divisions_x <= 1 and self.divisions_y <= 1:
             return []
 
         dividers = []
         offset = self.divider_width / 2.0
+        division_z = self.division_height * (
+            self.size_z - self.INSIDE_RIM_BOTTOM - self.floor_thickness
+        )
+        if division_z < 2.0:
+            chamfer = 0.5 * division_z
+        else:
+            chamfer = 1.0
         # Create the x divider profile in the XZ plane, clockwise from top left
         # when looking toward +Y
         if self.divisions_x > 1:
@@ -255,7 +272,7 @@ class StorageBox:
                 h.xyz(-offset - 1.0, self.WALL_THICKNESS, self.floor_thickness),
                 h.xyz(-offset, self.WALL_THICKNESS, self.floor_thickness + 1.0),
             ]
-            profile = h.poly_to_face(points, 1)
+            profile = h.poly_to_face(points, True)
             divider = profile.extrude(h.xyz(y=self.size_y - 2 * self.WALL_THICKNESS))
             spacing = self.size_x / self.divisions_x
             for i in range(1, self.divisions_x):
@@ -273,7 +290,7 @@ class StorageBox:
                 h.xyz(self.WALL_THICKNESS, -offset - 1.0, self.floor_thickness),
                 h.xyz(self.WALL_THICKNESS, -offset, self.floor_thickness + 1.0),
             ]
-            profile = h.poly_to_face(points, 1)
+            profile = h.poly_to_face(points, True)
             divider = profile.extrude(h.xyz(x=self.size_x - 2 * self.WALL_THICKNESS))
             spacing = self.size_y / self.divisions_y
             for i in range(1, self.divisions_y):
@@ -282,7 +299,7 @@ class StorageBox:
 
         return dividers
 
-    def floor(self, depth, width) -> Part.Shape:
+    def floor(self, depth: int, width: int) -> Part.Shape:
         """Create the shape of the floor."""
         s = self.spacing
         x = self.size_x - 2 * self.corner_size
@@ -297,7 +314,10 @@ class StorageBox:
                 for w in range(0, depth):
                     x = w * s + margin
                     cutout = Part.makeBox(
-                        s - 2 * margin, s - 2 * margin, self.floor_thickness - 1.2, h.xyz(x, y)
+                        s - 2 * margin,
+                        s - 2 * margin,
+                        self.floor_thickness - 1.2,
+                        h.xyz(x, y),
                     )
                     floor = floor.cut(cutout)
 
@@ -376,9 +396,21 @@ class StorageBox:
             return None
         points = [
             h.xyz(self.WALL_THICKNESS, back_wall, self.size_z - self.INSIDE_RIM_BOTTOM),
-            h.xyz(self.WALL_THICKNESS, back_wall - depth, self.size_z - self.INSIDE_RIM_BOTTOM),
-            h.xyz(self.WALL_THICKNESS, back_wall - depth, self.size_z - self.INSIDE_RIM_BOTTOM - 1),
-            h.xyz(self.WALL_THICKNESS, back_wall, self.size_z - self.INSIDE_RIM_BOTTOM - depth - 1),
+            h.xyz(
+                self.WALL_THICKNESS,
+                back_wall - depth,
+                self.size_z - self.INSIDE_RIM_BOTTOM,
+            ),
+            h.xyz(
+                self.WALL_THICKNESS,
+                back_wall - depth,
+                self.size_z - self.INSIDE_RIM_BOTTOM - 1,
+            ),
+            h.xyz(
+                self.WALL_THICKNESS,
+                back_wall,
+                self.size_z - self.INSIDE_RIM_BOTTOM - depth - 1,
+            ),
             h.xyz(self.WALL_THICKNESS, back_wall, self.size_z - self.INSIDE_RIM_BOTTOM),
         ]
         grip = h.poly_to_face(points).extrude(h.xyz(self.size_x - 2 * self.WALL_THICKNESS))
@@ -404,7 +436,7 @@ class StorageBox:
 
         return grip
 
-    def inner_cut_profile(self) -> list[Base.Vector]:
+    def inner_cut_profile(self) -> List[Base.Vector]:
         """Create the profile used to create the intersection cutter."""
         # counter-clockwise from left bottom bevel
         profile = [
@@ -420,7 +452,7 @@ class StorageBox:
         ]
         return profile
 
-    def insert(self, width, depth) -> list[Base.Vector]:
+    def insert(self, width: int, depth: int) -> List[Base.Vector]:
         """Create list of points to create the sketch."""
         if self.floor_thickness < self.MIN_FLOOR:
             self.floor_thickness = self.MIN_FLOOR
@@ -460,7 +492,7 @@ class StorageBox:
         )
         return points
 
-    def insert_as_sketch(self, width, depth) -> Part.Feature:
+    def insert_as_sketch(self, width: int, depth: int) -> Part.Feature:
         """Insert a sketch of the inner space."""
         points = self.insert(width, depth)
         sketch = h.poly_to_sketch(
@@ -499,8 +531,13 @@ class StorageBox:
         for i in range(1, 4):  # will be 4
             j = 9 - i
             # Positive X to positive Y
-            points = [profile_xp[i], profile_yp[i], profile_yp[i + 1], profile_xp[i + 1]]
-            faces.append(h.poly_to_face(points, 1))
+            points = [
+                profile_xp[i],
+                profile_yp[i],
+                profile_yp[i + 1],
+                profile_xp[i + 1],
+            ]
+            faces.append(h.poly_to_face(points, True))
             # Positive Y to Negative X
             points = [
                 profile_yp[j],
@@ -508,7 +545,7 @@ class StorageBox:
                 profile_xn[i + 1],
                 profile_yp[j - 1],
             ]
-            faces.append(h.poly_to_face(points, 1))
+            faces.append(h.poly_to_face(points, True))
             # Negative X to negative Y
             points = [
                 profile_xn[j],
@@ -517,7 +554,7 @@ class StorageBox:
                 profile_xn[j - 1],
             ]
             # print(points)
-            faces.append(h.poly_to_face(points, 1))
+            faces.append(h.poly_to_face(points, True))
             # Positive X to negative Y
             points = [
                 profile_yn[i],
@@ -525,7 +562,7 @@ class StorageBox:
                 profile_xp[j - 1],
                 profile_yn[i + 1],
             ]
-            faces.append(h.poly_to_face(points, 1))
+            faces.append(h.poly_to_face(points, True))
         # Bottom face
         points = [
             profile_xp[1],
@@ -537,7 +574,7 @@ class StorageBox:
             profile_yn[1],
             profile_xp[8],
         ]
-        faces.append(h.poly_to_face(points, 1))
+        faces.append(h.poly_to_face(points, True))
         # Top face
         points = [
             profile_xp[4],
@@ -549,7 +586,7 @@ class StorageBox:
             profile_yn[4],
             profile_xp[5],
         ]
-        faces.append(h.poly_to_face(points, 1))
+        faces.append(h.poly_to_face(points, True))
 
         # debug
         #   for f in faces:
@@ -558,7 +595,7 @@ class StorageBox:
         # Part.show(inter, 'inter')
         return inter
 
-    def magnet_holder(self, mag_diameter, mag_height) -> Part.Shape:
+    def magnet_holder(self, mag_diameter: float, mag_height: float) -> Part.Shape:
         """
         Creates a single corner magnet holder.
         The grid floor thickness must be 3.2[mm].
@@ -590,7 +627,13 @@ class StorageBox:
         return holder
 
     def make(
-        self, depth=1, width=1, height=10.0, mag_d=6.0, mag_h=2.0, floor_thickness=None
+        self,
+        depth: int = 1,
+        width: int = 1,
+        height: float = 10.0,
+        mag_d: float = 6.0,
+        mag_h: float = 2.0,
+        floor_thickness: Optional[float] = None,
     ) -> Part.Shape:
         """Return the body of a box including some default values, for testing."""
         if floor_thickness is not None:
@@ -612,7 +655,7 @@ class StorageBox:
         new_box = self.box_frame()
 
         # Add the floor
-        new_box = new_box.fuse(self.floor(depth, width))
+        new_box = new_box.fuse(self.floor(width, depth))
 
         # If there are dimensions larger than one, subtract slots for the grids
         intersection = self.intersection()
@@ -731,7 +774,7 @@ class StorageBox:
         self.self_test_1x2(h.xyz(y=120))
         self.self_test_sketch(h.xyz(y=-60))
 
-    def self_test_1x1(self, origin):
+    def self_test_1x1(self, origin: Base.Vector):
         shift = 0
         incr = 60
         self.reset()
@@ -754,7 +797,7 @@ class StorageBox:
         Part.show(b1x1x1p1_nm, "b1x1x1p1_nm")
         shift += incr
 
-    def self_test_1x1_features(self, origin):
+    def self_test_1x1_features(self, origin: Base.Vector):
         shift = 0
         incr = 60
 
@@ -806,7 +849,7 @@ class StorageBox:
         Part.show(b1x1x2p1_ramp, "b1x1x2p1_ramp")
         shift += incr
 
-    def self_test_1x2(self, origin):
+    def self_test_1x2(self, origin: Base.Vector):
         shift = 0
         incr = 60
         self.reset()
@@ -848,7 +891,7 @@ class StorageBox:
         Part.show(b1x2x1p1_nm, "b1x2x1p1_nm")
         shift += incr
 
-    def self_test_sketch(self, origin):
+    def self_test_sketch(self, origin: Base.Vector):
         shift = 0
         incr = 60
         self.reset()
@@ -862,7 +905,7 @@ class StorageBox:
         s1x1_open.Placement = Placement(origin.add(h.xyz(shift)), Rotation())
         shift += incr
 
-    def set_param(self, name, value):
+    def set_param(self, name: str, value):
         """Convenience method to facilitate data-driven generation."""
         if name == "as_components":
             self.as_components = value

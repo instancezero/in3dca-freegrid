@@ -161,20 +161,20 @@ class StorageBoxObject(StorageObject):
         # Size
         x = max(1, obj.width)
         y = max(1, obj.depth)
-        z = max(10, obj.height.getValueAs("mm"))
+        z = max(0, obj.height.getValueAs("mm").Value)
         # dividers = divisions - 1
         box.divisions_x = max(1, obj.divisionsX)
         box.divisions_y = max(1, obj.divisionsY)
         # Features
         box.closed_front = not obj.boxOpenFront
         box.ramp = obj.boxRamp  # scoop
-        depth = max(1, obj.boxGripDepth.getValueAs("mm"))
+        depth = max(1, obj.boxGripDepth.getValueAs("mm").Value)
         if obj.boxGrip and depth > 0:
             box.grip_depth = depth
         box.floor_support = obj.floorSupport
         # Magnets
-        mag_d = min(max(1, obj.magnetDiameter.getValueAs("mm")), 6.9)
-        mag_h = min(max(0.2, obj.magnetHeight.getValueAs("mm")), 3.4)
+        mag_d = min(max(1, obj.magnetDiameter.getValueAs("mm").Value), 6.9)
+        mag_h = min(max(0.2, obj.magnetHeight.getValueAs("mm").Value), 3.4)
         if obj.magnetOption == "noMagnets":
             box.magnets = False
             box.magnets_corners_only = True
@@ -255,10 +255,10 @@ class StorageGridObject(StorageObject):
         # Features
         grid.corner_connectors = obj.cornerConnectors
         grid.is_subtractive = obj.isSubtractive
-        extra_bottom = max(0, obj.extraBottom.getValueAs("mm"))
+        extra_bottom = max(0, obj.extraBottom.getValueAs("mm").Value)
         # Magnets
-        mag_d = min(max(1, obj.magnetDiameter.getValueAs("mm")), 6.9)
-        mag_h = min(max(0.2, obj.magnetHeight.getValueAs("mm")), 3.4)
+        mag_d = min(max(1, obj.magnetDiameter.getValueAs("mm").Value), 6.9)
+        mag_h = min(max(0.2, obj.magnetHeight.getValueAs("mm").Value), 3.4)
         grid.magnets = obj.includeMagnets
 
         return grid.make(x, y, mag_d, mag_h, extra_bottom)
