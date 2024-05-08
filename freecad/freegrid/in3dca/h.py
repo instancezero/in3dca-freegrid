@@ -37,18 +37,19 @@ __Communication__ = ""
 __Files__ = ""
 
 import copy
+import math
+from typing import List, Optional
 import DraftVecUtils
 import FreeCAD
 from FreeCAD import Base
-import math
 import Part
 import Sketcher
 
 
 def arc(
     radius: float = 10, degrees: float = 360, increment: float = 5, start_deg: float = 0
-) -> list:
-    """Create a list of Vectors forming an arc"""
+) -> List[Base.Vector]:
+    """Create a list of Vectors forming an arc."""
     increment_rads = math.radians(increment)
     position_rads = math.radians(start_deg)
     increment_abs = math.fabs(increment)
@@ -60,8 +61,8 @@ def arc(
     return points
 
 
-def disk(radius: float, depth: float, at=None) -> Part.Shape:
-    """Create a solid disk"""
+def disk(radius: float, depth: float, at: Optional[Base.Vector] = None) -> Part.Shape:
+    """Create a solid disk."""
     if at is None:
         at = xyz()
     wire = Part.Wire(Part.makeCircle(radius, at))
@@ -70,8 +71,12 @@ def disk(radius: float, depth: float, at=None) -> Part.Shape:
 
 
 def get_edges_enclosed_by_box(
-    base_shape: Part.Shape, origin: Base.Vector, size: Base.Vector, fully_enclosed=True, show=False
-) -> list:
+    base_shape: Part.Shape,
+    origin: Base.Vector,
+    size: Base.Vector,
+    fully_enclosed: bool = True,
+    show: bool = False,
+) -> List[Part.Edge]:
     """
     Get all edges of the base shape inside a box defined by origin and size
     If fully_enclosed is set, both edge endpoints must be in the box. If not,
@@ -82,7 +87,7 @@ def get_edges_enclosed_by_box(
         box = Part.show(Part.makeBox(size.x, size.y, size.z, origin))
         box.ViewObject.DisplayMode = "Wireframe"
     edge_list = []
-    # Note, the isInside() method is misnamed. Actual function is "contains"
+    # NOTE: the isInside() method is misnamed. Actual function is "contains"
     for i, edge in enumerate(base_shape.Edges):
         if fully_enclosed:
             if enclosure.isInside(edge.BoundBox):
@@ -95,40 +100,34 @@ def get_edges_enclosed_by_box(
     return edge_list
 
 
-def poly_close(vec, to_origin=0) -> list[Base.Vector]:
+def poly_close(points: List[Base.Vector]) -> List[Base.Vector]:
     """
     Move a list of vertices to a new origin and if the list isn't a closed polygon,
     close it.
     """
-    if to_origin == 0:
-        to_origin = xyz()
-    moved = []
-    for point in vec:
-        moved.append(xyz(point.x + to_origin.x, point.y + to_origin.y, point.z + to_origin.z))
-
-    last = len(moved) - 1
-    if moved[0].x != moved[last].x or moved[0].y != moved[last].y or moved[0].z != moved[last].z:
-        moved.append(copy.copy(moved[0]))
-    return moved
+    # NOTE: to close a polygon the first and last list elements need tobe the same point.
+    if tuple(points[0]) != tuple(points[-1]):
+        points.append(copy.copy(points[0]))
+    return points
 
 
-def poly_rotate(list, degrees, axis) -> list:
-    """Rotate a list of points"""
-    for i, p in enumerate(list):
-        list[i] = DraftVecUtils.rotate(p, math.radians(degrees), axis)
-    return list
+def poly_rotate(points: List[Base.Vector], degrees: float, axis: Base.Vector) -> List[Base.Vector]:
+    """Rotate a list of points."""
+    for i, p in enumerate(points):
+        points[i] = DraftVecUtils.rotate(p, math.radians(degrees), axis)
+    return points
 
 
-def poly_to_face(points, close=0) -> Part.Face:
-    """Convert polygon to face"""
-    if close != 0:
+def poly_to_face(points: List[Base.Vector], close_poly: bool = False) -> Part.Face:
+    """Convert polygon to face."""
+    if close_poly:
         points = poly_close(points)
 
     return Part.Face(Part.makePolygon(points))
 
 
-def poly_to_sketch(name, points, close=0) -> Part.Feature:
-    """Convert points to sketch"""
+def poly_to_sketch(name: str, points: List[Base.Vector], close: int = 0) -> Part.Feature:
+    """Convert points to sketch."""
     if close != 0:
         points = poly_close(points)
 
@@ -147,13 +146,13 @@ def poly_to_sketch(name, points, close=0) -> Part.Feature:
     return sketch
 
 
-def poly_translate(list, vector) -> list:
-    """Translate a list of points"""
-    for i, p in enumerate(list):
-        list[i] = p.add(vector)
-    return list
+def poly_translate(points: List[Base.Vector], vector: Base.Vector) -> List[Base.Vector]:
+    """Translate a list of points."""
+    for i, p in enumerate(points):
+        points[i] = p.add(vector)
+    return points
 
 
-def xyz(x=0.0, y=0.0, z=0.0) -> Base.Vector:
-    """Make a Vector with optional arguments"""
+def xyz(x: float = 0.0, y: float = 0.0, z: float = 0.0) -> Base.Vector:
+    """Make a Vector with optional arguments."""
     return Base.Vector(x, y, z)
