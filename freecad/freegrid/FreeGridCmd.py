@@ -59,8 +59,8 @@ class StorageObject:
         """Return the designation of the storage object."""
         h = ""
         # FIXME: Make it work with inches
-        if self.storageType == "StorageBox":
-            h = "x{:.1f}mm".format(obj.height.Value)
+        if self.storageType in ["StorageBox", "BitCartridgeHolder"]:
+            h = "x{:.1f}mm".format(obj.height.getValueAs("mm").Value)
         return self.storageType + "_" + str(obj.width) + "x" + str(obj.depth) + h
 
     def onDocumentRestored(self, obj):
@@ -191,6 +191,54 @@ class StorageBoxObject(StorageObject):
     def execute(self, obj):
         """Create the requested storage box object."""
         obj.Shape = self.generate_box(obj)
+        obj.Label = self.descriptionStr(obj)
+        if self.just_created:
+            self.just_created = False
+            if paramFreeGrid.GetBool("randomColor", True):
+                random_color = tuple(random.random() for _ in range(3))
+                obj.ViewObject.ShapeColor = random_color
+
+
+class BitCartridgeHolderObject(StorageBoxObject):
+    """Generate the Bit Cartridge Holder shape."""
+
+    def __init__(self, obj):
+        """Initialize storage box object, add properties."""
+        super().__init__(obj)
+        self.storageType = "BitCartridgeHolder"
+        obj.removeProperty("divisionsX")
+        obj.removeProperty("divisionsY")
+        obj.removeProperty("floorSupport")
+        obj.removeProperty("boxRamp")
+        obj.removeProperty("boxGrip")
+        obj.removeProperty("boxGripDepth")
+        obj.removeProperty("magnetHeight")
+        obj.removeProperty("magnetDiameter")
+        obj.removeProperty("magnetOption")
+        obj.addProperty(
+            "App::PropertyLength",
+            "sideLength",
+            translate(
+                "BitCartridgeHolderObject",
+                "Bit Cartridge Holder features",
+                "Property group",
+            ),
+            translate("BitCartridgeHolderObject", "Size ?", "Property tooltip"),
+        ).sideLength = "15mm"
+
+    def generate_bit_c_h(self, obj) -> Part.Shape:
+        """Create a bit cartridge holder using the object properties as parameters."""
+        bit_c_h = StorageBox.BitCartridgeHolder()
+        size = max(3, obj.sideLength.getValueAs("mm").Value)
+        x = max(1, obj.width)
+        y = max(1, obj.depth)
+        z = max(0, obj.height.getValueAs("mm").Value)
+
+        return bit_c_h.make(size, x, y, z, open_face=obj.boxOpenFront)
+
+    def execute(self, obj):
+        """Create the requested bit cartridge holder object."""
+        obj.Shape = self.generate_bit_c_h(obj)
         obj.Label = self.descriptionStr(obj)
         if self.just_created:
             self.just_created = False
