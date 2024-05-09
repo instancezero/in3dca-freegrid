@@ -278,8 +278,8 @@ class StorageGrid:
 
         else:
             # NOTE: Magnet holders on additive mode (original)
-            # Aparently the distance from the holder to the inmediate grid border is 14.1[mm]
-            # The diameter of the magnet and the constanc 'c' play a role here
+            # Apparently the distance from the holder to the immediate grid border is 14.1[mm]
+            # The diameter of the magnet and the constant 'c' play a role here
             # The holder separates from the grid border: (mag_diameter - 6mm)/2
             if self.magnets:
                 holder = self.magnet_holder(self.mag_diameter, self.mag_height)

@@ -114,6 +114,16 @@ class StorageBoxObject(StorageObject):
             ),
         ).divisionsY = paramFreeGrid.GetInt("divisionsY", 1)
         obj.addProperty(
+            "App::PropertyPercent",
+            "divisionHeight",
+            translate("StorageBoxObject", "Internal divisions", "Property group"),
+            translate(
+                "StorageBoxObject",
+                "Height of internal divisions relative to the box",
+                "Property tooltip",
+            ),
+        ).divisionHeight = paramFreeGrid.GetInt("divisionHeight", 100)
+        obj.addProperty(
             "App::PropertyBool",
             "boxOpenFront",
             translate("StorageBoxObject", "Box features", "Property group"),
@@ -165,6 +175,11 @@ class StorageBoxObject(StorageObject):
         # dividers = divisions - 1
         box.divisions_x = max(1, obj.divisionsX)
         box.divisions_y = max(1, obj.divisionsY)
+        try:
+            box.division_height = min(100, max(1, obj.divisionHeight)) / 100.0
+        except AttributeError:
+            box.division_height = 1.0
+        FreeCAD.Console.PrintWarning(box.division_height)
         # Features
         box.closed_front = not obj.boxOpenFront
         box.ramp = obj.boxRamp  # scoop
