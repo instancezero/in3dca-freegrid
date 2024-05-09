@@ -283,12 +283,12 @@ class StorageBox:
         # when looking toward +Y
         if self.divisions_x > 1:
             points = [
-                h.xyz(-offset, self.WALL_THICKNESS, self.size_z - self.INSIDE_RIM_BOTTOM),
-                h.xyz(offset, self.WALL_THICKNESS, self.size_z - self.INSIDE_RIM_BOTTOM),
-                h.xyz(offset, self.WALL_THICKNESS, self.floor_thickness + 1.0),
-                h.xyz(offset + 1.0, self.WALL_THICKNESS, self.floor_thickness),
-                h.xyz(-offset - 1.0, self.WALL_THICKNESS, self.floor_thickness),
-                h.xyz(-offset, self.WALL_THICKNESS, self.floor_thickness + 1.0),
+                h.xyz(-offset, self.WALL_THICKNESS, self.floor_thickness + division_z),
+                h.xyz(offset, self.WALL_THICKNESS, self.floor_thickness + division_z),
+                h.xyz(offset, self.WALL_THICKNESS, self.floor_thickness + chamfer),
+                h.xyz(offset + chamfer, self.WALL_THICKNESS, self.floor_thickness),
+                h.xyz(-offset - chamfer, self.WALL_THICKNESS, self.floor_thickness),
+                h.xyz(-offset, self.WALL_THICKNESS, self.floor_thickness + chamfer),
             ]
             profile = h.poly_to_face(points, True)
             divider = profile.extrude(h.xyz(y=self.size_y - 2 * self.WALL_THICKNESS))
@@ -301,12 +301,12 @@ class StorageBox:
         # when looking toward +X
         if self.divisions_y > 1:
             points = [
-                h.xyz(self.WALL_THICKNESS, -offset, self.size_z - self.INSIDE_RIM_BOTTOM),
-                h.xyz(self.WALL_THICKNESS, offset, self.size_z - self.INSIDE_RIM_BOTTOM),
-                h.xyz(self.WALL_THICKNESS, offset, self.floor_thickness + 1.0),
-                h.xyz(self.WALL_THICKNESS, offset + 1.0, self.floor_thickness),
-                h.xyz(self.WALL_THICKNESS, -offset - 1.0, self.floor_thickness),
-                h.xyz(self.WALL_THICKNESS, -offset, self.floor_thickness + 1.0),
+                h.xyz(self.WALL_THICKNESS, -offset, self.floor_thickness + division_z),
+                h.xyz(self.WALL_THICKNESS, offset, self.floor_thickness + division_z),
+                h.xyz(self.WALL_THICKNESS, offset, self.floor_thickness + chamfer),
+                h.xyz(self.WALL_THICKNESS, offset + chamfer, self.floor_thickness),
+                h.xyz(self.WALL_THICKNESS, -offset - chamfer, self.floor_thickness),
+                h.xyz(self.WALL_THICKNESS, -offset, self.floor_thickness + chamfer),
             ]
             profile = h.poly_to_face(points, True)
             divider = profile.extrude(h.xyz(x=self.size_x - 2 * self.WALL_THICKNESS))
@@ -760,6 +760,7 @@ class StorageBox:
         # Number of areas within the box
         self.divisions_x = 0
         self.divisions_y = 0
+        self.division_height = 1.0
         self.divider_width = 1.2
         self.floor_thickness = self.MIN_FLOOR
         self.grip_depth = 0.0
@@ -933,6 +934,8 @@ class StorageBox:
             self.divisions_x = value
         elif name == "divisions_y":
             self.divisions_y = value
+        elif name == "division_height":
+            self.division_height = value
         elif name == "grip_depth":
             self.grip_depth = value
         # Set to make magnet holes
