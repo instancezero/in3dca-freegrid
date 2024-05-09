@@ -161,7 +161,8 @@ class StorageBoxObject(StorageObject):
         # Size
         x = max(1, obj.width)
         y = max(1, obj.depth)
-        z = max(0, obj.height.getValueAs("mm").Value)
+        # No point having less than 2.6[mm] because geometry remains the same
+        z = max(2.6, obj.height.getValueAs("mm").Value)
         # dividers = divisions - 1
         box.divisions_x = max(1, obj.divisionsX)
         box.divisions_y = max(1, obj.divisionsY)
