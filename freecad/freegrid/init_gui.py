@@ -63,6 +63,7 @@ class FreeGridWorkbench(Workbench):
 
     commands = [
         "FreeGrid_StorageBox",
+        "FreeGrid_BitCartridgeHolder",
         "FreeGrid_StorageGrid",
         "FreeGrid_Sketch",
         "Separator",
@@ -84,6 +85,7 @@ class FreeGridWorkbench(Workbench):
         self.appendMenu("FreeGrid", self.commands)
 
         FreeCADGui.addCommand("FreeGrid_StorageBox", commands.CreateStorageBox())
+        FreeCADGui.addCommand("FreeGrid_BitCartridgeHolder", commands.CreateBitCartridgeHolder())
         FreeCADGui.addCommand("FreeGrid_StorageGrid", commands.CreateStorageGrid())
         FreeCADGui.addCommand("FreeGrid_Sketch", commands.CreateSketch())
         FreeCADGui.addCommand("FreeGrid_PreferencesPage", commands.OpenPreferencePage())

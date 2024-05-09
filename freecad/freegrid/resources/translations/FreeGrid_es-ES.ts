@@ -2,6 +2,21 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="es_ES" sourcelanguage="en">
 <context>
+    <name>BitCartridgeHolderObject</name>
+    <message>
+        <location filename="../../FreeGridCmd.py" line="258"/>
+        <source>Bit Cartridge Holder features</source>
+        <comment>Property group</comment>
+        <translation>Características de soporte para cartuchos de brocas</translation>
+    </message>
+    <message>
+        <location filename="../../FreeGridCmd.py" line="263"/>
+        <source>Size ?</source>
+        <comment>Property tooltip</comment>
+        <translation>Tamaño</translation>
+    </message>
+</context>
+<context>
     <name>Commands</name>
     <message>
         <location filename="../../commands.py" line="127"/>
@@ -18,6 +33,16 @@
         <location filename="../../commands.py" line="133"/>
         <source>Create a storage box</source>
         <translation>Crear una caja de almacenamiento</translation>
+    </message>
+    <message>
+        <location filename="../../commands.py" line="179"/>
+        <source>Bit cartridge holder</source>
+        <translation>Soporte para cartuchos de brocas</translation>
+    </message>
+    <message>
+        <location filename="../../commands.py" line="180"/>
+        <source>Create a bit cartridge holder</source>
+        <translation>Crear un soporte para cartuchos de brocas</translation>
     </message>
     <message>
         <location filename="../../commands.py" line="140"/>

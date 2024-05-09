@@ -45,10 +45,27 @@ import math
 
 
 class BitCartridgeHolder:
-    def __init__(self):
-        self.tilt = 8.0
+    """Class to manage the geometry of the Bit Cartridge Holder."""
 
-    def make(self, size, width, depth, height, open_face=True):
+    def __init__(self):
+        """Initialize the attributes of the BitCartridgeHolder object."""
+        self.tilt = 8.0  # tilt angle of bit cartridges
+
+    def make(self, size: float, width: int, depth: int, height: float, open_face: bool = True):
+        """
+        Create a holder for bit cartridges.
+
+        Args:
+            size (float): The side length of each bit cartridge. Makes a square.
+            width (int): Number of 50[mm] units on X direction of the holder.
+            depth (int): Number of 50[mm] units on Y direction of the holder.
+            height (float): The height of the holder.
+            open_face (bool, optional): Whether the holder should have an open face. Defaults to True.
+
+        Returns:
+            Part.Shape: The shape of the holder.
+        """
+
         box = StorageBox()
         box.closed_front = not open_face
         points = box.insert(width, depth)
@@ -57,7 +74,7 @@ class BitCartridgeHolder:
         extent_x = count_x * (size + 2) - 2
         offset_x = (box.size_x - extent_x) / 2
         margin_y = 3 + 3
-        range_z = height * box.unit_height - box.floor_thickness - 3
+        range_z = height - box.floor_thickness - 3
         shift = range_z * math.sin(math.radians(self.tilt))
         size_y = size + shift
         count_y = int((box.size_y - shift - 2 * margin_y + 2) // (size + 2))
@@ -79,6 +96,7 @@ class BitCartridgeHolder:
         ]
         hole = h.poly_to_face(hole_points).extrude(h.xyz(size))
 
+        # Make the holes for the bit cartridges
         for x in range(count_x):
             for y in range(count_y):
                 hole.Placement = Placement(
@@ -90,7 +108,7 @@ class BitCartridgeHolder:
         # Cut Y channels out
         channel_points = [
             h.xyz(),
-            h.xyz(y=extent_y - shift),
+            h.xyz(y=max(0, extent_y - shift)),  # avoid bad geometry
             h.xyz(0, extent_y, range_z),
             h.xyz(0, 0, range_z),
             h.xyz(),

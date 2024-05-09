@@ -4,7 +4,12 @@ import FreeCAD
 import FreeCADGui as Gui
 from PySide import QtGui
 from freecad.freegrid import ICONPATH, IMGPATH, UIPATH
-from freecad.freegrid.FreeGridCmd import SketchUI, StorageBoxObject, StorageGridObject
+from freecad.freegrid.FreeGridCmd import (
+    BitCartridgeHolderObject,
+    SketchUI,
+    StorageBoxObject,
+    StorageGridObject,
+)
 from freecad.freegrid.in3dca import StorageBox
 
 from TranslateUtils import translate
@@ -165,6 +170,14 @@ class CreateStorageBox(BaseObjectCommand):
     pixmap = "box.svg"
     menuText = translate("Commands", "Storage box")
     toolTip = translate("Commands", "Create a storage box")
+
+
+class CreateBitCartridgeHolder(BaseObjectCommand):
+    NAME = "StorageCartridgeHolder"
+    FREEGRID_FUNCTION = lambda obj: BitCartridgeHolderObject(obj)
+    pixmap = "holder.svg"
+    menuText = translate("Commands", "Bit cartridge holder")
+    toolTip = translate("Commands", "Create a bit cartridge holder")
 
 
 class CreateStorageGrid(BaseObjectCommand):
