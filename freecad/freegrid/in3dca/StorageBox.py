@@ -943,30 +943,31 @@ class StorageBox:
         elif name == "ramp":
             self.ramp = value
 
-    def top_profile(self, origin, reverse=True) -> list[Base.Vector]:
+    def top_profile(self, origin: Base.Vector, reverse: bool = True) -> List[Base.Vector]:
         """
         Generate this clockwise, relative to the origin, which is the outside top of the box,
         inset by the spacing margin of 0.1. The profile ends at the bottom of the bottom rim bevel.
         """
         width_at_rim = self.WALL_THICKNESS + self.INSIDE_RIM_WIDTH
-        points = [
+        points_raw = [
             h.xyz(0.1, -0.1).add(origin),
             h.xyz(1.1, -0.1).add(origin),
             h.xyz(width_at_rim, -(width_at_rim - 1.0)).add(origin),
             h.xyz(width_at_rim, -self.INSIDE_RIM_BOTTOM).add(origin),
             h.xyz(self.WALL_THICKNESS, -self.INSIDE_RIM_BOTTOM - self.INSIDE_RIM_WIDTH).add(origin),
         ]
+        # Only points that are above floor level are added to avoid breaking the geometry.
+        points = []
+        for p in points_raw:
+            if p.y > self.floor_thickness:
+                points.append(p)
+
         if reverse:
             points.reverse()
 
-        # FreeCAD.Console.PrintMessage("origin: (" + str(origin.x) + ", " + str(origin.y) + "),\n")
-        # for p in points:
-        #     FreeCAD.Console.PrintMessage("(" + str(p.x) + ", " + str(p.y) + "),\n")
-        # FreeCAD.Console.PrintMessage("top profile end\n")
-
         return points
 
-    def wall_profile(self, open_face=False) -> list[Base.Vector]:
+    def wall_profile(self, open_face: bool = False) -> List[Base.Vector]:
         """
         Generate a cross-section of the wall for a box. This profile will be extruded from
         corner to corner. If the face is open, then the top profile (designed to mate with
@@ -985,6 +986,7 @@ class StorageBox:
             profile.extend(self.top_profile(h.xyz(y=self.size_z)))
         profile.extend(
             [
+                h.xyz(0.1, self.floor_thickness),  # X_0, outer wall, floor level
                 h.xyz(0.1, 3.4),  # Down outer wall
                 h.xyz(2.5, 1),  # Bottom outer diagonal
                 h.xyz(2.5, 0.5),  #
