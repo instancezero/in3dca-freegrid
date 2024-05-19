@@ -98,7 +98,7 @@
          </spacer>
         </item>
         <item>
-         <widget class="Gui::PrefSpinBox" name="gridWidth_2">
+         <widget class="Gui::PrefSpinBox" name="gridDepth">
           <property name="sizePolicy">
            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -562,7 +562,7 @@
         <item>
          <widget class="Gui::PrefSpinBox" name="divisionHeight">
           <property name="toolTip">
-           <string>Division height in percent.</string>
+           <string>Divider height in percent</string>
           </property>
           <property name="minimum">
            <number>1</number>
@@ -571,7 +571,7 @@
            <number>100</number>
           </property>
           <property name="value">
-           <double>100.000000000000000</double>
+           <number>100</number>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>divisionHeight</cstring>
@@ -729,6 +729,9 @@
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
+          <property name="currentText">
+           <string>All intersections</string>
+          </property>
           <property name="prefEntry" stdset="0">
            <cstring>magnetOption</cstring>
           </property>
@@ -737,17 +740,17 @@
           </property>
           <item>
            <property name="text">
-            <string notr="true">allIntersections</string>
+            <string>All intersections</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string notr="true">cornersOnly</string>
+            <string>Corners only</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string notr="true">noMagnets</string>
+            <string>No magnets</string>
            </property>
           </item>
          </widget>
