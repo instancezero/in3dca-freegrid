@@ -79,6 +79,7 @@ class StorageBoxObject(StorageObject):
         """Initialize storage box object, add properties."""
         super().__init__(obj)
         self.storageType = "StorageBox"
+        self.magnetOptions = ["allIntersections", "cornersOnly", "noMagnets"]
         obj.depth = paramFreeGrid.GetInt("boxDepth", 1)
         obj.width = paramFreeGrid.GetInt("boxWidth", 1)
         obj.Proxy = self
@@ -162,8 +163,13 @@ class StorageBoxObject(StorageObject):
             "magnetOption",
             translate("StorageBoxObject", "Magnet mount", "Property group"),
             translate("StorageBoxObject", "Options to add magnets", "Property tooltip"),
-        ).magnetOption = ["allIntersections", "cornersOnly", "noMagnets"]
-        obj.magnetOption = "allIntersections"
+        ).magnetOption = self.magnetOptions
+        obj.magnetOption = self.magnetOptions[paramFreeGrid.GetInt("magnetOption", 0)]
+
+    def onChanged(self, obj, prop):
+        if prop == "magnetOption":
+            obj.setEditorMode("magnetDiameter", obj.magnetOption == "noMagnets")
+            obj.setEditorMode("magnetHeight", obj.magnetOption == "noMagnets")
 
     def generate_box(self, obj) -> Part.Shape:
         """Create a box using the object properties as parameters."""
@@ -309,6 +315,11 @@ class StorageGridObject(StorageObject):
             translate("StorageGridObject", "Magnet mount", "Property group"),
             translate("StorageGridObject", "Include magnet receptacles", "Property tooltip"),
         ).includeMagnets = paramFreeGrid.GetBool("includeMagnets", True)
+
+    def onChanged(self, obj, prop):
+        if prop == "includeMagnets":
+            obj.setEditorMode("magnetDiameter", not obj.includeMagnets)
+            obj.setEditorMode("magnetHeight", not obj.includeMagnets)
 
     def generate_grid(self, obj) -> Part.Shape:
         """Create a grid using the object properties as parameters."""
