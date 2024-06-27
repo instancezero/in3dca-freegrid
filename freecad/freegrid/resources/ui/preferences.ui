@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>FreeGridGui::preferencesFreeGrid</class>
- <widget class="QWidget" name="FreeGridGui::preferencesFreeGrid">
+ <class>FreeGridGui::PreferencesFreeGrid</class>
+ <widget class="QWidget" name="FreeGridGui::PreferencesFreeGrid">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -46,7 +46,7 @@
          </spacer>
         </item>
         <item>
-         <widget class="Gui::PrefSpinBox" name="gridWidth">
+         <widget class="Gui::PrefSpinBox" name="GridWidth">
           <property name="sizePolicy">
            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -63,7 +63,7 @@
            <number>2</number>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>gridWidth</cstring>
+           <cstring>GridWidth</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/FreeGrid</cstring>
@@ -98,7 +98,7 @@
          </spacer>
         </item>
         <item>
-         <widget class="Gui::PrefSpinBox" name="gridDepth">
+         <widget class="Gui::PrefSpinBox" name="GridDepth">
           <property name="sizePolicy">
            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -115,7 +115,7 @@
            <number>3</number>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>gridDepth</cstring>
+           <cstring>GridDepth</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/FreeGrid</cstring>
@@ -125,7 +125,7 @@
        </layout>
       </item>
       <item>
-       <widget class="Gui::PrefCheckBox" name="cornerConnectors">
+       <widget class="Gui::PrefCheckBox" name="CornerConnectors">
         <property name="text">
          <string>Add space for locking connectors at outside corners</string>
         </property>
@@ -133,7 +133,7 @@
          <bool>true</bool>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>cornerConnectors</cstring>
+         <cstring>CornerConnectors</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/FreeGrid</cstring>
@@ -141,7 +141,7 @@
        </widget>
       </item>
       <item>
-       <widget class="Gui::PrefCheckBox" name="includeMagnets">
+       <widget class="Gui::PrefCheckBox" name="IncludeMagnets">
         <property name="enabled">
          <bool>true</bool>
         </property>
@@ -152,7 +152,7 @@
          <bool>true</bool>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>includeMagnets</cstring>
+         <cstring>IncludeMagnets</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/FreeGrid</cstring>
@@ -169,7 +169,7 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="Gui::PrefCheckBox" name="randomColor">
+       <widget class="Gui::PrefCheckBox" name="RandomColor">
         <property name="toolTip">
          <string>This setting is different from the Part Design/Part setting</string>
         </property>
@@ -180,7 +180,7 @@
          <bool>true</bool>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>randomColor</cstring>
+         <cstring>RandomColor</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/FreeGrid</cstring>
@@ -318,7 +318,7 @@
          </spacer>
         </item>
         <item>
-         <widget class="Gui::PrefSpinBox" name="boxWidth">
+         <widget class="Gui::PrefSpinBox" name="BoxWidth">
           <property name="sizePolicy">
            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -341,7 +341,7 @@
            <number>1</number>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>boxWidth</cstring>
+           <cstring>BoxWidth</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/FreeGrid</cstring>
@@ -376,7 +376,7 @@
          </spacer>
         </item>
         <item>
-         <widget class="Gui::PrefSpinBox" name="boxDepth">
+         <widget class="Gui::PrefSpinBox" name="BoxDepth">
           <property name="sizePolicy">
            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -399,7 +399,7 @@
            <number>1</number>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>boxDepth</cstring>
+           <cstring>BoxDepth</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/FreeGrid</cstring>
@@ -434,7 +434,7 @@
          </spacer>
         </item>
         <item>
-         <widget class="Gui::PrefQuantitySpinBox" name="boxHeight">
+         <widget class="Gui::PrefQuantitySpinBox" name="BoxHeight">
           <property name="sizePolicy">
            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -451,7 +451,7 @@
            <double>50.000000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>boxHeight</cstring>
+           <cstring>BoxHeight</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/FreeGrid</cstring>
@@ -483,7 +483,7 @@
          </spacer>
         </item>
         <item>
-         <widget class="Gui::PrefSpinBox" name="divisionsX">
+         <widget class="Gui::PrefSpinBox" name="DivisionsX">
           <property name="sizePolicy">
            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -500,7 +500,7 @@
            <number>50</number>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>divisionsX</cstring>
+           <cstring>DivisionsX</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/FreeGrid</cstring>
@@ -535,7 +535,7 @@
          </spacer>
         </item>
         <item>
-         <widget class="Gui::PrefSpinBox" name="divisionsY">
+         <widget class="Gui::PrefSpinBox" name="DivisionsY">
           <property name="sizePolicy">
            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -552,7 +552,7 @@
            <number>50</number>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>divisionsY</cstring>
+           <cstring>DivisionsY</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/FreeGrid</cstring>
@@ -560,7 +560,7 @@
          </widget>
         </item>
         <item>
-         <widget class="Gui::PrefSpinBox" name="divisionHeight">
+         <widget class="Gui::PrefSpinBox" name="DivisionHeight">
           <property name="toolTip">
            <string>Divider height in percent</string>
           </property>
@@ -574,7 +574,7 @@
            <number>100</number>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>divisionHeight</cstring>
+           <cstring>DivisionHeight</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/FreeGrid</cstring>
@@ -584,12 +584,12 @@
        </layout>
       </item>
       <item>
-       <widget class="Gui::PrefCheckBox" name="boxOpenFront">
+       <widget class="Gui::PrefCheckBox" name="BoxOpenFront">
         <property name="text">
          <string>Leave front of box open</string>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>boxOpenFront</cstring>
+         <cstring>BoxOpenFront</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/FreeGrid</cstring>
@@ -597,7 +597,7 @@
        </widget>
       </item>
       <item>
-       <widget class="Gui::PrefCheckBox" name="boxRamp">
+       <widget class="Gui::PrefCheckBox" name="BoxRamp">
         <property name="text">
          <string>Add scoop inside front of box</string>
         </property>
@@ -605,7 +605,7 @@
          <bool>true</bool>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>boxRamp</cstring>
+         <cstring>BoxRamp</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/FreeGrid</cstring>
@@ -613,7 +613,7 @@
        </widget>
       </item>
       <item>
-       <widget class="Gui::PrefCheckBox" name="boxGrip">
+       <widget class="Gui::PrefCheckBox" name="BoxGrip">
         <property name="text">
          <string>Add grip/label area at rear of box</string>
         </property>
@@ -621,7 +621,7 @@
          <bool>true</bool>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>boxGrip</cstring>
+         <cstring>BoxGrip</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/FreeGrid</cstring>
@@ -654,7 +654,7 @@
          </spacer>
         </item>
         <item>
-         <widget class="Gui::PrefQuantitySpinBox" name="boxGripDepth">
+         <widget class="Gui::PrefQuantitySpinBox" name="BoxGripDepth">
           <property name="sizePolicy">
            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -671,7 +671,7 @@
            <double>15.000000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>boxGripDepth</cstring>
+           <cstring>BoxGripDepth</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/FreeGrid</cstring>
@@ -681,7 +681,7 @@
        </layout>
       </item>
       <item>
-       <widget class="Gui::PrefCheckBox" name="floorSupport">
+       <widget class="Gui::PrefCheckBox" name="FloorSupport">
         <property name="text">
          <string>Add integral floor support</string>
         </property>
@@ -689,7 +689,7 @@
          <bool>true</bool>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>floorSupport</cstring>
+         <cstring>FloorSupport</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/FreeGrid</cstring>
@@ -722,7 +722,7 @@
          </spacer>
         </item>
         <item>
-         <widget class="Gui::PrefComboBox" name="magnetOption">
+         <widget class="Gui::PrefComboBox" name="MagnetOption">
           <property name="sizePolicy">
            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -733,7 +733,7 @@
            <string>All intersections</string>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>magnetOption</cstring>
+           <cstring>MagnetOption</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/FreeGrid</cstring>
@@ -792,7 +792,7 @@
          </spacer>
         </item>
         <item>
-         <widget class="Gui::PrefQuantitySpinBox" name="magnetDiameter">
+         <widget class="Gui::PrefQuantitySpinBox" name="MagnetDiameter">
           <property name="toolTip">
            <string>Magnet's diamter at creation time</string>
           </property>
@@ -803,7 +803,7 @@
            <double>6.000000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>magnetDiameter</cstring>
+           <cstring>MagnetDiameter</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/FreeGrid</cstring>
@@ -838,7 +838,7 @@
          </spacer>
         </item>
         <item>
-         <widget class="Gui::PrefQuantitySpinBox" name="magnetHeight">
+         <widget class="Gui::PrefQuantitySpinBox" name="MagnetHeight">
           <property name="toolTip">
            <string>Magnet's height at creation time</string>
           </property>
@@ -849,7 +849,7 @@
            <double>2.000000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>magnetHeight</cstring>
+           <cstring>MagnetHeight</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/FreeGrid</cstring>
