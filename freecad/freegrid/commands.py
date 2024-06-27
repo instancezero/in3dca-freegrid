@@ -201,8 +201,8 @@ class CreateSketch(BaseCommand):
                 if isinstance(obj.Proxy, StorageBoxObject):
                     # Use  depth and width values from selected StorageBox
                     box = StorageBox.StorageBox()
-                    box.closed_front = not obj.boxOpenFront
-                    box.insert_as_sketch(obj.width, obj.depth)
+                    box.closed_front = not obj.BoxOpenFront
+                    box.insert_as_sketch(obj.Width, obj.Depth)
                     FreeCAD.ActiveDocument.recompute()
                 else:
                     raise TypeError("Selected object is not a StorageBox.")

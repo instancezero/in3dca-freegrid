@@ -27,7 +27,7 @@ import os
 
 from freecad.freegrid import ICONPATH, TRANSLATIONSPATH, UIPATH, __version__
 
-from TranslateUtils import translate
+translate = FreeCAD.Qt.translate
 
 # Add translations path
 FreeCADGui.addLanguagePath(TRANSLATIONSPATH)

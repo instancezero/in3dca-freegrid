@@ -8,7 +8,8 @@ from FreeCAD import Base, Placement, Rotation
 from freecad.freegrid import UIPATH
 from freecad.freegrid.in3dca import StorageBox, StorageGrid
 
-from TranslateUtils import translate
+QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
+translate = FreeCAD.Qt.translate
 
 # NOTE: The variables used in the FreeGrid preference page are automatically saved because the UI file uses
 # the FreeCAD custom `Gui::Pref*` Qt widgets. In the code you only need to read the values.
@@ -24,44 +25,36 @@ class StorageObject:
         self.storageType = ""
         obj.addProperty(
             "App::PropertyInteger",
-            "width",
-            translate("StorageObject", "Size", "Property group"),
-            translate(
-                "StorageObject",
-                "Number of 50[mm] units in X direction",
-                "Property tooltip",
-            ),
-        ).width = 1
+            QT_TRANSLATE_NOOP("App::Property", "Width"),
+            QT_TRANSLATE_NOOP("App::Property", "Size"),
+            QT_TRANSLATE_NOOP("App::Property", "Number of 50[mm] units in X direction"),
+        ).Width = 1
         obj.addProperty(
             "App::PropertyInteger",
-            "depth",
-            translate("StorageObject", "Size", "Property group"),
-            translate(
-                "StorageObject",
-                "Number of 50[mm] units in Y direction",
-                "Property tooltip",
-            ),
-        ).depth = 1
+            QT_TRANSLATE_NOOP("App::Property", "Depth"),
+            QT_TRANSLATE_NOOP("App::Property", "Size"),
+            QT_TRANSLATE_NOOP("App::Property", "Number of 50[mm] units in Y direction"),
+        ).Depth = 1
         obj.addProperty(
             "App::PropertyLength",
-            "magnetDiameter",
-            translate("StorageObject", "Magnet mount", "Property group"),
-            translate("StorageObject", "Diameter of the magnet", "Property tooltip"),
-        ).magnetDiameter = paramFreeGrid.GetString("magnetDiameter", "6mm")
+            QT_TRANSLATE_NOOP("App::Property", "MagnetDiameter"),
+            QT_TRANSLATE_NOOP("App::Property", "Magnet mount"),  #: Property group
+            QT_TRANSLATE_NOOP("App::Property", "Diameter of the magnet"),
+        ).MagnetDiameter = paramFreeGrid.GetString("MagnetDiameter", "6mm")
         obj.addProperty(
             "App::PropertyLength",
-            "magnetHeight",
-            translate("StorageObject", "Magnet mount", "Property group"),
-            translate("StorageObject", "Height of the magnet", "Property tooltip"),
-        ).magnetHeight = paramFreeGrid.GetString("magnetHeight", "2mm")
+            QT_TRANSLATE_NOOP("App::Property", "MagnetHeight"),
+            QT_TRANSLATE_NOOP("App::Property", "Magnet mount"),
+            QT_TRANSLATE_NOOP("App::Property", "Height of the magnet"),
+        ).MagnetHeight = paramFreeGrid.GetString("MagnetHeight", "2mm")
 
     def descriptionStr(self, obj):
         """Return the designation of the storage object."""
         h = ""
         # FIXME: Make it work with inches
         if self.storageType in ["StorageBox", "BitCartridgeHolder"]:
-            h = "x{:.1f}mm".format(obj.height.getValueAs("mm").Value)
-        return self.storageType + "_" + str(obj.width) + "x" + str(obj.depth) + h
+            h = "x{:.1f}mm".format(obj.Height.getValueAs("mm").Value)
+        return self.storageType + "_" + str(obj.Width) + "x" + str(obj.Depth) + h
 
     def onDocumentRestored(self, obj):
         # If in the future more properties are added we can check here
@@ -80,130 +73,113 @@ class StorageBoxObject(StorageObject):
         super().__init__(obj)
         self.storageType = "StorageBox"
         self.magnetOptions = ["allIntersections", "cornersOnly", "noMagnets"]
-        obj.depth = paramFreeGrid.GetInt("boxDepth", 1)
-        obj.width = paramFreeGrid.GetInt("boxWidth", 1)
+        obj.Depth = paramFreeGrid.GetInt("BoxDepth", 1)
+        obj.Width = paramFreeGrid.GetInt("BoxWidth", 1)
         obj.Proxy = self
         # TODO: check if it works when default system is imperial
         obj.addProperty(
             "App::PropertyLength",
-            "height",
-            translate("StorageBoxObject", "Size", "Property group"),
-            translate(
-                "StorageBoxObject",
+            QT_TRANSLATE_NOOP("App::Property", "Height"),
+            QT_TRANSLATE_NOOP("App::Property", "Size"),
+            QT_TRANSLATE_NOOP(
+                "App::Property",
                 "Height (in Z direction), enter value and unit\n" "example: 4cm, 1dm, 3in, 0.5ft",
-                "Property tooltip",
             ),
-        ).height = paramFreeGrid.GetString("boxHeight", "50mm")
+        ).Height = paramFreeGrid.GetString("BoxHeight", "50mm")
         obj.addProperty(
             "App::PropertyInteger",
-            "divisionsX",
-            translate("StorageBoxObject", "Internal divisions", "Property group"),
-            translate(
-                "StorageBoxObject",
-                "Number of divisions along the X axis",
-                "Property tooltip",
-            ),
-        ).divisionsX = paramFreeGrid.GetInt("divisionsX", 1)
+            QT_TRANSLATE_NOOP("App::Property", "DivisionsX"),
+            QT_TRANSLATE_NOOP("App::Property", "Internal divisions"),
+            QT_TRANSLATE_NOOP("App::Property", "Number of divisions along the X axis"),
+        ).DivisionsX = paramFreeGrid.GetInt("DivisionsX", 1)
         obj.addProperty(
             "App::PropertyInteger",
-            "divisionsY",
-            translate("StorageBoxObject", "Internal divisions", "Property group"),
-            translate(
-                "StorageBoxObject",
-                "Number of divisions along the Y axis",
-                "Property tooltip",
-            ),
-        ).divisionsY = paramFreeGrid.GetInt("divisionsY", 1)
+            QT_TRANSLATE_NOOP("App::Property", "DivisionsY"),
+            QT_TRANSLATE_NOOP("App::Property", "Internal divisions"),
+            QT_TRANSLATE_NOOP("App::Property", "Number of divisions along the Y axis"),
+        ).DivisionsY = paramFreeGrid.GetInt("DivisionsY", 1)
         obj.addProperty(
             "App::PropertyPercent",
-            "divisionHeight",
-            translate("StorageBoxObject", "Internal divisions", "Property group"),
-            translate(
-                "StorageBoxObject",
-                "Height of internal divisions relative to the box",
-                "Property tooltip",
-            ),
-        ).divisionHeight = paramFreeGrid.GetInt("divisionHeight", 100)
+            QT_TRANSLATE_NOOP("App::Property", "DivisionHeight"),
+            QT_TRANSLATE_NOOP("App::Property", "Internal divisions"),
+            QT_TRANSLATE_NOOP("App::Property", "Height of internal divisions relative to the box"),
+        ).DivisionHeight = paramFreeGrid.GetInt("DivisionHeight", 100)
         obj.addProperty(
             "App::PropertyBool",
-            "boxOpenFront",
-            translate("StorageBoxObject", "Box features", "Property group"),
-            translate("StorageBoxObject", "Leave front of box open", "Property tooltip"),
-        ).boxOpenFront = paramFreeGrid.GetBool("boxOpenFront", False)
+            QT_TRANSLATE_NOOP("App::Property", "BoxOpenFront"),
+            QT_TRANSLATE_NOOP("App::Property", "Box features"),
+            QT_TRANSLATE_NOOP("App::Property", "Leave front of box open"),
+        ).BoxOpenFront = paramFreeGrid.GetBool("BoxOpenFront", False)
         obj.addProperty(
             "App::PropertyBool",
-            "boxRamp",
-            translate("StorageBoxObject", "Box features", "Property group"),
-            translate("StorageBoxObject", "Add scoop inside front of box", "Property tooltip"),
-        ).boxRamp = paramFreeGrid.GetBool("boxRamp", True)
+            QT_TRANSLATE_NOOP("App::Property", "BoxRamp"),
+            QT_TRANSLATE_NOOP("App::Property", "Box features"),
+            QT_TRANSLATE_NOOP("App::Property", "Add scoop inside front of box"),
+        ).BoxRamp = paramFreeGrid.GetBool("BoxRamp", True)
         obj.addProperty(
             "App::PropertyBool",
-            "boxGrip",
-            translate("StorageBoxObject", "Box features", "Property group"),
-            translate(
-                "StorageBoxObject",
-                "Add grip/label area at rear of box",
-                "Property tooltip",
-            ),
-        ).boxGrip = paramFreeGrid.GetBool("boxGrip", True)
+            QT_TRANSLATE_NOOP("App::Property", "BoxGrip"),
+            QT_TRANSLATE_NOOP("App::Property", "Box features"),
+            QT_TRANSLATE_NOOP("App::Property", "Add grip/label area at rear of box"),
+        ).BoxGrip = paramFreeGrid.GetBool("BoxGrip", True)
         obj.addProperty(
             "App::PropertyLength",
-            "boxGripDepth",
-            translate("StorageBoxObject", "Box features", "Property group"),
-            translate("StorageBoxObject", "Depth of grip (mm)", "Property tooltip"),
-        ).boxGripDepth = paramFreeGrid.GetString("boxGripDepth", "15mm")
+            QT_TRANSLATE_NOOP("App::Property", "BoxGripDepth"),
+            QT_TRANSLATE_NOOP("App::Property", "Box features"),
+            QT_TRANSLATE_NOOP("App::Property", "Depth of grip (mm)"),
+        ).BoxGripDepth = paramFreeGrid.GetString("BoxGripDepth", "15mm")
         obj.addProperty(
             "App::PropertyBool",
-            "floorSupport",
-            translate("StorageBoxObject", "Box features", "Property group"),
-            translate("StorageBoxObject", "Add integral floor support", "Property tooltip"),
-        ).floorSupport = paramFreeGrid.GetBool("floorSupport", True)
+            QT_TRANSLATE_NOOP("App::Property", "FloorSupport"),
+            QT_TRANSLATE_NOOP("App::Property", "Box features"),
+            QT_TRANSLATE_NOOP("App::Property", "Add integral floor support"),
+        ).FloorSupport = paramFreeGrid.GetBool("FloorSupport", True)
         obj.addProperty(
             "App::PropertyEnumeration",
-            "magnetOption",
-            translate("StorageBoxObject", "Magnet mount", "Property group"),
-            translate("StorageBoxObject", "Options to add magnets", "Property tooltip"),
-        ).magnetOption = self.magnetOptions
-        obj.magnetOption = self.magnetOptions[paramFreeGrid.GetInt("magnetOption", 0)]
+            QT_TRANSLATE_NOOP("App::Property", "MagnetOption"),
+            QT_TRANSLATE_NOOP("App::Property", "Magnet mount"),
+            QT_TRANSLATE_NOOP("App::Property", "Options to add magnets"),
+        ).MagnetOption = self.magnetOptions
+        obj.MagnetOption = self.magnetOptions[paramFreeGrid.GetInt("MagnetOption", 0)]
 
     def onChanged(self, obj, prop):
-        if prop == "magnetOption":
-            obj.setEditorMode("magnetDiameter", obj.magnetOption == "noMagnets")
-            obj.setEditorMode("magnetHeight", obj.magnetOption == "noMagnets")
+        if prop == "MagnetOption":
+            obj.setEditorMode("MagnetDiameter", obj.MagnetOption == "noMagnets")
+            obj.setEditorMode("MagnetHeight", obj.MagnetOption == "noMagnets")
 
     def generate_box(self, obj) -> Part.Shape:
         """Create a box using the object properties as parameters."""
         box = StorageBox.StorageBox()
         # Size
-        x = max(1, obj.width)
-        y = max(1, obj.depth)
+        x = max(1, obj.Width)
+        y = max(1, obj.Depth)
         # No point having less than 2.6[mm] because geometry remains the same
-        z = max(2.6, obj.height.getValueAs("mm").Value)
+        z = max(2.6, obj.Height.getValueAs("mm").Value)
         # dividers = divisions - 1
-        box.divisions_x = max(1, obj.divisionsX)
-        box.divisions_y = max(1, obj.divisionsY)
+        box.divisions_x = max(1, obj.DivisionsX)
+        box.divisions_y = max(1, obj.DivisionsY)
         try:
-            box.division_height = min(100, max(1, obj.divisionHeight)) / 100.0
+            box.division_height = min(100, max(1, obj.DivisionHeight)) / 100.0
         except AttributeError:
             box.division_height = 1.0
         FreeCAD.Console.PrintWarning(box.division_height)
         # Features
-        box.closed_front = not obj.boxOpenFront
-        box.ramp = obj.boxRamp  # scoop
-        depth = max(1, obj.boxGripDepth.getValueAs("mm").Value)
-        if obj.boxGrip and depth > 0:
+        box.closed_front = not obj.BoxOpenFront
+        box.ramp = obj.BoxRamp  # scoop
+        depth = max(1, obj.BoxGripDepth.getValueAs("mm").Value)
+        if obj.BoxGrip and depth > 0:
             box.grip_depth = depth
-        box.floor_support = obj.floorSupport
+        box.floor_support = obj.FloorSupport
         # Magnets
-        mag_d = min(max(1, obj.magnetDiameter.getValueAs("mm").Value), 6.9)
-        mag_h = min(max(0.2, obj.magnetHeight.getValueAs("mm").Value), 3.4)
-        if obj.magnetOption == "noMagnets":
+        mag_d = min(max(1, obj.MagnetDiameter.getValueAs("mm").Value), 6.9)
+        mag_h = min(max(0.2, obj.MagnetHeight.getValueAs("mm").Value), 3.4)
+        if obj.MagnetOption == "noMagnets":
             box.magnets = False
             box.magnets_corners_only = True
-        elif obj.magnetOption == "allIntersections":
+        elif obj.MagnetOption == "allIntersections":
             box.magnets = True
             box.magnets_corners_only = False
-        elif obj.magnetOption == "cornersOnly":
+        elif obj.MagnetOption == "cornersOnly":
             box.magnets = True
             box.magnets_corners_only = True
         box.as_components = False
@@ -216,7 +192,7 @@ class StorageBoxObject(StorageObject):
         obj.Label = self.descriptionStr(obj)
         if self.just_created:
             self.just_created = False
-            if paramFreeGrid.GetBool("randomColor", True):
+            if paramFreeGrid.GetBool("RandomColor", True):
                 random_color = tuple(random.random() for _ in range(3))
                 obj.ViewObject.ShapeColor = random_color
 
@@ -228,35 +204,35 @@ class BitCartridgeHolderObject(StorageBoxObject):
         """Initialize storage box object, add properties."""
         super().__init__(obj)
         self.storageType = "BitCartridgeHolder"
-        obj.removeProperty("divisionsX")
-        obj.removeProperty("divisionsY")
-        obj.removeProperty("floorSupport")
-        obj.removeProperty("boxRamp")
-        obj.removeProperty("boxGrip")
-        obj.removeProperty("boxGripDepth")
-        obj.removeProperty("magnetHeight")
-        obj.removeProperty("magnetDiameter")
-        obj.removeProperty("magnetOption")
+        for prop in [
+            "DivisionsX",
+            "DivisionsY",
+            "DivisionHeight",
+            "FloorSupport",
+            "BoxRamp",
+            "BoxGrip",
+            "BoxGripDepth",
+            "MagnetHeight",
+            "MagnetDiameter",
+            "MagnetOption",
+        ]:
+            obj.removeProperty(prop)
         obj.addProperty(
             "App::PropertyLength",
-            "sideLength",
-            translate(
-                "BitCartridgeHolderObject",
-                "Bit Cartridge Holder features",
-                "Property group",
-            ),
-            translate("BitCartridgeHolderObject", "Size ?", "Property tooltip"),
-        ).sideLength = "15mm"
+            QT_TRANSLATE_NOOP("App::Property", "SideLength"),
+            QT_TRANSLATE_NOOP("App::Property", "Bit Cartridge Holder features"),
+            QT_TRANSLATE_NOOP("App::Property", "Length of the longest side of the cartridge"),
+        ).SideLength = "15mm"
 
     def generate_bit_c_h(self, obj) -> Part.Shape:
         """Create a bit cartridge holder using the object properties as parameters."""
         bit_c_h = StorageBox.BitCartridgeHolder()
-        size = max(3, obj.sideLength.getValueAs("mm").Value)
-        x = max(1, obj.width)
-        y = max(1, obj.depth)
-        z = max(0, obj.height.getValueAs("mm").Value)
+        size = max(10, obj.SideLength.getValueAs("mm").Value)
+        x = max(1, obj.Width)
+        y = max(1, obj.Depth)
+        z = max(0, obj.Height.getValueAs("mm").Value)
 
-        return bit_c_h.make(size, x, y, z, open_face=obj.boxOpenFront)
+        return bit_c_h.make(size, x, y, z, open_face=obj.BoxOpenFront)
 
     def execute(self, obj):
         """Create the requested bit cartridge holder object."""
@@ -264,7 +240,7 @@ class BitCartridgeHolderObject(StorageBoxObject):
         obj.Label = self.descriptionStr(obj)
         if self.just_created:
             self.just_created = False
-            if paramFreeGrid.GetBool("randomColor", True):
+            if paramFreeGrid.GetBool("RandomColor", True):
                 random_color = tuple(random.random() for _ in range(3))
                 obj.ViewObject.ShapeColor = random_color
 
@@ -277,64 +253,54 @@ class StorageGridObject(StorageObject):
         super().__init__(obj)
         self.storageType = "StorageGrid"
         obj.Proxy = self
-        obj.depth = paramFreeGrid.GetInt("gridDepth", 2)
-        obj.width = paramFreeGrid.GetInt("gridWidth", 3)
+        obj.Depth = paramFreeGrid.GetInt("GridDepth", 2)
+        obj.Width = paramFreeGrid.GetInt("GridWidth", 3)
         obj.addProperty(
             "App::PropertyBool",
-            "cornerConnectors",
-            translate("StorageGridObject", "Grid features", "Property group"),
-            translate(
-                "StorageGridObject",
-                "Space for locking connectors at outside corners",
-                "Property tooltip",
-            ),
-        ).cornerConnectors = paramFreeGrid.GetBool("cornerConnectors", True)
+            QT_TRANSLATE_NOOP("App::Property", "CornerConnectors"),
+            QT_TRANSLATE_NOOP("App::Property", "Grid features"),
+            QT_TRANSLATE_NOOP("App::Property", "Space for locking connectors at outside corners"),
+        ).CornerConnectors = paramFreeGrid.GetBool("CornerConnectors", True)
         obj.addProperty(
             "App::PropertyBool",
-            "isSubtractive",
-            translate("StorageGridObject", "Grid features", "Property group"),
-            translate(
-                "StorageGridObject",
-                "Create a grid suitable for subtractive manufacturing",
-                "Property tooltip",
+            QT_TRANSLATE_NOOP("App::Property", "IsSubtractive"),
+            QT_TRANSLATE_NOOP("App::Property", "Grid features"),
+            QT_TRANSLATE_NOOP(
+                "App::Property", "Create a grid suitable for subtractive manufacturing"
             ),
-        ).isSubtractive = False
+        ).IsSubtractive = False
         obj.addProperty(
             "App::PropertyLength",
-            "extraBottom",
-            translate("StorageGridObject", "Grid features", "Property group"),
-            translate(
-                "StorageGridObject",
-                "Extra thickness under grid (mm)",
-                "Property tooltip",
-            ),
-        ).extraBottom = "16mm"
+            QT_TRANSLATE_NOOP("App::Property", "ExtraBottomMaterial"),
+            QT_TRANSLATE_NOOP("App::Property", "Grid features"),
+            QT_TRANSLATE_NOOP("App::Property", "Extra thickness under grid (mm)"),
+        ).ExtraBottomMaterial = "16mm"
         obj.addProperty(
             "App::PropertyBool",
-            "includeMagnets",
-            translate("StorageGridObject", "Magnet mount", "Property group"),
-            translate("StorageGridObject", "Include magnet receptacles", "Property tooltip"),
-        ).includeMagnets = paramFreeGrid.GetBool("includeMagnets", True)
+            QT_TRANSLATE_NOOP("App::Property", "IncludeMagnets"),
+            QT_TRANSLATE_NOOP("App::Property", "Magnet mount"),
+            QT_TRANSLATE_NOOP("App::Property", "Include magnet receptacles"),
+        ).IncludeMagnets = paramFreeGrid.GetBool("IncludeMagnets", True)
 
     def onChanged(self, obj, prop):
-        if prop == "includeMagnets":
-            obj.setEditorMode("magnetDiameter", not obj.includeMagnets)
-            obj.setEditorMode("magnetHeight", not obj.includeMagnets)
+        if prop == "IncludeMagnets":
+            obj.setEditorMode("MagnetDiameter", not obj.IncludeMagnets)
+            obj.setEditorMode("MagnetHeight", not obj.IncludeMagnets)
 
     def generate_grid(self, obj) -> Part.Shape:
         """Create a grid using the object properties as parameters."""
         grid = StorageGrid.StorageGrid()
         # Size
-        x = max(1, obj.width)
-        y = max(1, obj.depth)
+        x = max(1, obj.Width)
+        y = max(1, obj.Depth)
         # Features
-        grid.corner_connectors = obj.cornerConnectors
-        grid.is_subtractive = obj.isSubtractive
-        extra_bottom = max(0, obj.extraBottom.getValueAs("mm").Value)
+        grid.corner_connectors = obj.CornerConnectors
+        grid.is_subtractive = obj.IsSubtractive
+        extra_bottom = max(0, obj.ExtraBottomMaterial.getValueAs("mm").Value)
         # Magnets
-        mag_d = min(max(1, obj.magnetDiameter.getValueAs("mm").Value), 6.9)
-        mag_h = min(max(0.2, obj.magnetHeight.getValueAs("mm").Value), 3.4)
-        grid.magnets = obj.includeMagnets
+        mag_d = min(max(1, obj.MagnetDiameter.getValueAs("mm").Value), 6.9)
+        mag_h = min(max(0.2, obj.MagnetHeight.getValueAs("mm").Value), 3.4)
+        grid.magnets = obj.IncludeMagnets
 
         return grid.make(x, y, mag_d, mag_h, extra_bottom)
 
@@ -345,18 +311,13 @@ class StorageGridObject(StorageObject):
         if self.just_created:
             obj.Placement = Placement(Base.Vector(0.0, 0.0, -3.2), Rotation())
             self.just_created = False
-            if paramFreeGrid.GetBool("randomColor", True):
+            if paramFreeGrid.GetBool("RandomColor", True):
                 random_color = tuple(random.random() for _ in range(3))
                 obj.ViewObject.ShapeColor = random_color
 
 
 class SketchUI:
-    """
-    Generate a sketch of an NxM storage box using a dockable user interface.
-    Attributes:
-    view: The view to which the sketch UI is attached.
-    form: The PySide UI form representing the sketch UI.
-    """
+    """Generate a sketch of an NxM storage box using a task panel."""
 
     def __init__(self):
         self.form = FreeCADGui.PySideUic.loadUi(os.path.join(UIPATH, "sketch.ui"))

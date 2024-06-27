@@ -91,7 +91,7 @@ update_locale() {
 			lconvert -i _${WB}.ts -o ${WB}.ts
 		else
 			lconvert -source-language en -target-language "${locale//-/_}" \
-				-i _${WB}.ts -o ${WB}_${locale}.ts
+				-i _${WB}.ts -o "${WB}_${locale}.ts"
 		fi
 	else
 		echo -e "\033[1;34m\n\t<<< Updating '${WB}${u}${locale}.ts' file >>>\n\033[m"
@@ -100,7 +100,7 @@ update_locale() {
 			lconvert -i _${WB}.ts ${WB}.ts -o ${WB}.ts
 		else
 			lconvert -source-language en -target-language "${locale//-/_}" \
-				-i _${WB}.ts ${WB}_${locale}.ts -o ${WB}_${locale}.ts
+				-i _${WB}.ts "${WB}_${locale}.ts" -o "${WB}_${locale}.ts"
 		fi
 	fi
 
@@ -111,7 +111,7 @@ update_locale() {
 release_locale() {
 	# Release locale (creation of *.qm file from *.ts file)
 	local locale="$1"
-	lrelease ${WB}_${locale}.ts
+	lrelease "${WB}_${locale}.ts"
 }
 
 help() {
@@ -136,7 +136,7 @@ elif [ $# -eq 1 ]; then
 	if [ "$1" == "-R" ]; then
 		find . -type f -name '*_*.ts' | while IFS= read -r file; do
 			# Release all locales
-			lrelease $file
+			lrelease "$file"
 			echo
 		done
 	elif [ "$1" == "-U" ]; then
@@ -159,6 +159,9 @@ elif [ $# -eq 2 ]; then
 	else
 		echo "Verify your language code. Case sensitive."
 		echo "If it's correct ask a maintainer to add support for your language on FreeCAD."
+		echo -e "Supported locales, 'FreeCADGui.supportedLocales()': \033[1;33m"
+		for locale in "${supported_locales[@]}"; do echo -n "$locale "; done
+		echo
 	fi
 else
 	help
