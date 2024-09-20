@@ -9,9 +9,9 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="83"/>
-        <location filename="../../FreeGridCmd.py" line="35"/>
         <location filename="../../FreeGridCmd.py" line="29"/>
+        <location filename="../../FreeGridCmd.py" line="35"/>
+        <location filename="../../FreeGridCmd.py" line="83"/>
         <source>Size</source>
         <translation type="unfinished"></translation>
     </message>
@@ -36,17 +36,16 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="280"/>
-        <location filename="../../FreeGridCmd.py" line="140"/>
-        <location filename="../../FreeGridCmd.py" line="47"/>
         <location filename="../../FreeGridCmd.py" line="41"/>
+        <location filename="../../FreeGridCmd.py" line="47"/>
+        <location filename="../../FreeGridCmd.py" line="140"/>
+        <location filename="../../FreeGridCmd.py" line="298"/>
         <source>Magnet mount</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../FreeGridCmd.py" line="42"/>
         <source>Diameter of the magnet</source>
-        <extracomment>Property group</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -65,7 +64,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="84"/>
+        <location filename="../../FreeGridCmd.py" line="87"/>
         <source>Height (in Z direction), enter value and unit
 example: 4cm, 1dm, 3in, 0.5ft</source>
         <translation type="unfinished"></translation>
@@ -76,9 +75,9 @@ example: 4cm, 1dm, 3in, 0.5ft</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="104"/>
-        <location filename="../../FreeGridCmd.py" line="98"/>
         <location filename="../../FreeGridCmd.py" line="92"/>
+        <location filename="../../FreeGridCmd.py" line="98"/>
+        <location filename="../../FreeGridCmd.py" line="104"/>
         <source>Internal divisions</source>
         <translation type="unfinished"></translation>
     </message>
@@ -113,11 +112,11 @@ example: 4cm, 1dm, 3in, 0.5ft</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="134"/>
-        <location filename="../../FreeGridCmd.py" line="128"/>
-        <location filename="../../FreeGridCmd.py" line="122"/>
-        <location filename="../../FreeGridCmd.py" line="116"/>
         <location filename="../../FreeGridCmd.py" line="110"/>
+        <location filename="../../FreeGridCmd.py" line="116"/>
+        <location filename="../../FreeGridCmd.py" line="122"/>
+        <location filename="../../FreeGridCmd.py" line="128"/>
+        <location filename="../../FreeGridCmd.py" line="134"/>
         <source>Box features</source>
         <translation type="unfinished"></translation>
     </message>
@@ -177,134 +176,65 @@ example: 4cm, 1dm, 3in, 0.5ft</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="221"/>
+        <location filename="../../FreeGridCmd.py" line="222"/>
         <source>SideLength</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="222"/>
+        <location filename="../../FreeGridCmd.py" line="223"/>
         <source>Bit Cartridge Holder features</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="223"/>
+        <location filename="../../FreeGridCmd.py" line="224"/>
         <source>Length of the longest side of the cartridge</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="259"/>
+        <location filename="../../FreeGridCmd.py" line="277"/>
         <source>CornerConnectors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="274"/>
-        <location filename="../../FreeGridCmd.py" line="266"/>
-        <location filename="../../FreeGridCmd.py" line="260"/>
+        <location filename="../../FreeGridCmd.py" line="278"/>
+        <location filename="../../FreeGridCmd.py" line="284"/>
+        <location filename="../../FreeGridCmd.py" line="292"/>
         <source>Grid features</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="261"/>
+        <location filename="../../FreeGridCmd.py" line="279"/>
         <source>Space for locking connectors at outside corners</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="265"/>
+        <location filename="../../FreeGridCmd.py" line="283"/>
         <source>IsSubtractive</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="267"/>
+        <location filename="../../FreeGridCmd.py" line="287"/>
         <source>Create a grid suitable for subtractive manufacturing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="273"/>
+        <location filename="../../FreeGridCmd.py" line="291"/>
         <source>ExtraBottomMaterial</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="275"/>
+        <location filename="../../FreeGridCmd.py" line="293"/>
         <source>Extra thickness under grid (mm)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="279"/>
+        <location filename="../../FreeGridCmd.py" line="297"/>
         <source>IncludeMagnets</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="281"/>
+        <location filename="../../FreeGridCmd.py" line="299"/>
         <source>Include magnet receptacles</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>Commands</name>
-    <message>
-        <location filename="../../commands.py" line="140"/>
-        <source>Create {}</source>
-        <comment>Transaction</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../commands.py" line="171"/>
-        <source>Storage box</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../commands.py" line="172"/>
-        <source>Create a storage box</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../commands.py" line="179"/>
-        <source>Bit cartridge holder</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../commands.py" line="180"/>
-        <source>Create a bit cartridge holder</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../commands.py" line="187"/>
-        <source>Storage grid</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../commands.py" line="188"/>
-        <source>Create a storage grid</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../commands.py" line="193"/>
-        <source>Sketch</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../commands.py" line="194"/>
-        <source>Generate inner box profile</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../commands.py" line="217"/>
-        <source>Preferences page</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../commands.py" line="218"/>
-        <source>Open the FreeGrid preferences page</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../commands.py" line="229"/>
-        <source>About FreeGrid</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../commands.py" line="230"/>
-        <source>Show information about FreeGrid</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -316,63 +246,63 @@ example: 4cm, 1dm, 3in, 0.5ft</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/about.ui" line="33"/>
+        <location filename="../ui/about.ui" line="377"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/about.ui" line="46"/>
+        <location filename="../ui/about.ui" line="39"/>
         <source>About FreeGrid Workbench</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/about.ui" line="73"/>
+        <location filename="../ui/about.ui" line="66"/>
         <source>Version:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/about.ui" line="100"/>
+        <location filename="../ui/about.ui" line="93"/>
         <source>Description:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/about.ui" line="119"/>
+        <location filename="../ui/about.ui" line="112"/>
         <source>A simple tools workbench for generating
 FreeGrid storage system components.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/about.ui" line="134"/>
+        <location filename="../ui/about.ui" line="127"/>
         <source>Macro author:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/about.ui" line="161"/>
+        <location filename="../ui/about.ui" line="154"/>
         <source>Workbench author:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/about.ui" line="188"/>
+        <location filename="../ui/about.ui" line="181"/>
         <source>Maintainers:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/about.ui" line="217"/>
+        <location filename="../ui/about.ui" line="210"/>
         <source>License:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/about.ui" line="230"/>
+        <location filename="../ui/about.ui" line="223"/>
         <source>AGPL-3.0 license</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/about.ui" line="245"/>
+        <location filename="../ui/about.ui" line="272"/>
         <source>Forum thread</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/about.ui" line="267"/>
+        <location filename="../ui/about.ui" line="343"/>
         <source>Repository</source>
         <translation type="unfinished"></translation>
     </message>
@@ -381,7 +311,7 @@ FreeGrid storage system components.</source>
     <name>FreeGridGui::PreferencesFreeGrid</name>
     <message>
         <location filename="../ui/preferences.ui" line="14"/>
-        <location filename="../ui/preferences.ui" line="168"/>
+        <location filename="../ui/preferences.ui" line="174"/>
         <source>General</source>
         <translation type="unfinished"></translation>
     </message>
@@ -392,177 +322,177 @@ FreeGrid storage system components.</source>
     </message>
     <message>
         <location filename="../ui/preferences.ui" line="31"/>
-        <location filename="../ui/preferences.ui" line="303"/>
+        <location filename="../ui/preferences.ui" line="312"/>
         <source>Default width</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/preferences.ui" line="57"/>
-        <location filename="../ui/preferences.ui" line="329"/>
+        <location filename="../ui/preferences.ui" line="338"/>
         <source>Number of 50[mm] units in X direction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences.ui" line="60"/>
-        <location filename="../ui/preferences.ui" line="112"/>
-        <location filename="../ui/preferences.ui" line="332"/>
-        <location filename="../ui/preferences.ui" line="390"/>
+        <location filename="../ui/preferences.ui" line="63"/>
+        <location filename="../ui/preferences.ui" line="118"/>
+        <location filename="../ui/preferences.ui" line="344"/>
+        <location filename="../ui/preferences.ui" line="405"/>
         <source> unit(s)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences.ui" line="83"/>
-        <location filename="../ui/preferences.ui" line="361"/>
+        <location filename="../ui/preferences.ui" line="86"/>
+        <location filename="../ui/preferences.ui" line="373"/>
         <source>Default depth</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences.ui" line="109"/>
-        <location filename="../ui/preferences.ui" line="387"/>
+        <location filename="../ui/preferences.ui" line="112"/>
+        <location filename="../ui/preferences.ui" line="399"/>
         <source>Number of 50[mm] units in Y direction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences.ui" line="130"/>
+        <location filename="../ui/preferences.ui" line="136"/>
         <source>Add space for locking connectors at outside corners</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences.ui" line="149"/>
+        <location filename="../ui/preferences.ui" line="155"/>
         <source>Include magnet receptacles</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences.ui" line="174"/>
+        <location filename="../ui/preferences.ui" line="180"/>
         <source>This setting is different from the Part Design/Part setting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences.ui" line="177"/>
+        <location filename="../ui/preferences.ui" line="183"/>
         <source>Assign random color to new objects</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences.ui" line="193"/>
+        <location filename="../ui/preferences.ui" line="199"/>
         <source>Command&apos;s icon is showed in the tooltip (need restart)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences.ui" line="196"/>
+        <location filename="../ui/preferences.ui" line="202"/>
         <source>Show picture on command&apos;s tooltips</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences.ui" line="217"/>
+        <location filename="../ui/preferences.ui" line="223"/>
         <source>Size of icon on the tooltip</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences.ui" line="243"/>
+        <location filename="../ui/preferences.ui" line="249"/>
         <source>Icon size (need restart)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences.ui" line="292"/>
+        <location filename="../ui/preferences.ui" line="301"/>
         <source>Box</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences.ui" line="419"/>
-        <location filename="../ui/preferences.ui" line="823"/>
+        <location filename="../ui/preferences.ui" line="434"/>
+        <location filename="../ui/preferences.ui" line="865"/>
         <source>Default height</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences.ui" line="445"/>
-        <location filename="../ui/preferences.ui" line="665"/>
+        <location filename="../ui/preferences.ui" line="460"/>
+        <location filename="../ui/preferences.ui" line="695"/>
         <source>Height (in Z direction), enter value and unit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences.ui" line="468"/>
+        <location filename="../ui/preferences.ui" line="486"/>
         <source>Number of divisions along the X axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences.ui" line="494"/>
-        <location filename="../ui/preferences.ui" line="546"/>
+        <location filename="../ui/preferences.ui" line="512"/>
+        <location filename="../ui/preferences.ui" line="567"/>
         <source>dividers = divisions - 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences.ui" line="520"/>
+        <location filename="../ui/preferences.ui" line="541"/>
         <source>Number of divisions along the Y axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences.ui" line="565"/>
+        <location filename="../ui/preferences.ui" line="589"/>
         <source>Divider height in percent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences.ui" line="589"/>
+        <location filename="../ui/preferences.ui" line="619"/>
         <source>Leave front of box open</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences.ui" line="602"/>
+        <location filename="../ui/preferences.ui" line="632"/>
         <source>Add scoop inside front of box</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences.ui" line="618"/>
+        <location filename="../ui/preferences.ui" line="648"/>
         <source>Add grip/label area at rear of box</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences.ui" line="639"/>
+        <location filename="../ui/preferences.ui" line="669"/>
         <source>Depth of grip</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences.ui" line="686"/>
+        <location filename="../ui/preferences.ui" line="719"/>
         <source>Add integral floor support</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences.ui" line="707"/>
+        <location filename="../ui/preferences.ui" line="740"/>
         <source>Options to add magnets</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences.ui" line="733"/>
-        <location filename="../ui/preferences.ui" line="743"/>
+        <location filename="../ui/preferences.ui" line="766"/>
+        <location filename="../ui/preferences.ui" line="776"/>
         <source>All intersections</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences.ui" line="748"/>
+        <location filename="../ui/preferences.ui" line="781"/>
         <source>Corners only</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences.ui" line="753"/>
+        <location filename="../ui/preferences.ui" line="786"/>
         <source>No magnets</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences.ui" line="766"/>
+        <location filename="../ui/preferences.ui" line="799"/>
         <source>Magnet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences.ui" line="777"/>
+        <location filename="../ui/preferences.ui" line="810"/>
         <source>Default diameter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences.ui" line="797"/>
+        <location filename="../ui/preferences.ui" line="836"/>
         <source>Magnet&apos;s diamter at creation time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences.ui" line="843"/>
+        <location filename="../ui/preferences.ui" line="891"/>
         <source>Magnet&apos;s height at creation time</source>
         <translation type="unfinished"></translation>
     </message>
@@ -575,44 +505,153 @@ FreeGrid storage system components.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../ui/sketch.ui" line="22"/>
+        <location filename="../ui/sketch.ui" line="45"/>
+        <source>Number of 50[mm] units in X direction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../ui/sketch.ui" line="25"/>
         <source>Width</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/sketch.ui" line="55"/>
+        <location filename="../ui/sketch.ui" line="48"/>
+        <location filename="../ui/sketch.ui" line="85"/>
+        <source> unit(s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/sketch.ui" line="59"/>
+        <location filename="../ui/sketch.ui" line="82"/>
+        <source>Number of 50[mm] units in Y direction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/sketch.ui" line="62"/>
         <source>Depth</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/sketch.ui" line="85"/>
+        <location filename="../ui/sketch.ui" line="99"/>
         <source>Include open front</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>InitGui</name>
+    <name>FreeGrid_About</name>
     <message>
-        <location filename="../../init_gui.py" line="40"/>
-        <source>You are using the FreeGridWorkbench with an old version of FreeCAD (&lt;0.16)</source>
-        <comment>Logger</comment>
+        <location filename="../../commands.py" line="234"/>
+        <source>About FreeGrid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../init_gui.py" line="47"/>
+        <location filename="../../commands.py" line="236"/>
+        <source>Show information about FreeGrid</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>FreeGrid_BitCartridgeHolder</name>
+    <message>
+        <location filename="../../commands.py" line="184"/>
+        <source>Bit cartridge holder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../commands.py" line="187"/>
+        <source>Create a bit cartridge holder</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>FreeGrid_PreferencesPage</name>
+    <message>
+        <location filename="../../commands.py" line="222"/>
+        <source>Preferences page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../commands.py" line="224"/>
+        <source>Open the FreeGrid preferences page</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>FreeGrid_Sketch</name>
+    <message>
+        <location filename="../../commands.py" line="198"/>
+        <source>Sketch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../commands.py" line="200"/>
+        <source>Generate inner box profile</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>FreeGrid_StorageBox</name>
+    <message>
+        <location filename="../../commands.py" line="176"/>
+        <source>Storage box</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../commands.py" line="179"/>
+        <source>Create a storage box</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>FreeGrid_StorageGrid</name>
+    <message>
+        <location filename="../../commands.py" line="192"/>
+        <source>Storage grid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../commands.py" line="195"/>
+        <source>Create a storage grid</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Log</name>
+    <message>
+        <location filename="../../init_gui.py" line="44"/>
+        <source>You are using the FreeGrid Workbench with an old version of FreeCAD (&lt;0.16)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../init_gui.py" line="50"/>
         <source>The class Workbench is loaded, although not imported: magic</source>
-        <comment>Logger</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../init_gui.py" line="61"/>
-        <source>Parametric 3D printed storage system</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../init_gui.py" line="98"/>
+        <location filename="../../init_gui.py" line="96"/>
         <source>FreeGrid Workbench initialized v{}</source>
-        <comment>Logger</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../commands.py" line="212"/>
+        <source>Selected object is not a StorageBox object.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Transaction</name>
+    <message>
+        <location filename="../../commands.py" line="144"/>
+        <source>Create {}</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Workbench</name>
+    <message>
+        <location filename="../../init_gui.py" line="60"/>
+        <source>Parametric 3D printed storage system</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
