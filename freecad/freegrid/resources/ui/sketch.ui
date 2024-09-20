@@ -19,7 +19,7 @@
      <item>
       <widget class="QLabel" name="widthLabel">
        <property name="toolTip">
-        <string extracomment="Number of 50[mm] units in x direction"/>
+        <string>Number of 50[mm] units in X direction</string>
        </property>
        <property name="text">
         <string>Width</string>
@@ -40,7 +40,14 @@
       </spacer>
      </item>
      <item>
-      <widget class="QSpinBox" name="sketch_x"/>
+      <widget class="QSpinBox" name="sketch_x">
+       <property name="toolTip">
+        <string>Number of 50[mm] units in X direction</string>
+       </property>
+       <property name="suffix">
+        <string> unit(s)</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -49,7 +56,7 @@
      <item>
       <widget class="QLabel" name="depthLabel">
        <property name="toolTip">
-        <string extracomment="Number of 50[mm] units in y direction"/>
+        <string>Number of 50[mm] units in Y direction</string>
        </property>
        <property name="text">
         <string>Depth</string>
@@ -70,7 +77,14 @@
       </spacer>
      </item>
      <item>
-      <widget class="QSpinBox" name="sketch_y"/>
+      <widget class="QSpinBox" name="sketch_y">
+       <property name="toolTip">
+        <string>Number of 50[mm] units in Y direction</string>
+       </property>
+       <property name="suffix">
+        <string> unit(s)</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
