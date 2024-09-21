@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>450</width>
-    <height>900</height>
+    <width>700</width>
+    <height>950</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -55,6 +55,9 @@
           </property>
           <property name="toolTip">
            <string>Number of 50[mm] units in X direction</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
           <property name="suffix">
            <string> unit(s)</string>
@@ -107,6 +110,9 @@
           </property>
           <property name="toolTip">
            <string>Number of 50[mm] units in Y direction</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
           <property name="suffix">
            <string> unit(s)</string>
@@ -242,6 +248,9 @@
           <property name="toolTip">
            <string>Icon size (need restart)</string>
           </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
           <property name="suffix">
            <string notr="true"> px</string>
           </property>
@@ -328,6 +337,9 @@
           <property name="toolTip">
            <string>Number of 50[mm] units in X direction</string>
           </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
           <property name="suffix">
            <string> unit(s)</string>
           </property>
@@ -385,6 +397,9 @@
           </property>
           <property name="toolTip">
            <string>Number of 50[mm] units in Y direction</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
           <property name="suffix">
            <string> unit(s)</string>
@@ -444,6 +459,9 @@
           <property name="toolTip">
            <string>Height (in Z direction), enter value and unit</string>
           </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
           <property name="unit" stdset="0">
            <string notr="true">mm</string>
           </property>
@@ -492,6 +510,9 @@
           </property>
           <property name="toolTip">
            <string>dividers = divisions - 1</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
           <property name="minimum">
            <number>1</number>
@@ -545,6 +566,9 @@
           <property name="toolTip">
            <string>dividers = divisions - 1</string>
           </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
           <property name="minimum">
            <number>1</number>
           </property>
@@ -563,6 +587,12 @@
          <widget class="Gui::PrefSpinBox" name="DivisionHeight">
           <property name="toolTip">
            <string>Divider height in percent</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="suffix">
+           <string notr="true"> %</string>
           </property>
           <property name="minimum">
            <number>1</number>
@@ -663,6 +693,9 @@
           </property>
           <property name="toolTip">
            <string>Height (in Z direction), enter value and unit</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
           <property name="unit" stdset="0">
            <string notr="true">mm</string>
@@ -793,8 +826,17 @@
         </item>
         <item>
          <widget class="Gui::PrefQuantitySpinBox" name="MagnetDiameter">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="toolTip">
            <string>Magnet's diamter at creation time</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
           <property name="unit" stdset="0">
            <string notr="true">mm</string>
@@ -839,8 +881,17 @@
         </item>
         <item>
          <widget class="Gui::PrefQuantitySpinBox" name="MagnetHeight">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="toolTip">
            <string>Magnet's height at creation time</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
           <property name="unit" stdset="0">
            <string notr="true">mm</string>
