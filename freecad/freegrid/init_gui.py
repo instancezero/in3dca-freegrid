@@ -38,16 +38,14 @@ try:
 except ImportError as e:
     FreeCAD.Console.PrintWarning(
         translate(
-            "InitGui",
-            "You are using the FreeGridWorkbench with an old version of FreeCAD (<0.16)",
-            "Logger",
+            "Log",
+            "You are using the FreeGrid Workbench with an old version of FreeCAD (<0.16)",
         )
     )
     FreeCAD.Console.PrintWarning(
         translate(
-            "InitGui",
+            "Log",
             "The class Workbench is loaded, although not imported: magic",
-            "Logger",
         )
     )
 
@@ -58,7 +56,7 @@ class FreeGridWorkbench(Workbench):
     """
 
     MenuText = "FreeGrid"
-    ToolTip = translate("InitGui", "Parametric 3D printed storage system")
+    ToolTip = translate("Workbench", "Parametric 3D printed storage system")
     Icon = os.path.join(ICONPATH, "FreeGrid.svg")
 
     commands = [
@@ -95,8 +93,7 @@ class FreeGridWorkbench(Workbench):
         FreeCADGui.addPreferencePage(os.path.join(UIPATH, "preferences.ui"), "FreeGrid")
 
         FreeCAD.Console.PrintMessage(
-            translate("InitGui", "FreeGrid Workbench initialized v{}", "Logger").format(__version__)
-            + "\n"
+            translate("Log", "FreeGrid Workbench initialized v{}").format(__version__) + "\n"
         )
 
     def Activated(self):

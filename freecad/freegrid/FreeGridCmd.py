@@ -25,9 +25,9 @@ class StorageObject:
         self.storageType = ""
         obj.addProperty(
             "App::PropertyInteger",
-            QT_TRANSLATE_NOOP("App::Property", "Width"),
-            QT_TRANSLATE_NOOP("App::Property", "Size"),
-            QT_TRANSLATE_NOOP("App::Property", "Number of 50[mm] units in X direction"),
+            QT_TRANSLATE_NOOP("App::Property", "Width"),  # property
+            QT_TRANSLATE_NOOP("App::Property", "Size"),  # group
+            QT_TRANSLATE_NOOP("App::Property", "Number of 50[mm] units in X direction"),  # tooltip
         ).Width = 1
         obj.addProperty(
             "App::PropertyInteger",
@@ -38,7 +38,7 @@ class StorageObject:
         obj.addProperty(
             "App::PropertyLength",
             QT_TRANSLATE_NOOP("App::Property", "MagnetDiameter"),
-            QT_TRANSLATE_NOOP("App::Property", "Magnet mount"),  #: Property group
+            QT_TRANSLATE_NOOP("App::Property", "Magnet mount"),
             QT_TRANSLATE_NOOP("App::Property", "Diameter of the magnet"),
         ).MagnetDiameter = paramFreeGrid.GetString("MagnetDiameter", "6mm")
         obj.addProperty(
@@ -83,7 +83,7 @@ class StorageBoxObject(StorageObject):
             QT_TRANSLATE_NOOP("App::Property", "Size"),
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Height (in Z direction), enter value and unit\n" "example: 4cm, 1dm, 3in, 0.5ft",
+                "Height (in Z direction), enter value and unit\nexample: 4cm, 1dm, 3in, 0.5ft",
             ),
         ).Height = paramFreeGrid.GetString("BoxHeight", "50mm")
         obj.addProperty(
