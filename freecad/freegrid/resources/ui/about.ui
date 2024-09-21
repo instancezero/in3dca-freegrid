@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>550</width>
-    <height>400</height>
+    <height>500</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -26,13 +26,6 @@
       </size>
      </property>
     </spacer>
-   </item>
-   <item row="2" column="0">
-    <widget class="QPushButton" name="closeButton">
-     <property name="text">
-      <string>Close</string>
-     </property>
-    </widget>
    </item>
    <item row="0" column="0">
     <widget class="QGroupBox" name="groupBox">
@@ -53,9 +46,9 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="QLabel" name="picture">
+       <widget class="QLabel" name="banner">
         <property name="text">
-         <string notr="true">picture</string>
+         <string notr="true">banner</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -63,7 +56,7 @@
        </widget>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout">
+       <layout class="QHBoxLayout" name="version_horizontalLayout">
         <property name="topMargin">
          <number>0</number>
         </property>
@@ -90,7 +83,7 @@
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <layout class="QHBoxLayout" name="description_horizontalLayout">
         <property name="topMargin">
          <number>0</number>
         </property>
@@ -124,7 +117,7 @@ FreeGrid storage system components.</string>
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_6">
+       <layout class="QHBoxLayout" name="authorMacro_horizontalLayout">
         <property name="topMargin">
          <number>0</number>
         </property>
@@ -151,7 +144,7 @@ FreeGrid storage system components.</string>
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <layout class="QHBoxLayout" name="authorWB_horizontalLayout">
         <property name="topMargin">
          <number>0</number>
         </property>
@@ -178,7 +171,7 @@ FreeGrid storage system components.</string>
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <layout class="QHBoxLayout" name="maintainer_horizontalLayout">
         <property name="topMargin">
          <number>0</number>
         </property>
@@ -207,7 +200,7 @@ hasecilu</string>
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_5">
+       <layout class="QHBoxLayout" name="license_horizontalLayout">
         <property name="topMargin">
          <number>0</number>
         </property>
@@ -234,50 +227,155 @@ hasecilu</string>
        </layout>
       </item>
       <item>
-       <widget class="Gui::UrlLabel" name="forum">
-        <property name="font">
-         <font>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
+       <layout class="QHBoxLayout" name="forum_horizontalLayout">
+        <property name="topMargin">
+         <number>0</number>
         </property>
-        <property name="text">
-         <string>Forum thread</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-        <property name="url">
-         <string notr="true">https://forum.freecad.org/viewtopic.php?p=613002#p613002</string>
-        </property>
-        <property name="buddy">
-         <cstring></cstring>
-        </property>
-       </widget>
+        <item>
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="forum_icon">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string notr="true">forum icon</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::UrlLabel" name="forum">
+          <property name="font">
+           <font>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Forum thread</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+          </property>
+          <property name="url">
+           <string notr="true">https://forum.freecad.org/viewtopic.php?p=613002#p613002</string>
+          </property>
+          <property name="buddy">
+           <cstring></cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
       </item>
       <item>
-       <widget class="Gui::UrlLabel" name="repository">
-        <property name="font">
-         <font>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
+       <layout class="QHBoxLayout" name="repo_horizontalLayout">
+        <property name="topMargin">
+         <number>0</number>
         </property>
-        <property name="text">
-         <string>Repository</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-        <property name="url">
-         <string notr="true">https://github.com/instancezero/in3dca-freegrid/tree/WorkBench</string>
-        </property>
-        <property name="buddy">
-         <cstring>x</cstring>
-        </property>
-       </widget>
+        <item>
+         <spacer name="horizontalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="repo_icon">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string notr="true">repo icon</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::UrlLabel" name="repository">
+          <property name="font">
+           <font>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Repository</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+          </property>
+          <property name="url">
+           <string notr="true">https://github.com/instancezero/in3dca-freegrid/tree/WorkBench</string>
+          </property>
+          <property name="buddy">
+           <cstring>x</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_4">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
       </item>
      </layout>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QPushButton" name="closeButton">
+     <property name="text">
+      <string>Close</string>
+     </property>
     </widget>
    </item>
   </layout>

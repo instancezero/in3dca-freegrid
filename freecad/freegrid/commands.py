@@ -240,6 +240,11 @@ class About(BaseCommand):
         self.dialog = Gui.PySideUic.loadUi(os.path.join(UIPATH, "about.ui"))
         # TODO: make a well rendered banner
         banner = QtGui.QPixmap(os.path.join(IMGPATH, "banner.png"))
-        self.dialog.picture.setPixmap(banner.scaledToHeight(300))
+        self.dialog.banner.setPixmap(banner.scaledToHeight(300))
+        # TODO: use built-in image
+        forum = QtGui.QPixmap(os.path.join(ICONPATH, "FreeCAD.svg"))
+        self.dialog.forum_icon.setPixmap(forum.scaledToHeight(24))
+        gh = QtGui.QPixmap(os.path.join(ICONPATH, "GitHub.svg"))
+        self.dialog.repo_icon.setPixmap(gh.scaledToHeight(24))
         self.dialog.closeButton.clicked.connect(self.dialog.close)
         self.dialog.exec_()
