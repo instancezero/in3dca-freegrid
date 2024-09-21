@@ -3,6 +3,7 @@ import os
 import FreeCAD
 import FreeCADGui as Gui
 from PySide import QtGui
+
 from freecad.freegrid import ICONPATH, IMGPATH, UIPATH
 from freecad.freegrid.FreeGridCmd import (
     BitCartridgeHolderObject,
@@ -12,7 +13,8 @@ from freecad.freegrid.FreeGridCmd import (
 )
 from freecad.freegrid.in3dca import StorageBox
 
-from TranslateUtils import translate
+translate = FreeCAD.Qt.translate
+QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 
 paramFreeGrid = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/FreeGrid")
 
@@ -89,6 +91,8 @@ class BaseCommand(object):
 
     def toolTipWithIcon(self, icon_size: int = 125) -> str:
         """Return an html formatted string to include the command's icon along the tooltip."""
+        # NOTE:The use of html code on the toolTip prevents the translated strings
+        # to be showed, decide if remove this feature.
         if paramFreeGrid.GetBool("tooltipPicture", True):
             tt = (
                 "<img src="
@@ -137,7 +141,7 @@ class BaseObjectCommand(BaseCommand):
         if doc is None:
             doc = FreeCAD.newDocument()
 
-        doc.openTransaction(translate("Commands", "Create {}", "Transaction").format(cls.NAME))
+        doc.openTransaction(translate("Transaction", "Create {}").format(cls.NAME))
 
         if FreeCAD.GuiUp:
             body = Gui.ActiveDocument.ActiveView.getActiveObject("pdbody")
@@ -168,30 +172,30 @@ class CreateStorageBox(BaseObjectCommand):
     NAME = "StorageBox"
     FREEGRID_FUNCTION = lambda obj: StorageBoxObject(obj)
     pixmap = "box.svg"
-    menuText = translate("Commands", "Storage box")
-    toolTip = translate("Commands", "Create a storage box")
+    menuText = QT_TRANSLATE_NOOP("FreeGrid_StorageBox", "Storage box")
+    toolTip = QT_TRANSLATE_NOOP("FreeGrid_StorageBox", "Create a storage box")
 
 
 class CreateBitCartridgeHolder(BaseObjectCommand):
     NAME = "StorageCartridgeHolder"
     FREEGRID_FUNCTION = lambda obj: BitCartridgeHolderObject(obj)
     pixmap = "holder.svg"
-    menuText = translate("Commands", "Bit cartridge holder")
-    toolTip = translate("Commands", "Create a bit cartridge holder")
+    menuText = QT_TRANSLATE_NOOP("FreeGrid_BitCartridgeHolder", "Bit cartridge holder")
+    toolTip = QT_TRANSLATE_NOOP("FreeGrid_BitCartridgeHolder", "Create a bit cartridge holder")
 
 
 class CreateStorageGrid(BaseObjectCommand):
     NAME = "StorageGrid"
     FREEGRID_FUNCTION = lambda obj: StorageGridObject(obj)
     pixmap = "grid.svg"
-    menuText = translate("Commands", "Storage grid")
-    toolTip = translate("Commands", "Create a storage grid")
+    menuText = QT_TRANSLATE_NOOP("FreeGrid_StorageGrid", "Storage grid")
+    toolTip = QT_TRANSLATE_NOOP("FreeGrid_StorageGrid", "Create a storage grid")
 
 
 class CreateSketch(BaseCommand):
     pixmap = "sketch.svg"
-    menuText = translate("Commands", "Sketch")
-    toolTip = translate("Commands", "Generate inner box profile")
+    menuText = QT_TRANSLATE_NOOP("FreeGrid_Sketch", "Sketch")
+    toolTip = QT_TRANSLATE_NOOP("FreeGrid_Sketch", "Generate inner box profile")
 
     def Activated(self):
         try:
@@ -205,7 +209,7 @@ class CreateSketch(BaseCommand):
                     box.insert_as_sketch(obj.Width, obj.Depth)
                     FreeCAD.ActiveDocument.recompute()
                 else:
-                    raise TypeError("Selected object is not a StorageBox.")
+                    raise TypeError(translate("Log", "Selected object is not a StorageBox object."))
             else:
                 SketchUI()
         except Exception as e:
@@ -214,8 +218,8 @@ class CreateSketch(BaseCommand):
 
 class OpenPreferencePage(BaseCommand):
     pixmap = "preferences_page.svg"
-    menuText = translate("Commands", "Preferences page")
-    toolTip = translate("Commands", "Open the FreeGrid preferences page")
+    menuText = QT_TRANSLATE_NOOP("FreeGrid_PreferencesPage", "Preferences page")
+    toolTip = QT_TRANSLATE_NOOP("FreeGrid_PreferencesPage", "Open the FreeGrid preferences page")
 
     def IsActive(self):
         return True
@@ -226,15 +230,15 @@ class OpenPreferencePage(BaseCommand):
 
 class About(BaseCommand):
     pixmap = "about.svg"
-    menuText = translate("Commands", "About FreeGrid")
-    toolTip = translate("Commands", "Show information about FreeGrid")
+    menuText = QT_TRANSLATE_NOOP("FreeGrid_About", "About FreeGrid")
+    toolTip = QT_TRANSLATE_NOOP("FreeGrid_About", "Show information about FreeGrid")
 
     def IsActive(self):
         return True
 
     def Activated(self):
         self.dialog = Gui.PySideUic.loadUi(os.path.join(UIPATH, "about.ui"))
-        # TODO: make a good rendered banner
+        # TODO: make a well rendered banner
         banner = QtGui.QPixmap(os.path.join(IMGPATH, "banner.png"))
         self.dialog.picture.setPixmap(banner.scaledToHeight(300))
         self.dialog.closeButton.clicked.connect(self.dialog.close)
