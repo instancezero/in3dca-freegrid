@@ -184,6 +184,8 @@ class StorageBoxObject(StorageObject):
             box.magnets_corners_only = True
         box.as_components = False
 
+        # NOTE: `x` and `y` are swapped in order to maintain
+        # consistency with property names.
         return box.make(x, y, z, mag_d, mag_h)
 
     def execute(self, obj):
@@ -204,18 +206,15 @@ class BitCartridgeHolderObject(StorageBoxObject):
         """Initialize storage box object, add properties."""
         super().__init__(obj)
         self.storageType = "BitCartridgeHolder"
+        self.magnetOptions = ["allIntersections", "cornersOnly", "noMagnets"]
         for prop in [
             "DivisionsX",
             "DivisionsY",
             "DivisionHeight",
-            "FloorSupport",
             "BoxOpenFront",
             "BoxRamp",
             "BoxGrip",
             "BoxGripDepth",
-            "MagnetHeight",
-            "MagnetDiameter",
-            "MagnetOption",
         ]:
             obj.removeProperty(prop)
         obj.addProperty(
@@ -228,12 +227,29 @@ class BitCartridgeHolderObject(StorageBoxObject):
     def generate_bit_c_h(self, obj) -> Part.Shape:
         """Create a bit cartridge holder using the object properties as parameters."""
         bit_c_h = StorageBox.BitCartridgeHolder()
+        # Size
         size = max(10, obj.SideLength.getValueAs("mm").Value)
         x = max(1, obj.Width)
         y = max(1, obj.Depth)
         z = max(0, obj.Height.getValueAs("mm").Value)
+        # Features
+        bit_c_h.floor_support = obj.FloorSupport
+        # Magnets
+        mag_d = min(max(1, obj.MagnetDiameter.getValueAs("mm").Value), 6.9)
+        mag_h = min(max(0.2, obj.MagnetHeight.getValueAs("mm").Value), 3.4)
+        if obj.MagnetOption == "noMagnets":
+            bit_c_h.magnets = False
+            bit_c_h.magnets_corners_only = True
+        elif obj.MagnetOption == "allIntersections":
+            bit_c_h.magnets = True
+            bit_c_h.magnets_corners_only = False
+        elif obj.MagnetOption == "cornersOnly":
+            bit_c_h.magnets = True
+            bit_c_h.magnets_corners_only = True
 
-        return bit_c_h.make(size, x, y, z)
+        # NOTE: `x` and `y` are swapped in order to maintain
+        # consistency with property names.
+        return bit_c_h.make(x, y, z, mag_d, mag_h, size=size)
 
     def execute(self, obj):
         """Create the requested bit cartridge holder object."""
@@ -303,6 +319,8 @@ class StorageGridObject(StorageObject):
         mag_h = min(max(0.2, obj.MagnetHeight.getValueAs("mm").Value), 3.4)
         grid.magnets = obj.IncludeMagnets
 
+        # NOTE: `x` and `y` are swapped in order to maintain
+        # consistency with property names.
         return grid.make(x, y, mag_d, mag_h, extra_bottom)
 
     def execute(self, obj):
