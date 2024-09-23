@@ -1,5 +1,15 @@
 # Contributing
 
+<!--toc:start-->
+- [Contributing](#contributing)
+  - [Ideas](#ideas)
+  - [Translators](#translators)
+  - [Designers](#designers)
+  - [Accessibility / Usability](#accessibility-usability)
+  - [Testers](#testers)
+  - [Developers](#developers)
+<!--toc:end-->
+
 Contributing can take many forms, and it's not just for developers.
 
 ## Ideas
@@ -22,6 +32,10 @@ Create an account and you'll be able to start contributing right away. In additi
 to providing translations, you can also proof read the translations already contributed.
 Do a little or a lot. Even small incremental gains are valuable.
 
+To know more about the translation process take a look on
+[the README file](./freecad/freegrid/resources/translations) on the
+translations directory.
+
 ## Designers
 
 Our current icons were created by exporting a page with a isometric view created
@@ -30,6 +44,8 @@ by TechDraw WB to `.dwg` file and then modified on Inkscape to a`.svg` file.
 Do our icons make you cringe too? Think you can do better?
 
 Here are FreeCAD guidelines for icons: <https://wiki.freecad.org/Artwork_Guidelines>
+
+Related: <https://forum.freecad.org/viewtopic.php?t=87507>
 
 ## Accessibility / Usability
 
