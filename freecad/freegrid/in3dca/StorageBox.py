@@ -44,111 +44,6 @@ from freecad.freegrid.in3dca import h
 import math
 
 
-class BitCartridgeHolder:
-    """Class to manage the geometry of the Bit Cartridge Holder."""
-
-    def __init__(self):
-        """Initialize the attributes of the BitCartridgeHolder object."""
-        self.tilt = 8.0  # tilt angle of bit cartridges
-
-    def make(self, size: float, width: int, depth: int, height: float):
-        """
-        Create a holder for bit cartridges.
-
-        Args:
-            size (float): The side length of each bit cartridge. Makes a square.
-            width (int): Number of 50[mm] units on X direction of the holder.
-            depth (int): Number of 50[mm] units on Y direction of the holder.
-            height (float): The height of the holder.
-
-        Returns:
-            Part.Shape: The shape of the holder.
-        """
-
-        box = StorageBox()
-        box.size_x = width
-        box.size_y = depth
-        box.size_z = height
-        box.closed_front = False
-        points = box.insert(width, depth)
-        margin_x = 9
-        count_x = int((box.size_x - 2 * margin_x + 2) // (size + 2))
-        extent_x = count_x * (size + 2) - 2
-        offset_x = (box.size_x - extent_x) / 2
-        margin_y = 3 + 3
-        range_z = height - box.floor_thickness - 3
-        shift = range_z * math.sin(math.radians(self.tilt))
-        size_y = size + shift
-        count_y = int((box.size_y - shift - 2 * margin_y + 2) // (size + 2))
-        extent_y = count_y * (size + 2) - 2 + shift
-        offset_y = 3
-
-        # Create a solid insert
-        insert = h.poly_to_face(points).extrude(h.xyz(z=range_z))
-
-        # Cut the holes out of the insert
-        # Make a quadrilateral face in the YZ plane to represent the tilted profile,
-        # Extrude in X to get the tilted prism.
-        hole_points = [
-            h.xyz(),
-            h.xyz(y=size),
-            h.xyz(0, size_y, range_z),
-            h.xyz(0, shift, range_z),
-            h.xyz(),
-        ]
-        hole = h.poly_to_face(hole_points).extrude(h.xyz(size))
-
-        # Make the holes for the bit cartridges
-        for x in range(count_x):
-            for y in range(count_y):
-                hole.Placement = Placement(
-                    h.xyz(offset_x + x * (size + 2), offset_y + y * (size + 2)),
-                    Rotation(),
-                )
-                insert = insert.cut(hole)
-
-        # Cut Y channels out
-        channel_points = [
-            h.xyz(),
-            h.xyz(y=max(0, extent_y - shift)),  # avoid bad geometry
-            h.xyz(0, extent_y, range_z),
-            h.xyz(0, 0, range_z),
-            h.xyz(),
-        ]
-        tab = size / 3
-        channel = h.poly_to_face(channel_points).extrude(h.xyz(size - 2 * tab))
-        for x in range(count_x):
-            channel.Placement = Placement(h.xyz(offset_x + tab + x * (size + 2)), Rotation())
-            insert = insert.cut(channel)
-
-        # Get the edges on the top face, including across the front
-        limit_y = extent_y + offset_y + 2
-        origin = h.xyz(offset_x - 1, -1, range_z - 1)
-        box_size = h.xyz(extent_x + 2, limit_y, 2)
-        edge_list = h.get_edges_enclosed_by_box(insert, origin, box_size)
-        # Add the edges on the channel tabs
-        for x in range(count_x):
-            origin = h.xyz(offset_x + tab + x * (size + 2) - 1, -1, -1)
-            box_size = h.xyz(tab + 2, limit_y, range_z + 1)
-            edge_list.extend(h.get_edges_enclosed_by_box(insert, origin, box_size))
-
-        # add the segments across the top front
-        origin = h.xyz(box.corner_size - 1, -1, range_z - 1)
-        box_size = h.xyz(box.size_x - 2 * box.corner_size + 1, points[2].y, 2)
-        edge_list.extend(h.get_edges_enclosed_by_box(insert, origin, box_size))
-        edges = []
-        for index in edge_list:
-            edges.append(insert.Edges[index])
-
-        chamfer = insert.makeChamfer(0.5, edges)
-        chamfer.Placement = Placement(h.xyz(z=box.floor_thickness), Rotation())
-
-        # FIXME: why the parameters should be swapped?
-        bit_c_h = chamfer.fuse(box.floor(width, depth))
-        bit_c_h = bit_c_h.fuse(box.box_frame())
-        return bit_c_h.removeSplitter()
-
-
 class StorageBox:
     """Class to manage the geometry of the Storage Box."""
 
@@ -679,7 +574,7 @@ class StorageBox:
         new_box = self.box_frame()
 
         # Add the floor
-        new_box = new_box.fuse(self.floor(width, depth))
+        new_box = new_box.fuse(self.floor(depth, width))
 
         # If there are dimensions larger than one, subtract slots for the grids
         intersection = self.intersection()
@@ -1004,3 +899,129 @@ class StorageBox:
             ]
         )
         return profile
+
+
+class BitCartridgeHolder(StorageBox):
+    """Class to manage the geometry of the Bit Cartridge Holder."""
+
+    def __init__(self):
+        """Initialize the attributes of the BitCartridgeHolder object."""
+        self.tilt = 8.0  # tilt angle of bit cartridges
+        super().__init__()
+
+    def make(
+        self,
+        depth: int = 1,
+        width: int = 1,
+        height: float = 10.0,
+        mag_d: float = 6.0,
+        mag_h: float = 2.0,
+        floor_thickness: Optional[float] = None,
+        size: float = 15.0,
+    ) -> Part.Shape:
+        """
+        Create a holder for bit cartridges.
+
+        Args:
+            size (float): The side length of each bit cartridge. Makes a square.
+            width (int): Number of 50[mm] units on X direction of the holder.
+            depth (int): Number of 50[mm] units on Y direction of the holder.
+            height (float): The height of the holder.
+
+        Returns:
+            Part.Shape: The shape of the holder.
+        """
+
+        self.cells_x = depth
+        self.cells_y = width
+        self.size_x = depth * self.spacing
+        self.size_y = width * self.spacing
+        if height < 0:
+            height = 0
+        # height is already in mm
+        self.size_z = height + self.STACK_ADJUSTMENT
+        self.closed_front = False
+        self.mag_diameter = mag_d
+        self.mag_height = mag_h
+        if floor_thickness is not None:
+            self.floor_thickness = floor_thickness
+        if self.floor_thickness < self.MIN_FLOOR:
+            self.floor_thickness = self.MIN_FLOOR
+        self.size = size  # side length of each bit cartridge
+
+        points = self.insert(depth, width)
+        margin_x = 9
+        count_x = int((self.size_x - 2 * margin_x + 2) // (self.size + 2))
+        extent_x = count_x * (self.size + 2) - 2
+        offset_x = (self.size_x - extent_x) / 2
+        margin_y = 3 + 3
+        range_z = height - self.floor_thickness - 3
+        shift = range_z * math.sin(math.radians(self.tilt))
+        size_y = self.size + shift
+        count_y = int((self.size_y - shift - 2 * margin_y + 2) // (self.size + 2))
+        extent_y = count_y * (self.size + 2) - 2 + shift
+        offset_y = 3
+
+        # Create a solid insert
+        insert = h.poly_to_face(points).extrude(h.xyz(z=range_z))
+
+        # Cut the holes out of the insert
+        # Make a quadrilateral face in the YZ plane to represent the tilted profile,
+        # Extrude in X to get the tilted prism.
+        hole_points = [
+            h.xyz(),
+            h.xyz(y=self.size),
+            h.xyz(0, size_y, range_z),
+            h.xyz(0, shift, range_z),
+            h.xyz(),
+        ]
+        hole = h.poly_to_face(hole_points).extrude(h.xyz(self.size))
+
+        # Make the holes for the bit cartridges
+        for x in range(count_x):
+            for y in range(count_y):
+                hole.Placement = Placement(
+                    h.xyz(offset_x + x * (self.size + 2), offset_y + y * (self.size + 2)),
+                    Rotation(),
+                )
+                insert = insert.cut(hole)
+
+        # Cut Y channels out
+        channel_points = [
+            h.xyz(),
+            h.xyz(y=max(0, extent_y - shift)),  # avoid bad geometry
+            h.xyz(0, extent_y, range_z),
+            h.xyz(0, 0, range_z),
+            h.xyz(),
+        ]
+        tab = self.size / 3
+        channel = h.poly_to_face(channel_points).extrude(h.xyz(self.size - 2 * tab))
+        for x in range(count_x):
+            channel.Placement = Placement(h.xyz(offset_x + tab + x * (self.size + 2)), Rotation())
+            insert = insert.cut(channel)
+
+        # Get the edges on the top face, including across the front
+        limit_y = extent_y + offset_y + 2
+        origin = h.xyz(offset_x - 1, -1, range_z - 1)
+        box_size = h.xyz(extent_x + 2, limit_y, 2)
+        edge_list = h.get_edges_enclosed_by_box(insert, origin, box_size)
+        # Add the edges on the channel tabs
+        for x in range(count_x):
+            origin = h.xyz(offset_x + tab + x * (self.size + 2) - 1, -1, -1)
+            box_size = h.xyz(tab + 2, limit_y, range_z + 1)
+            edge_list.extend(h.get_edges_enclosed_by_box(insert, origin, box_size))
+
+        # add the segments across the top front
+        origin = h.xyz(self.corner_size - 1, -1, range_z - 1)
+        box_size = h.xyz(self.size_x - 2 * self.corner_size + 1, points[2].y, 2)
+        edge_list.extend(h.get_edges_enclosed_by_box(insert, origin, box_size))
+        edges = []
+        for index in edge_list:
+            edges.append(insert.Edges[index])
+
+        chamfer = insert.makeChamfer(0.5, edges)
+        chamfer.Placement = Placement(h.xyz(z=self.floor_thickness), Rotation())
+
+        bit_c_h = chamfer.fuse(self.floor(depth, width))
+        bit_c_h = bit_c_h.fuse(self.box_frame())
+        return bit_c_h.removeSplitter()
