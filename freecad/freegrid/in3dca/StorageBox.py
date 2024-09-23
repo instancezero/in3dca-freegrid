@@ -51,7 +51,7 @@ class BitCartridgeHolder:
         """Initialize the attributes of the BitCartridgeHolder object."""
         self.tilt = 8.0  # tilt angle of bit cartridges
 
-    def make(self, size: float, width: int, depth: int, height: float, open_face: bool = True):
+    def make(self, size: float, width: int, depth: int, height: float):
         """
         Create a holder for bit cartridges.
 
@@ -60,14 +60,16 @@ class BitCartridgeHolder:
             width (int): Number of 50[mm] units on X direction of the holder.
             depth (int): Number of 50[mm] units on Y direction of the holder.
             height (float): The height of the holder.
-            open_face (bool, optional): Whether the holder should have an open face. Defaults to True.
 
         Returns:
             Part.Shape: The shape of the holder.
         """
 
         box = StorageBox()
-        box.closed_front = not open_face
+        box.size_x = width
+        box.size_y = depth
+        box.size_z = height
+        box.closed_front = False
         points = box.insert(width, depth)
         margin_x = 9
         count_x = int((box.size_x - 2 * margin_x + 2) // (size + 2))
@@ -139,8 +141,12 @@ class BitCartridgeHolder:
             edges.append(insert.Edges[index])
 
         chamfer = insert.makeChamfer(0.5, edges)
-        chamfer.Placement = Placement(h.xyz(y=box.floor_thickness), Rotation())
-        return chamfer
+        chamfer.Placement = Placement(h.xyz(z=box.floor_thickness), Rotation())
+
+        # FIXME: why the parameters should be swapped?
+        bit_c_h = chamfer.fuse(box.floor(width, depth))
+        bit_c_h = bit_c_h.fuse(box.box_frame())
+        return bit_c_h.removeSplitter()
 
 
 class StorageBox:

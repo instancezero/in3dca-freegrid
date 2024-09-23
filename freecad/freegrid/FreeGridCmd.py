@@ -209,6 +209,7 @@ class BitCartridgeHolderObject(StorageBoxObject):
             "DivisionsY",
             "DivisionHeight",
             "FloorSupport",
+            "BoxOpenFront",
             "BoxRamp",
             "BoxGrip",
             "BoxGripDepth",
@@ -232,7 +233,7 @@ class BitCartridgeHolderObject(StorageBoxObject):
         y = max(1, obj.Depth)
         z = max(0, obj.Height.getValueAs("mm").Value)
 
-        return bit_c_h.make(size, x, y, z, open_face=obj.BoxOpenFront)
+        return bit_c_h.make(size, x, y, z)
 
     def execute(self, obj):
         """Create the requested bit cartridge holder object."""
