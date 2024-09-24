@@ -11,7 +11,7 @@ This project contains a [FreeCAD](https://freecad.org) workbench for generating 
 [![FreeCAD Addon manager status](https://img.shields.io/badge/FreeCAD%20addon%20manager-available-brightgreen)](https://github.com/FreeCAD/FreeCAD-addons)
 
 The recommended way to install FreeGrid is via FreeCAD's
-[Addon Manager](https://wiki.freecadweb.org/Addon_Manager) under
+[Addon Manager](https://wiki.freecad.org/Std_AddonMgr) under
 `Tools > Addon Manager` dropdown menu.
 
 Search for **FreeGrid** in the workbench category.
