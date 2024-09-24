@@ -1,18 +1,50 @@
 # In3D.ca FreeGrid Storage System
 
-This project contains [FreeCAD](https://freecadweb.org) macros for generating FreeGrid storage system components.
+This project contains a [FreeCAD](https://freecad.org) workbench for generating FreeGrid storage system components.
 
 ![screen capture of the FreeGrid User Interface](img/screen.png "FreeGrid dialog")
 
 ## Installation
 
-Clone or download the project, copy the contents of the FreeCAD-Macros folder into your FreeCAD user macro folder.
+### Automatic Installation
+
+[![FreeCAD Addon manager status](https://img.shields.io/badge/FreeCAD%20addon%20manager-available-brightgreen)](https://github.com/FreeCAD/FreeCAD-addons)
+
+The recommended way to install FreeGrid is via FreeCAD's
+[Addon Manager](https://wiki.freecadweb.org/Addon_Manager) under
+`Tools > Addon Manager` dropdown menu.
+
+Search for **FreeGrid** in the workbench category.
+
+### Manual installation
+
+The install path for FreeCAD modules depends on the operating system used.
+
+To find where is the user's application data directory enter next command on
+FreeCAD's Python console.
+
+```python
+App.getUserAppDataDir()
+```
+
+Examples on different OS
+
+* Linux: `/home/user/.local/share/FreeCAD/Mod/`
+* macOS: `/Users/user/Library/Preferences/FreeCAD/Mod/`
+* Windows: `C:\Users\user\AppData\Roaming\FreeCAD\Mod\`
+
+Use the CLI to enter the `Mod` directory and use Git to install FreeGrid:
+
+```shell
+git clone https://github.com/instancezero/in3dca-freegrid.git FreeGrid
+```
+
 If you are updating the code, restarting FreeCAD is advised.
 
 ## Community/Contributing
 
-If you use FreeGrid or add components to it, please let me know! If you have models on Cults, tag them with In3D and
-FreeGrid.
+If you use FreeGrid or add components to it, please let me know! If you have models
+on Cults, tag them with In3D and FreeGrid.
 
 You can find In3D:
 
@@ -22,6 +54,9 @@ You can find In3D:
 * on [Facebook](https://www.facebook.com/in3dca)
 
 Bug reports, coding questions, and pull requests are welcome on Github.
+
+Read our [CONTRIBUTING](./CONTRIBUTING.md) file to know about ways how to help
+on the FreeCAD workbench.
 
 ## History
 
