@@ -11,7 +11,7 @@
   <maintainer email="">Alan Langford</maintainer>
   <maintainer email="">Michael K Johnson</maintainer>
   <maintainer email="hasecilu@tuta.io">hasecilu</maintainer>
-  <license file="LICENSE">AGPL-3.0 license</license>
+  <license file="LICENSE">AGPL-3.0-or-later</license>
   <pythonmin>3.6.0</pythonmin>
   <url type="repository" branch="main">https://github.com/instancezero/in3dca-freegrid</url>
   <url type="bugtracker">https://github.com/instancezero/in3dca-freegrid/issues</url>
