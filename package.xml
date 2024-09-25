@@ -1,21 +1,42 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <package format="1" xmlns="https://wiki.freecad.org/Package_Metadata">
+
   <name>FreeGrid Workbench</name>
+
   <description>A simple tools workbench for generating FreeGrid storage system components.</description>
-  <tag>storage</tag>
-  <tag>parametric</tag>
-  <tag>3dprinting</tag>
+
   <version>2.0.0</version>
-  <date>2024-09-23</date>
-  <author>Alan Langford</author>
-  <maintainer email="">Alan Langford</maintainer>
-  <maintainer email="">Michael K Johnson</maintainer>
+
+  <date>2024-09-24</date>
+
+  <maintainer>Alan Langford</maintainer>
+
+  <maintainer>Michael K Johnson</maintainer>
+
   <maintainer email="hasecilu@tuta.io">hasecilu</maintainer>
+
   <license file="LICENSE">AGPL-3.0-or-later</license>
+
   <pythonmin>3.6.0</pythonmin>
-  <url type="repository" branch="main">https://github.com/instancezero/in3dca-freegrid</url>
+
+  <url type="website">https://in3d.ca/freegrid-an-open-grid-based-3d-printed-storage-system/</url>
+
+  <url branch="main" type="repository">https://github.com/instancezero/in3dca-freegrid</url>
+
   <url type="bugtracker">https://github.com/instancezero/in3dca-freegrid/issues</url>
-  <url type="readme">https://github.com/instancezero/in3dca-freegrid/blob/WorkBench/README.md</url>
+
+  <url type="readme">https://github.com/instancezero/in3dca-freegrid/blob/main/README.md</url>
+
+  <url type="discussion">https://forum.freecad.org/viewtopic.php?p=613002</url>
+
+  <author>Alan Langford</author>
+
+  <tag>storage</tag>
+
+  <tag>parametric</tag>
+
+  <tag>3dprinting</tag>
+
   <icon>freecad/freegrid/resources/icons/FreeGrid.svg</icon>
 
   <content>

@@ -275,7 +275,7 @@ hasecilu</string>
            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
           </property>
           <property name="url">
-           <string notr="true">https://forum.freecad.org/viewtopic.php?p=613002#p613002</string>
+           <string notr="true">https://forum.freecad.org/viewtopic.php?p=613002</string>
           </property>
           <property name="buddy">
            <cstring></cstring>
