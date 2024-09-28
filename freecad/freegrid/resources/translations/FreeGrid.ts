@@ -488,7 +488,7 @@ FreeGrid storage system components.</source>
     </message>
     <message>
         <location filename="../ui/preferences.ui" line="836"/>
-        <source>Magnet&apos;s diamter at creation time</source>
+        <source>Magnet&apos;s diameter at creation time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
