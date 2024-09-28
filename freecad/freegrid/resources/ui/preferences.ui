@@ -833,7 +833,7 @@
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>Magnet's diamter at creation time</string>
+           <string>Magnet's diameter at creation time</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

@@ -75,7 +75,7 @@ class FreeGridWorkbench(Workbench):
         here is the place to import all the commands.
         """
 
-        # Add commmands to toolbar and menu
+        # Add commands to toolbar and menu
 
         from freecad.freegrid import commands
 

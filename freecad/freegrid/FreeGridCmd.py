@@ -58,7 +58,7 @@ class StorageObject:
 
     def onDocumentRestored(self, obj):
         # If in the future more properties are added we can check here
-        # to avoid breaking old objects, not neccessary as of now.
+        # to avoid breaking old objects, not necessary as of now.
         pass
 
     def paramChanged(self, param, value):
