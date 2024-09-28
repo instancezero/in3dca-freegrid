@@ -16,3 +16,8 @@ repos:
     hooks:
       - id: black
         args: ["--line-length", "100"]
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.1.0
+    hooks:
+      - id: codespell
+        files: ^.*\.(py|md|sh|ui|yml|xml)$
