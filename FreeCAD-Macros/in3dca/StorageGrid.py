@@ -100,7 +100,7 @@ class StorageGrid:
     def magnet_holder(self, mag_diameter: float, mag_height: float) -> Part.Shape:
         """
         Creates a single corner magnet holder.
-        The maximun height of this body is 3.2[mm] meaning that:
+        The maximum height of this body is 3.2[mm] meaning that:
         the height of the magnet plus the height of the floor in which
         the magnet is glued sums 3.2mm.
         floor_thickness + mag_diameter = 3.2[mm]
@@ -109,8 +109,8 @@ class StorageGrid:
         2 * peg_radius + extra = 13.4mm
 
         As of the current constants:
-        - the maximun magnet diameter is 10[mm], 11[mm] don't fit
-        - the maximun magnet height is 3[mm] (and 0.2[mm] of floor)
+        - the maximum magnet diameter is 10[mm], 11[mm] don't fit
+        - the maximum magnet height is 3[mm] (and 0.2[mm] of floor)
         """
         height = mag_height + 0.2  # Height of the magnet cutter
         mag_radius = mag_diameter / 2.0

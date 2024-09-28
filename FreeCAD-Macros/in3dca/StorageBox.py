@@ -523,8 +523,8 @@ class StorageBox:
         The available space is less than the grid.
 
         As of the current constants:
-        - the maximun magnet diameter is 7[mm], 8[mm] don't fit
-        - the maximun magnet height is 3[mm] (and 0.2[mm] of floor)
+        - the maximum magnet diameter is 7[mm], 8[mm] don't fit
+        - the maximum magnet height is 3[mm] (and 0.2[mm] of floor)
         """
         mag_radius = mag_diameter / 2.0
         peg_radius = mag_radius + 1.2
