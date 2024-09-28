@@ -1,14 +1,16 @@
 # In3D.ca FreeGrid Storage System
 
+[![FreeCAD Addon Manager][AddonMgr_badge]][AddonMgr]
+[![pre-commit enabled][pre-commit_badge]][pre-commit]
+[![Code style: black][black_badge]][black]
+
 This project contains a [FreeCAD](https://freecad.org) workbench for generating FreeGrid storage system components.
 
-![screen capture of the FreeGrid User Interface](img/screen.png "FreeGrid dialog")
+![Example of some FreeGrid components](img/screen.png "Example of some FreeGrid components")
 
 ## Installation
 
 ### Automatic Installation
-
-[![FreeCAD Addon manager status](https://img.shields.io/badge/FreeCAD%20addon%20manager-available-brightgreen)](https://github.com/FreeCAD/FreeCAD-addons)
 
 The recommended way to install FreeGrid is via FreeCAD's
 [Addon Manager](https://wiki.freecad.org/Std_AddonMgr) under
@@ -151,3 +153,10 @@ Originally the FreeGrid system was thought to be manufactured using an additive 
 is that the used material and time needed to complete a big grid can be exaggeratedly large. In order to address
 this problem we can make use of another manufacturing process as CNC machining. Now we can save some minutes and
 a few bucks if instead of plastic filament we use a wood/acrylic board to carve the grid shape.
+
+[AddonMgr]: https://github.com/FreeCAD/FreeCAD-addons
+[AddonMgr_badge]: https://img.shields.io/badge/FreeCAD%20addon%20manager-available-brightgreen
+[pre-commit]: https://github.com/pre-commit/pre-commit
+[pre-commit_badge]: https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit
+[black]: https://github.com/psf/black
+[black_badge]: https://img.shields.io/badge/code%20style-black-000000.svg
