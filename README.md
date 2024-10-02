@@ -1,8 +1,11 @@
 # In3D.ca FreeGrid Storage System
 
+[![Contributions welcome][ContribsW_badge]][ContribsW]
+[![license][license_badge]][license]
 [![FreeCAD Addon Manager][AddonMgr_badge]][AddonMgr]
 [![pre-commit enabled][pre-commit_badge]][pre-commit]
 [![Code style: black][black_badge]][black]
+[![GitHub Tag][tag_bagde]][tag]
 
 This project contains a [FreeCAD](https://freecad.org) workbench for generating FreeGrid storage system components.
 
@@ -154,9 +157,15 @@ is that the used material and time needed to complete a big grid can be exaggera
 this problem we can make use of another manufacturing process as CNC machining. Now we can save some minutes and
 a few bucks if instead of plastic filament we use a wood/acrylic board to carve the grid shape.
 
+[ContribsW]: ./CONTRIBUTING.md
+[ContribsW_badge]: https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat
+[license]: ./LICENSE
+[license_badge]: https://img.shields.io/github/license/instancezero/in3dca-freegrid
 [AddonMgr]: https://github.com/FreeCAD/FreeCAD-addons
 [AddonMgr_badge]: https://img.shields.io/badge/FreeCAD%20addon%20manager-available-brightgreen
 [pre-commit]: https://github.com/pre-commit/pre-commit
 [pre-commit_badge]: https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit
 [black]: https://github.com/psf/black
 [black_badge]: https://img.shields.io/badge/code%20style-black-000000.svg
+[tag]: https://github.com/instancezero/in3dca-freegrid/releases
+[tag_bagde]: https://img.shields.io/github/v/tag/instancezero/in3dca-freegrid
