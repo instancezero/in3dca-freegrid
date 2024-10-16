@@ -111,6 +111,11 @@ class In3dGridUi(QtGui.QWidget):
         self.box_divs_y.setMaxLength(3)
         self.box_divs_y.setText("1")
         form.addRow("Number of divisions along the Y axis", self.box_divs_y)
+        self.box_divs_h = QtGui.QLineEdit()
+        self.box_divs_h.setValidator(plus_int)
+        self.box_divs_h.setMaxLength(3)
+        self.box_divs_h.setText("100")
+        form.addRow("Size of dividers on the Z axis (as percentage)", self.box_divs_h)
         self.box_open_front = QtGui.QCheckBox("Leave front of box open")
         self.box_open_front.setChecked(False)
         form.addRow(self.box_open_front)
@@ -287,6 +292,10 @@ class In3dGridUi(QtGui.QWidget):
         depth = pq(self.box_grip_depth.text()).getValueAs("mm")
         box.divisions_x = int(self.box_divs_x.text())
         box.divisions_y = int(self.box_divs_y.text())
+        try:
+            box.division_height = min(100, max(1, int(self.box_divs_h.text()))) / 100.0
+        except AttributeError:
+            box.division_height = 1.0
         if box.divisions_x < 1:
             box.divisions_x = 1
         if box.divisions_y < 1:
