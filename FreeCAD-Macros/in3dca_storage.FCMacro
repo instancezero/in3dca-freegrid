@@ -21,26 +21,24 @@ User Interface to generate In3D.ca storage components in FreeCAD.
 *******************************************************************************
 """
 
-__Name__ = 'In3D.ca FreeGrid Storage System'
-__Comment__ = 'Generate In3D.ca FreeGrid storage components'
+__Name__ = "In3D.ca FreeGrid Storage System"
+__Comment__ = "Generate In3D.ca FreeGrid storage components"
 __Author__ = "Alan Langford <prints@in3d.ca>"
-__Version__ = '0.0.0'
-__Date__ = '20xx-xx-xx'
-__License__ = 'GNU AGPLv3+'
-__Web__ = 'https://in3d.ca'
-__Wiki__ = ''
-__Icon__ = ''
-__Help__ = 'Select object type and characteristics and click on the create button. Repeat. Close when done.'
-__Status__ = ''
-__Requires__ = ''
-__Communication__ = ''
-__Files__ = ''
+__Version__ = "0.0.0"
+__Date__ = "20xx-xx-xx"
+__License__ = "GNU AGPLv3+"
+__Web__ = "https://in3d.ca"
+__Wiki__ = ""
+__Icon__ = ""
+__Help__ = "Select object type and characteristics and click on the create button. Repeat. Close when done."
+__Status__ = ""
+__Requires__ = ""
+__Communication__ = ""
+__Files__ = ""
 
 import FreeCAD
-import FreeCADGui
 import Part
 
-import DraftVecUtils
 
 from in3dca import StorageGrid, StorageBox
 
@@ -51,16 +49,18 @@ pq = FreeCAD.Units.parseQuantity
 try:
     _encoding = QtGui.QApplication.UnicodeUTF8
 
-
     def tr(context, text):
         return QtGui.QApplication.translate(context, text, None, _encoding)
 except AttributeError:
+
     def tr(context, text):
         return QtGui.QApplication.translate(context, text, None)
+
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
+
     def _fromUtf8(s):
         return s
 
@@ -71,7 +71,7 @@ class In3dGridUi(QtGui.QWidget):
         plus_int = QtGui.QIntValidator()
         plus_int.setBottom(1)
 
-        #self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
+        # self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
         self.setWindowTitle("In3D.ca FreeGrid Storage System")
         self.setWindowModality(QtCore.Qt.ApplicationModal)
         self.resize(350, 330)
@@ -98,7 +98,9 @@ class In3dGridUi(QtGui.QWidget):
         self.box_z = QtGui.QLineEdit()
         self.box_z.setMaxLength(7)
         self.box_z.setText("5cm")
-        form.addRow("Box Height (z, 10mm units or \nenter value and unit: 4cm, 1dm, 3in, 0.5ft)", self.box_z)
+        form.addRow(
+            "Box Height (z, 10mm units or \nenter value and unit: 4cm, 1dm, 3in, 0.5ft)", self.box_z
+        )
         self.box_divs_x = QtGui.QLineEdit()
         self.box_divs_x.setValidator(plus_int)
         self.box_divs_x.setMaxLength(3)
@@ -144,7 +146,9 @@ class In3dGridUi(QtGui.QWidget):
         self.corner_connectors = QtGui.QCheckBox("Space for locking connectors at outside corners")
         self.corner_connectors.setChecked(True)
         form.addRow(self.corner_connectors)
-        self.is_substractive = QtGui.QCheckBox("Create a grid suitable for substractive manufacturing")
+        self.is_substractive = QtGui.QCheckBox(
+            "Create a grid suitable for substractive manufacturing"
+        )
         self.is_substractive.setChecked(False)
         form.addRow(self.is_substractive)
         self.extra_bottom = QtGui.QLineEdit()
@@ -206,7 +210,6 @@ class In3dGridUi(QtGui.QWidget):
 
         self.opt_as_objects = QtGui.QCheckBox("Generate components as individual shapes")
         self.global_opts.addWidget(self.opt_as_objects)
-
 
         # Near the bottom, the buttons
         self.buttons = QtGui.QHBoxLayout()
@@ -281,7 +284,7 @@ class In3dGridUi(QtGui.QWidget):
         box = StorageBox.StorageBox()
         box.as_components = self.opt_as_objects.isChecked()
         box.closed_front = not self.box_open_front.isChecked()
-        depth = pq(self.box_grip_depth.text()).getValueAs('mm')
+        depth = pq(self.box_grip_depth.text()).getValueAs("mm")
         box.divisions_x = int(self.box_divs_x.text())
         box.divisions_y = int(self.box_divs_y.text())
         if box.divisions_x < 1:
@@ -301,16 +304,16 @@ class In3dGridUi(QtGui.QWidget):
 
         x = int(self.box_x.text())
         y = int(self.box_y.text())
-        mag_d = pq(self.magnet_diameter.text()).getValueAs('mm')
-        mag_h = pq(self.magnet_height.text()).getValueAs('mm')
+        mag_d = pq(self.magnet_diameter.text()).getValueAs("mm")
+        mag_h = pq(self.magnet_height.text()).getValueAs("mm")
 
         # FreeCAD Quantity: https://wiki.freecad.org/Quantity
-        #z = pq(self.box_z.text()).Value  # get the number (always internal system (mm/kg/s))
+        # z = pq(self.box_z.text()).Value  # get the number (always internal system (mm/kg/s))
         # Which is equivalent to line 315:
         if self.box_z.text().isdigit():
-            z = 10 * int(self.box_z.text()) # 1 unit = 10[mm]
+            z = 10 * int(self.box_z.text())  # 1 unit = 10[mm]
         else:
-            z = pq(self.box_z.text()).getValueAs('mm')  # Translate the value
+            z = pq(self.box_z.text()).getValueAs("mm")  # Translate the value
 
         if x > 0 and y > 0 and z >= 0:
             self.message.setText("Generating...")
@@ -330,11 +333,11 @@ class In3dGridUi(QtGui.QWidget):
         grid.magnets = not self.opt_magnets_none.isChecked()
         grid.corner_connectors = self.corner_connectors.isChecked()
         grid.is_substractive = self.is_substractive.isChecked()
-        extra_bottom = pq(self.extra_bottom.text()).getValueAs('mm')
+        extra_bottom = pq(self.extra_bottom.text()).getValueAs("mm")
         x = int(self.grid_x.text())
         y = int(self.grid_y.text())
-        mag_d = pq(self.magnet_diameter.text()).getValueAs('mm')
-        mag_h = pq(self.magnet_height.text()).getValueAs('mm')
+        mag_d = pq(self.magnet_diameter.text()).getValueAs("mm")
+        mag_h = pq(self.magnet_height.text()).getValueAs("mm")
         if x > 0 and y > 0:
             self.message.setText("Generating...")
             self.message.repaint()
@@ -361,5 +364,6 @@ class In3dGridUi(QtGui.QWidget):
 
     def close_button_click(self):
         self.hide()
+
 
 gui = In3dGridUi()
