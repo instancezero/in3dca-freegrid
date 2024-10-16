@@ -146,11 +146,11 @@ class In3dGridUi(QtGui.QWidget):
         self.corner_connectors = QtGui.QCheckBox("Space for locking connectors at outside corners")
         self.corner_connectors.setChecked(True)
         form.addRow(self.corner_connectors)
-        self.is_substractive = QtGui.QCheckBox(
-            "Create a grid suitable for substractive manufacturing"
+        self.is_subtractive = QtGui.QCheckBox(
+            "Create a grid suitable for subtractive manufacturing"
         )
-        self.is_substractive.setChecked(False)
-        form.addRow(self.is_substractive)
+        self.is_subtractive.setChecked(False)
+        form.addRow(self.is_subtractive)
         self.extra_bottom = QtGui.QLineEdit()
         self.extra_bottom.setMaxLength(5)
         self.extra_bottom.setText("16mm")
@@ -243,7 +243,7 @@ class In3dGridUi(QtGui.QWidget):
         self.box_open_front.clicked.connect(self.box_open_front_click)
         self.inside_sketch_button.clicked.connect(self.inside_sketch_button_click)
         self.corner_connectors.clicked.connect(self.corner_connectors_click)
-        self.is_substractive.clicked.connect(self.is_substractive_click)
+        self.is_subtractive.clicked.connect(self.is_subtractive_click)
 
         self.ok_button.clicked.connect(self.ok_button_click)
         self.apply_button.clicked.connect(self.start_button_click)
@@ -275,8 +275,8 @@ class In3dGridUi(QtGui.QWidget):
     def corner_connectors_click(self, state):
         self.corner_connectors.setChecked(state)
 
-    def is_substractive_click(self, state):
-        self.is_substractive.setChecked(state)
+    def is_subtractive_click(self, state):
+        self.is_subtractive.setChecked(state)
         self.extra_bottom.setEnabled(state)
 
     def generate_box(self):
@@ -332,7 +332,7 @@ class In3dGridUi(QtGui.QWidget):
         grid = StorageGrid.StorageGrid()
         grid.magnets = not self.opt_magnets_none.isChecked()
         grid.corner_connectors = self.corner_connectors.isChecked()
-        grid.is_substractive = self.is_substractive.isChecked()
+        grid.is_subtractive = self.is_subtractive.isChecked()
         extra_bottom = pq(self.extra_bottom.text()).getValueAs("mm")
         x = int(self.grid_x.text())
         y = int(self.grid_y.text())
