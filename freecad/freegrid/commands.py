@@ -1,4 +1,5 @@
 import os
+import random
 
 import FreeCAD
 import FreeCADGui as Gui
@@ -162,6 +163,10 @@ class BaseObjectCommand(BaseCommand):
         else:
             obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", cls.NAME)
             cls.FREEGRID_FUNCTION(obj)
+
+        if paramFreeGrid.GetBool("RandomColor", True):
+            # Assign a random color to newly created object
+            obj.ViewObject.ShapeColor = tuple(random.random() for _ in range(3))
 
         doc.commitTransaction()
 

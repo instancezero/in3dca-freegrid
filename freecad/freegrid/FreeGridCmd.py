@@ -1,5 +1,4 @@
 import os
-import random
 
 import FreeCAD
 import FreeCADGui
@@ -192,11 +191,6 @@ class StorageBoxObject(StorageObject):
         """Create the requested storage box object."""
         obj.Shape = self.generate_box(obj)
         obj.Label = self.descriptionStr(obj)
-        if self.just_created:
-            self.just_created = False
-            if paramFreeGrid.GetBool("RandomColor", True):
-                random_color = tuple(random.random() for _ in range(3))
-                obj.ViewObject.ShapeColor = random_color
 
 
 class BitCartridgeHolderObject(StorageBoxObject):
@@ -255,11 +249,6 @@ class BitCartridgeHolderObject(StorageBoxObject):
         """Create the requested bit cartridge holder object."""
         obj.Shape = self.generate_bit_c_h(obj)
         obj.Label = self.descriptionStr(obj)
-        if self.just_created:
-            self.just_created = False
-            if paramFreeGrid.GetBool("RandomColor", True):
-                random_color = tuple(random.random() for _ in range(3))
-                obj.ViewObject.ShapeColor = random_color
 
 
 class StorageGridObject(StorageObject):
@@ -330,9 +319,6 @@ class StorageGridObject(StorageObject):
         if self.just_created:
             obj.Placement = Placement(Base.Vector(0.0, 0.0, -3.2), Rotation())
             self.just_created = False
-            if paramFreeGrid.GetBool("RandomColor", True):
-                random_color = tuple(random.random() for _ in range(3))
-                obj.ViewObject.ShapeColor = random_color
 
 
 class SketchUI:
