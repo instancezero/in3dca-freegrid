@@ -20,7 +20,7 @@ QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 paramFreeGrid = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/FreeGrid")
 
 
-class ViewProvider(object):
+class ViewProvider:
     """
     Base class for defining the visual representation and behavior of
     FreeCAD objects in the GUI.
@@ -175,7 +175,7 @@ class BaseObjectCommand(BaseCommand):
 
 class CreateStorageBox(BaseObjectCommand):
     NAME = "StorageBox"
-    FREEGRID_FUNCTION = lambda obj: StorageBoxObject(obj)
+    FREEGRID_FUNCTION = StorageBoxObject
     pixmap = "box.svg"
     menuText = QT_TRANSLATE_NOOP("FreeGrid_StorageBox", "Storage box")
     toolTip = QT_TRANSLATE_NOOP("FreeGrid_StorageBox", "Create a storage box")
@@ -183,7 +183,7 @@ class CreateStorageBox(BaseObjectCommand):
 
 class CreateBitCartridgeHolder(BaseObjectCommand):
     NAME = "StorageCartridgeHolder"
-    FREEGRID_FUNCTION = lambda obj: BitCartridgeHolderObject(obj)
+    FREEGRID_FUNCTION = BitCartridgeHolderObject
     pixmap = "holder.svg"
     menuText = QT_TRANSLATE_NOOP("FreeGrid_BitCartridgeHolder", "Bit cartridge holder")
     toolTip = QT_TRANSLATE_NOOP("FreeGrid_BitCartridgeHolder", "Create a bit cartridge holder")
@@ -191,7 +191,7 @@ class CreateBitCartridgeHolder(BaseObjectCommand):
 
 class CreateStorageGrid(BaseObjectCommand):
     NAME = "StorageGrid"
-    FREEGRID_FUNCTION = lambda obj: StorageGridObject(obj)
+    FREEGRID_FUNCTION = StorageGridObject
     pixmap = "grid.svg"
     menuText = QT_TRANSLATE_NOOP("FreeGrid_StorageGrid", "Storage grid")
     toolTip = QT_TRANSLATE_NOOP("FreeGrid_StorageGrid", "Create a storage grid")
