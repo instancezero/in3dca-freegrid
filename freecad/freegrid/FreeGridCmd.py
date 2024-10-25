@@ -3,7 +3,6 @@ import os
 import FreeCAD
 import FreeCADGui
 import Part
-from FreeCAD import Base, Placement, Rotation
 from freecad.freegrid import UIPATH
 from freecad.freegrid.in3dca import StorageBox, StorageGrid
 
@@ -20,7 +19,6 @@ class StorageObject:
 
     def __init__(self, obj):
         """Initialize common properties."""
-        self.just_created = True
         self.storageType = ""
         obj.addProperty(
             "App::PropertyInteger",
@@ -316,9 +314,6 @@ class StorageGridObject(StorageObject):
         """Create the requested storage grid object."""
         obj.Shape = self.generate_grid(obj)
         obj.Label = self.descriptionStr(obj)
-        if self.just_created:
-            obj.Placement = Placement(Base.Vector(0.0, 0.0, -3.2), Rotation())
-            self.just_created = False
 
 
 class SketchUI:

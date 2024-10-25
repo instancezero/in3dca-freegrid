@@ -2,6 +2,7 @@ import os
 import random
 
 import FreeCAD
+from FreeCAD import Base, Placement, Rotation
 import FreeCADGui as Gui
 from PySide import QtGui
 
@@ -167,6 +168,9 @@ class BaseObjectCommand(BaseCommand):
         if paramFreeGrid.GetBool("RandomColor", True):
             # Assign a random color to newly created object
             obj.ViewObject.ShapeColor = tuple(random.random() for _ in range(3))
+
+        if cls.NAME == "StorageGrid":
+            obj.Placement = Placement(Base.Vector(0.0, 0.0, -3.2), Rotation())
 
         doc.commitTransaction()
 
