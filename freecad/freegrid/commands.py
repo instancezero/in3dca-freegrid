@@ -6,7 +6,7 @@ from FreeCAD import Base, Placement, Rotation
 import FreeCADGui as Gui
 from PySide import QtGui
 
-from freecad.freegrid import ICONPATH, IMGPATH, UIPATH
+from freecad.freegrid import ICONPATH, IMGPATH, UIPATH, get_icon_path
 from freecad.freegrid.FreeGridCmd import (
     BitCartridgeHolderObject,
     SketchUI,
@@ -31,44 +31,16 @@ class ViewProvider:
         # Set this object to the proxy object of the actual view provider
         obj.Proxy = self
         self._check_attr()
-        # dirname = os.path.dirname(__file__)
-        self.icon_fn = icon_fn or os.path.join(ICONPATH, "FreeGrid.svg")
+        self.icon_fn = get_icon_path(icon_fn or "FreeGrid")  # full path
 
     def _check_attr(self):
         """Check for missing attributes."""
         if not hasattr(self, "icon_fn"):
-            setattr(self, "icon_fn", os.path.join(ICONPATH, "FreeGrid.svg"))
-
-    def attach(self, vobj):
-        self.vobj = vobj
+            setattr(self, "icon_fn", get_icon_path("FreeGrid"))  # full path
 
     def getIcon(self):
         self._check_attr()
         return self.icon_fn
-
-    if (FreeCAD.Version()[0] + "." + FreeCAD.Version()[1]) >= "0.22":
-
-        def dumps(self):
-            #        return {'ObjectName' : self.Object.Name}
-            return None
-
-        def loads(self, state):
-            if state is not None:
-                import FreeCAD
-
-                doc = FreeCAD.ActiveDocument  # crap
-                self.Object = doc.getObject(state["ObjectName"])
-
-    else:
-
-        def __getstate__(self):
-            #        return {'ObjectName' : self.Object.Name}
-            return None
-
-        def __setstate__(self, state):
-            if state is not None:
-                doc = FreeCAD.ActiveDocument  # crap
-                self.Object = doc.getObject(state["ObjectName"])
 
 
 class BaseCommand(object):
@@ -95,15 +67,17 @@ class BaseCommand(object):
         """Return an html formatted string to include the command's icon along the tooltip."""
         # NOTE:The use of html code on the toolTip prevents the translated strings
         # to be showed, decide if remove this feature.
+        # Also, scaling treats SVG as bitmaps, if SVG is small enlargement is blurry
+        # TODO: New Ribbon WB offers UI to make icons bigger, make custom FreeGrid Ribbon
         if paramFreeGrid.GetBool("tooltipPicture", True):
             tt = (
                 "<img src="
-                + os.path.join(ICONPATH, self.pixmap)
+                + get_icon_path(self.pixmap)  # full path because HTML needs it
                 + " align=left width='"
                 + str(icon_size)
                 + "' height='"
                 + str(icon_size)
-                + "' type='svg/xml' />"
+                + "' type='image/svg+xml' />"
                 + "<div align=center>"
                 + self.toolTip
                 + "</div>"
@@ -115,6 +89,7 @@ class BaseCommand(object):
 
     def GetResources(self):
         return {
+            # We can use this without the full path because we used `FreeCADGui.addIconPath()`
             "Pixmap": self.pixmap,
             "MenuText": self.menuText,
             "ToolTip": self.toolTipWithIcon(paramFreeGrid.GetInt("iconTooltipSize", 125)),
@@ -180,7 +155,7 @@ class BaseObjectCommand(BaseCommand):
 class CreateStorageBox(BaseObjectCommand):
     NAME = "StorageBox"
     FREEGRID_FUNCTION = StorageBoxObject
-    pixmap = "box.svg"
+    pixmap = "box"
     menuText = QT_TRANSLATE_NOOP("FreeGrid_StorageBox", "Storage box")
     toolTip = QT_TRANSLATE_NOOP("FreeGrid_StorageBox", "Create a storage box")
 
@@ -188,7 +163,7 @@ class CreateStorageBox(BaseObjectCommand):
 class CreateBitCartridgeHolder(BaseObjectCommand):
     NAME = "StorageCartridgeHolder"
     FREEGRID_FUNCTION = BitCartridgeHolderObject
-    pixmap = "holder.svg"
+    pixmap = "holder"
     menuText = QT_TRANSLATE_NOOP("FreeGrid_BitCartridgeHolder", "Bit cartridge holder")
     toolTip = QT_TRANSLATE_NOOP("FreeGrid_BitCartridgeHolder", "Create a bit cartridge holder")
 
@@ -196,13 +171,13 @@ class CreateBitCartridgeHolder(BaseObjectCommand):
 class CreateStorageGrid(BaseObjectCommand):
     NAME = "StorageGrid"
     FREEGRID_FUNCTION = StorageGridObject
-    pixmap = "grid.svg"
+    pixmap = "grid"
     menuText = QT_TRANSLATE_NOOP("FreeGrid_StorageGrid", "Storage grid")
     toolTip = QT_TRANSLATE_NOOP("FreeGrid_StorageGrid", "Create a storage grid")
 
 
 class CreateSketch(BaseCommand):
-    pixmap = "sketch.svg"
+    pixmap = "sketch"
     menuText = QT_TRANSLATE_NOOP("FreeGrid_Sketch", "Sketch")
     toolTip = QT_TRANSLATE_NOOP("FreeGrid_Sketch", "Generate inner box profile")
 
@@ -226,7 +201,7 @@ class CreateSketch(BaseCommand):
 
 
 class OpenPreferencePage(BaseCommand):
-    pixmap = "preferences_page.svg"
+    pixmap = "preferences_page"
     menuText = QT_TRANSLATE_NOOP("FreeGrid_PreferencesPage", "Preferences page")
     toolTip = QT_TRANSLATE_NOOP("FreeGrid_PreferencesPage", "Open the FreeGrid preferences page")
 
@@ -238,7 +213,7 @@ class OpenPreferencePage(BaseCommand):
 
 
 class About(BaseCommand):
-    pixmap = "about.svg"
+    pixmap = "about"
     menuText = QT_TRANSLATE_NOOP("FreeGrid_About", "About FreeGrid")
     toolTip = QT_TRANSLATE_NOOP("FreeGrid_About", "Show information about FreeGrid")
 
