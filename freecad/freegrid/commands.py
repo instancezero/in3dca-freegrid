@@ -226,8 +226,9 @@ class About(BaseCommand):
         banner = QtGui.QPixmap(os.path.join(IMGPATH, "banner.png"))
         self.dialog.banner.setPixmap(banner.scaledToHeight(300))
         # TODO: use built-in image
-        forum = QtGui.QPixmap(os.path.join(ICONPATH, "FreeCAD.svg"))
-        self.dialog.forum_icon.setPixmap(forum.scaledToHeight(24))
+        fc = QtGui.QPixmap(os.path.join(ICONPATH, "FreeCAD.svg"))
+        self.dialog.wiki_icon.setPixmap(fc.scaledToHeight(24))
+        self.dialog.forum_icon.setPixmap(fc.scaledToHeight(24))
         gh = QtGui.QPixmap(os.path.join(ICONPATH, "GitHub.svg"))
         self.dialog.repo_icon.setPixmap(gh.scaledToHeight(24))
         self.dialog.closeButton.clicked.connect(self.dialog.close)

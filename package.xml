@@ -7,7 +7,7 @@
 
   <version>2.0.0</version>
 
-  <date>2024-09-24</date>
+  <date>2024-10-31</date>
 
   <maintainer>Alan Langford</maintainer>
 
@@ -26,6 +26,8 @@
   <url type="bugtracker">https://github.com/instancezero/in3dca-freegrid/issues</url>
 
   <url type="readme">https://github.com/instancezero/in3dca-freegrid/blob/main/README.md</url>
+
+  <url type="documentation">https://wiki.freecad.org/FreeGrid_Workbench</url>
 
   <url type="discussion">https://forum.freecad.org/viewtopic.php?p=613002</url>
 

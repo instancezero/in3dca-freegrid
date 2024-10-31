@@ -227,6 +227,62 @@ hasecilu</string>
        </layout>
       </item>
       <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <spacer name="horizontalSpacer_5">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="wiki_icon">
+          <property name="text">
+           <string notr="true">wiki icon</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::UrlLabel" name="wiki">
+          <property name="font">
+           <font>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Wiki documentation</string>
+          </property>
+          <property name="url">
+           <string notr="true">https://wiki.freecad.org/FreeGrid_Workbench</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_6">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+      <item>
        <layout class="QHBoxLayout" name="forum_horizontalLayout">
         <property name="topMargin">
          <number>0</number>
@@ -346,7 +402,7 @@ hasecilu</string>
            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
           </property>
           <property name="url">
-           <string notr="true">https://github.com/instancezero/in3dca-freegrid/tree/WorkBench</string>
+           <string notr="true">https://github.com/instancezero/in3dca-freegrid</string>
           </property>
           <property name="buddy">
            <cstring>x</cstring>
