@@ -6,6 +6,7 @@
 [![pre-commit enabled][pre-commit_badge]][pre-commit]
 [![Code style: black][black_badge]][black]
 [![GitHub Tag][tag_bagde]][tag]
+[![Common Changelog][cc_badge]][cc]
 
 This project contains a [FreeCAD](https://freecad.org) workbench for generating FreeGrid storage system components.
 
@@ -169,3 +170,5 @@ a few bucks if instead of plastic filament we use a wood/acrylic board to carve 
 [black_badge]: https://img.shields.io/badge/code%20style-black-000000.svg
 [tag]: https://github.com/instancezero/in3dca-freegrid/releases
 [tag_bagde]: https://img.shields.io/github/v/tag/instancezero/in3dca-freegrid
+[cc_badge]: <https://common-changelog.org/badge.svg>
+[cc]: <./CHANGELOG.md>
