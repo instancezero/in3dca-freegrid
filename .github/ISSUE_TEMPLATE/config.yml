@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Read the documentation
+    url: https://wiki.freecad.org/FreeGrid_Workbench
+    about: Read the FreeGrid workbench documentation on the FreeCAD Wiki
+  - name: General questions about the workbench
+    url: https://forum.freecad.org/viewtopic.php?p=613002
+    about: You can join the discussions on the FreeCAD forum.

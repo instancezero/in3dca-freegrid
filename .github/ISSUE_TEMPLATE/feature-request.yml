@@ -1,0 +1,37 @@
+name: New feature
+description: Suggest or request a new feature
+labels: ["enhancement"]
+assignees: ["hasecilu"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please fill out the sections below to properly describe the new feature you are suggesting.
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the feature
+      placeholder: A new commands to generate this new FreeGrid part
+    validations:
+      required: true
+  - type: textarea
+    id: rationale
+    attributes:
+      label: It should be implemented because
+      placeholder: It's needed to build this model, it's a very common part
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      placeholder: |
+        Add any other context or screenshots about the feature request here.
+  - type: dropdown
+    id: assign
+    attributes:
+      label: "Would you like to work on this issue?"
+      options:
+        - "Yes"
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for your suggestion! Let's see together if it can be implemented.
