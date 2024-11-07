@@ -3,7 +3,9 @@ import os
 import FreeCAD
 import FreeCADGui
 import Part
-from freecad.freegrid import UIPATH
+from FreeCAD import Base, Placement, Rotation, Vector
+
+from freecad.freegrid import SPACING, UIPATH
 from freecad.freegrid.in3dca import StorageBox, StorageGrid
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
@@ -44,6 +46,9 @@ class StorageObject:
             QT_TRANSLATE_NOOP("App::Property", "Magnet mount"),
             QT_TRANSLATE_NOOP("App::Property", "Height of the magnet"),
         ).MagnetHeight = paramFreeGrid.GetString("MagnetHeight", "2mm")
+
+        obj.addExtension("Part::AttachExtensionPython")
+        obj.AttacherEngine = "Engine Plane"
 
     def descriptionStr(self, obj):
         """Return the designation of the storage object."""
@@ -138,11 +143,38 @@ class StorageBoxObject(StorageObject):
             QT_TRANSLATE_NOOP("App::Property", "Options to add magnets"),
         ).MagnetOption = self.magnetOptions
         obj.MagnetOption = self.magnetOptions[paramFreeGrid.GetInt("MagnetOption", 0)]
+        obj.addProperty(
+            "App::PropertyInteger",
+            QT_TRANSLATE_NOOP("App::Property", "PositionX"),
+            QT_TRANSLATE_NOOP("App::Property", "Position on grid"),
+            QT_TRANSLATE_NOOP(
+                "App::Property", "Box position on the grid in the X axis.\nStarts at zero."
+            ),
+        ).PositionX = 0
+        obj.addProperty(
+            "App::PropertyInteger",
+            QT_TRANSLATE_NOOP("App::Property", "PositionY"),
+            QT_TRANSLATE_NOOP("App::Property", "Position on grid"),
+            QT_TRANSLATE_NOOP(
+                "App::Property", "Box position on the grid in the Y axis.\nStarts at zero."
+            ),
+        ).PositionY = 0
 
     def onChanged(self, obj, prop):
         if prop == "MagnetOption":
             obj.setEditorMode("MagnetDiameter", obj.MagnetOption == "noMagnets")
             obj.setEditorMode("MagnetHeight", obj.MagnetOption == "noMagnets")
+        elif prop in ["PositionX", "PositionY"]:
+            # FIXME: find a way to avoid shape re-computation when only
+            # the position on the grid is changed, maybe cache the shape
+            if obj.PositionX < 0:
+                obj.PositionX = 0
+            if obj.PositionY < 0:
+                obj.PositionY = 0
+            obj.AttachmentOffset = Placement(
+                Vector(obj.PositionX * SPACING, obj.PositionY * SPACING, 3.2),
+                Rotation(0.0, 0.0, 0.0),
+            )
 
     def generate_box(self, obj) -> Part.Shape:
         """Create a box using the object properties as parameters."""
@@ -187,6 +219,7 @@ class StorageBoxObject(StorageObject):
 
     def execute(self, obj):
         """Create the requested storage box object."""
+        obj.positionBySupport()
         obj.Shape = self.generate_box(obj)
         obj.Label = self.descriptionStr(obj)
 
@@ -245,6 +278,7 @@ class BitCartridgeHolderObject(StorageBoxObject):
 
     def execute(self, obj):
         """Create the requested bit cartridge holder object."""
+        obj.positionBySupport()
         obj.Shape = self.generate_bit_c_h(obj)
         obj.Label = self.descriptionStr(obj)
 
@@ -312,6 +346,7 @@ class StorageGridObject(StorageObject):
 
     def execute(self, obj):
         """Create the requested storage grid object."""
+        obj.positionBySupport()
         obj.Shape = self.generate_grid(obj)
         obj.Label = self.descriptionStr(obj)
 

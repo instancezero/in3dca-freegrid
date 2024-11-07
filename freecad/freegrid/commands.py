@@ -2,11 +2,11 @@ import os
 import random
 
 import FreeCAD
-from FreeCAD import Base, Placement, Rotation
+from FreeCAD import Base, Placement, Rotation, Vector
 import FreeCADGui as Gui
 from PySide import QtGui
 
-from freecad.freegrid import ICONPATH, IMGPATH, UIPATH, get_icon_path
+from freecad.freegrid import ICONPATH, IMGPATH, SPACING, UIPATH, get_icon_path
 from freecad.freegrid.FreeGridCmd import (
     BitCartridgeHolderObject,
     SketchUI,
@@ -102,6 +102,8 @@ class BaseObjectCommand(BaseCommand):
     a Storage object in the GUI.
     """
 
+    # NOTE: Code on this class is only executed once, at creation time
+
     NAME = ""
     FREEGRID_FUNCTION = None
 
@@ -146,6 +148,29 @@ class BaseObjectCommand(BaseCommand):
 
         if cls.NAME == "StorageGrid":
             obj.Placement = Placement(Base.Vector(0.0, 0.0, -3.2), Rotation())
+        else:
+            try:
+                selection = Gui.Selection.getSelection()
+                if len(selection) == 1:
+                    sel_obj = selection[0]
+                    if isinstance(sel_obj.Proxy, StorageGridObject):
+                        obj.AttachmentOffset = Placement(
+                            Vector(obj.PositionX * SPACING, obj.PositionY * SPACING, 3.2),
+                            Rotation(0.0, 0.0, 0.0),
+                        )
+                        # obj.AttachmentSupport = sel_obj
+                        obj.AttachmentSupport = [(sel_obj, "")]
+                        obj.MapMode = "ObjectXY"
+                        obj.MapPathParameter = 0.0
+                        obj.MapReversed = False
+                    else:
+                        raise TypeError(
+                            translate("Log", "Selected object is not a StorageGrid object.")
+                        )
+                elif len(selection) > 1:
+                    raise ValueError(translate("Log", "Please select only one object."))
+            except Exception as e:
+                FreeCAD.Console.PrintError(f"Error: {str(e)}\n")
 
         doc.commitTransaction()
 
