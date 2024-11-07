@@ -4,236 +4,264 @@
 <context>
     <name>App::Property</name>
     <message>
-        <location filename="../../FreeGridCmd.py" line="25"/>
+        <location filename="../../FreeGridCmd.py" line="27"/>
         <source>Width</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="26"/>
-        <location filename="../../FreeGridCmd.py" line="32"/>
-        <location filename="../../FreeGridCmd.py" line="80"/>
+        <location filename="../../FreeGridCmd.py" line="28"/>
+        <location filename="../../FreeGridCmd.py" line="34"/>
+        <location filename="../../FreeGridCmd.py" line="85"/>
         <source>Size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="27"/>
+        <location filename="../../FreeGridCmd.py" line="29"/>
         <source>Number of 50[mm] units in X direction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="31"/>
+        <location filename="../../FreeGridCmd.py" line="33"/>
         <source>Depth</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="33"/>
+        <location filename="../../FreeGridCmd.py" line="35"/>
         <source>Number of 50[mm] units in Y direction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="37"/>
+        <location filename="../../FreeGridCmd.py" line="39"/>
         <source>MagnetDiameter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="38"/>
-        <location filename="../../FreeGridCmd.py" line="44"/>
-        <location filename="../../FreeGridCmd.py" line="137"/>
-        <location filename="../../FreeGridCmd.py" line="285"/>
+        <location filename="../../FreeGridCmd.py" line="40"/>
+        <location filename="../../FreeGridCmd.py" line="46"/>
+        <location filename="../../FreeGridCmd.py" line="142"/>
+        <location filename="../../FreeGridCmd.py" line="315"/>
         <source>Magnet mount</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="39"/>
+        <location filename="../../FreeGridCmd.py" line="41"/>
         <source>Diameter of the magnet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="43"/>
+        <location filename="../../FreeGridCmd.py" line="45"/>
         <source>MagnetHeight</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="45"/>
+        <location filename="../../FreeGridCmd.py" line="47"/>
         <source>Height of the magnet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="79"/>
+        <location filename="../../FreeGridCmd.py" line="84"/>
         <source>Height</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="84"/>
+        <location filename="../../FreeGridCmd.py" line="89"/>
         <source>Height (in Z direction), enter value and unit
 example: 4cm, 1dm, 3in, 0.5ft</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="88"/>
+        <location filename="../../FreeGridCmd.py" line="93"/>
         <source>DivisionsX</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="89"/>
-        <location filename="../../FreeGridCmd.py" line="95"/>
-        <location filename="../../FreeGridCmd.py" line="101"/>
+        <location filename="../../FreeGridCmd.py" line="94"/>
+        <location filename="../../FreeGridCmd.py" line="100"/>
+        <location filename="../../FreeGridCmd.py" line="106"/>
         <source>Internal divisions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="90"/>
+        <location filename="../../FreeGridCmd.py" line="95"/>
         <source>Number of divisions along the X axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="94"/>
+        <location filename="../../FreeGridCmd.py" line="99"/>
         <source>DivisionsY</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="96"/>
+        <location filename="../../FreeGridCmd.py" line="101"/>
         <source>Number of divisions along the Y axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="100"/>
+        <location filename="../../FreeGridCmd.py" line="105"/>
         <source>DivisionHeight</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="102"/>
+        <location filename="../../FreeGridCmd.py" line="107"/>
         <source>Height of internal divisions relative to the box</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="106"/>
+        <location filename="../../FreeGridCmd.py" line="111"/>
         <source>BoxOpenFront</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="107"/>
-        <location filename="../../FreeGridCmd.py" line="113"/>
-        <location filename="../../FreeGridCmd.py" line="119"/>
-        <location filename="../../FreeGridCmd.py" line="125"/>
-        <location filename="../../FreeGridCmd.py" line="131"/>
+        <location filename="../../FreeGridCmd.py" line="112"/>
+        <location filename="../../FreeGridCmd.py" line="118"/>
+        <location filename="../../FreeGridCmd.py" line="124"/>
+        <location filename="../../FreeGridCmd.py" line="130"/>
+        <location filename="../../FreeGridCmd.py" line="136"/>
         <source>Box features</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="108"/>
+        <location filename="../../FreeGridCmd.py" line="113"/>
         <source>Leave front of box open</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="112"/>
+        <location filename="../../FreeGridCmd.py" line="117"/>
         <source>BoxRamp</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="114"/>
+        <location filename="../../FreeGridCmd.py" line="119"/>
         <source>Add scoop inside front of box</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="118"/>
+        <location filename="../../FreeGridCmd.py" line="123"/>
         <source>BoxGrip</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="120"/>
+        <location filename="../../FreeGridCmd.py" line="125"/>
         <source>Add grip/label area at rear of box</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="124"/>
+        <location filename="../../FreeGridCmd.py" line="129"/>
         <source>BoxGripDepth</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="126"/>
+        <location filename="../../FreeGridCmd.py" line="131"/>
         <source>Depth of grip (mm)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="130"/>
+        <location filename="../../FreeGridCmd.py" line="135"/>
         <source>FloorSupport</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="132"/>
+        <location filename="../../FreeGridCmd.py" line="137"/>
         <source>Add integral floor support</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="136"/>
+        <location filename="../../FreeGridCmd.py" line="141"/>
         <source>MagnetOption</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="138"/>
+        <location filename="../../FreeGridCmd.py" line="143"/>
         <source>Options to add magnets</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="214"/>
+        <location filename="../../FreeGridCmd.py" line="148"/>
+        <source>PositionX</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../FreeGridCmd.py" line="149"/>
+        <location filename="../../FreeGridCmd.py" line="157"/>
+        <source>Position on grid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../FreeGridCmd.py" line="152"/>
+        <source>Box position on the grid in the X axis.
+Starts at zero.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../FreeGridCmd.py" line="156"/>
+        <source>PositionY</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../FreeGridCmd.py" line="160"/>
+        <source>Box position on the grid in the Y axis.
+Starts at zero.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../FreeGridCmd.py" line="243"/>
         <source>SideLength</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="215"/>
+        <location filename="../../FreeGridCmd.py" line="244"/>
         <source>Bit Cartridge Holder features</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="216"/>
+        <location filename="../../FreeGridCmd.py" line="245"/>
         <source>Length of the longest side of the cartridge</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="264"/>
+        <location filename="../../FreeGridCmd.py" line="294"/>
         <source>CornerConnectors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="265"/>
-        <location filename="../../FreeGridCmd.py" line="271"/>
-        <location filename="../../FreeGridCmd.py" line="279"/>
+        <location filename="../../FreeGridCmd.py" line="295"/>
+        <location filename="../../FreeGridCmd.py" line="301"/>
+        <location filename="../../FreeGridCmd.py" line="309"/>
         <source>Grid features</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="266"/>
+        <location filename="../../FreeGridCmd.py" line="296"/>
         <source>Space for locking connectors at outside corners</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="270"/>
+        <location filename="../../FreeGridCmd.py" line="300"/>
         <source>IsSubtractive</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="274"/>
+        <location filename="../../FreeGridCmd.py" line="304"/>
         <source>Create a grid suitable for subtractive manufacturing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="278"/>
+        <location filename="../../FreeGridCmd.py" line="308"/>
         <source>ExtraBottomMaterial</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="280"/>
+        <location filename="../../FreeGridCmd.py" line="310"/>
         <source>Extra thickness under grid (mm)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="284"/>
+        <location filename="../../FreeGridCmd.py" line="314"/>
         <source>IncludeMagnets</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FreeGridCmd.py" line="286"/>
+        <location filename="../../FreeGridCmd.py" line="316"/>
         <source>Include magnet receptacles</source>
         <translation type="unfinished"></translation>
     </message>
@@ -546,12 +574,12 @@ FreeGrid storage system components.</source>
 <context>
     <name>FreeGrid_About</name>
     <message>
-        <location filename="../../commands.py" line="218"/>
+        <location filename="../../commands.py" line="243"/>
         <source>About FreeGrid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../commands.py" line="220"/>
+        <location filename="../../commands.py" line="245"/>
         <source>Show information about FreeGrid</source>
         <translation type="unfinished"></translation>
     </message>
@@ -559,12 +587,12 @@ FreeGrid storage system components.</source>
 <context>
     <name>FreeGrid_BitCartridgeHolder</name>
     <message>
-        <location filename="../../commands.py" line="168"/>
+        <location filename="../../commands.py" line="193"/>
         <source>Bit cartridge holder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../commands.py" line="171"/>
+        <location filename="../../commands.py" line="196"/>
         <source>Create a bit cartridge holder</source>
         <translation type="unfinished"></translation>
     </message>
@@ -572,12 +600,12 @@ FreeGrid storage system components.</source>
 <context>
     <name>FreeGrid_PreferencesPage</name>
     <message>
-        <location filename="../../commands.py" line="206"/>
+        <location filename="../../commands.py" line="231"/>
         <source>Preferences page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../commands.py" line="208"/>
+        <location filename="../../commands.py" line="233"/>
         <source>Open the FreeGrid preferences page</source>
         <translation type="unfinished"></translation>
     </message>
@@ -585,12 +613,12 @@ FreeGrid storage system components.</source>
 <context>
     <name>FreeGrid_Sketch</name>
     <message>
-        <location filename="../../commands.py" line="182"/>
+        <location filename="../../commands.py" line="207"/>
         <source>Sketch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../commands.py" line="184"/>
+        <location filename="../../commands.py" line="209"/>
         <source>Generate inner box profile</source>
         <translation type="unfinished"></translation>
     </message>
@@ -598,12 +626,12 @@ FreeGrid storage system components.</source>
 <context>
     <name>FreeGrid_StorageBox</name>
     <message>
-        <location filename="../../commands.py" line="160"/>
+        <location filename="../../commands.py" line="185"/>
         <source>Storage box</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../commands.py" line="163"/>
+        <location filename="../../commands.py" line="188"/>
         <source>Create a storage box</source>
         <translation type="unfinished"></translation>
     </message>
@@ -611,12 +639,12 @@ FreeGrid storage system components.</source>
 <context>
     <name>FreeGrid_StorageGrid</name>
     <message>
-        <location filename="../../commands.py" line="176"/>
+        <location filename="../../commands.py" line="201"/>
         <source>Storage grid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../commands.py" line="179"/>
+        <location filename="../../commands.py" line="204"/>
         <source>Create a storage grid</source>
         <translation type="unfinished"></translation>
     </message>
@@ -624,7 +652,17 @@ FreeGrid storage system components.</source>
 <context>
     <name>Log</name>
     <message>
-        <location filename="../../commands.py" line="196"/>
+        <location filename="../../commands.py" line="169"/>
+        <source>Selected object is not a StorageGrid object.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../commands.py" line="171"/>
+        <source>Please select only one object.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../commands.py" line="221"/>
         <source>Selected object is not a StorageBox object.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -647,7 +685,7 @@ FreeGrid storage system components.</source>
 <context>
     <name>Transaction</name>
     <message>
-        <location filename="../../commands.py" line="121"/>
+        <location filename="../../commands.py" line="123"/>
         <source>Create {}</source>
         <translation type="unfinished"></translation>
     </message>
