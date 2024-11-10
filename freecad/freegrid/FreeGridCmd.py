@@ -404,6 +404,7 @@ class StorageGridObject(StorageObject):
             QT_TRANSLATE_NOOP("App::Property", "Grid features"),
             QT_TRANSLATE_NOOP("App::Property", "Extra thickness under grid (mm)"),
         ).ExtraBottomMaterial = "16mm"
+        obj.setEditorMode("ExtraBottomMaterial", True)
         obj.addProperty(
             "App::PropertyBool",
             QT_TRANSLATE_NOOP("App::Property", "IncludeMagnets"),
@@ -419,6 +420,8 @@ class StorageGridObject(StorageObject):
         if prop == "IncludeMagnets":
             obj.setEditorMode("MagnetDiameter", not obj.IncludeMagnets)
             obj.setEditorMode("MagnetHeight", not obj.IncludeMagnets)
+        elif prop == "IsSubtractive":
+            obj.setEditorMode("ExtraBottomMaterial", not obj.IsSubtractive)
 
     def generate_grid(self, obj) -> Part.Shape:
         """Create a grid using the object properties as parameters."""
@@ -429,7 +432,7 @@ class StorageGridObject(StorageObject):
         # Features
         grid.corner_connectors = obj.CornerConnectors
         grid.is_subtractive = obj.IsSubtractive
-        extra_bottom = max(0, obj.ExtraBottomMaterial.getValueAs("mm").Value)
+        extra_bottom = obj.ExtraBottomMaterial.getValueAs("mm").Value
         # Magnets
         mag_d = obj.MagnetDiameter.getValueAs("mm").Value
         mag_h = obj.MagnetHeight.getValueAs("mm").Value
