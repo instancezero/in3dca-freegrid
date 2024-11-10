@@ -275,9 +275,17 @@ class StorageBoxObject(StorageObject):
 
     def execute(self, obj):
         """Create the requested storage box object."""
+
+        # Update position when attached-to object changes position
         obj.positionBySupport()
-        obj.Shape = self.generate_box(obj)
-        obj.Label = self.descriptionStr(obj)
+
+        # Generate the shape if it is null or if the property that
+        # changed is not one of the offset components
+        if obj.Shape.isNull() or not self.offset_changed:
+            obj.Shape = self.generate_box(obj)
+            obj.Label = self.descriptionStr(obj)
+
+        self.offset_changed = False
 
 
 class BitCartridgeHolderObject(StorageBoxObject):
@@ -346,9 +354,17 @@ class BitCartridgeHolderObject(StorageBoxObject):
 
     def execute(self, obj):
         """Create the requested bit cartridge holder object."""
+
+        # Update position when attached-to object changes position
         obj.positionBySupport()
-        obj.Shape = self.generate_bit_c_h(obj)
-        obj.Label = self.descriptionStr(obj)
+
+        # Generate the shape if it is null or if the property that
+        # changed is not one of the offset components
+        if obj.Shape.isNull() or not self.offset_changed:
+            obj.Shape = self.generate_bit_c_h(obj)
+            obj.Label = self.descriptionStr(obj)
+
+        self.offset_changed = False
 
 
 class StorageGridObject(StorageObject):
@@ -428,6 +444,7 @@ class StorageGridObject(StorageObject):
 
         # Update position when attached-to object changes position.
         obj.positionBySupport()
+
         obj.Shape = self.generate_grid(obj)
         obj.Label = self.descriptionStr(obj)
 
