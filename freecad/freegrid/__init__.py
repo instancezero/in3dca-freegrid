@@ -1,7 +1,7 @@
 import os
 import FreeCAD
 
-__version__ = "2.1.0"
+__version__ = "2.1.1"
 
 path = os.path.join(os.path.dirname(__file__), "resources")
 
