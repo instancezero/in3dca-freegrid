@@ -5,9 +5,9 @@
 
   <description>A simple tools workbench for generating FreeGrid storage system components.</description>
 
-  <version>2.0.1</version>
+  <version>2.1.0</version>
 
-  <date>2024-10-31</date>
+  <date>2024-11-07</date>
 
   <maintainer>Alan Langford</maintainer>
 
@@ -45,7 +45,7 @@
     <workbench>
       <name>FreeGrid Workbench</name>
       <icon>resources/icons/FreeGrid.svg</icon>
-      <subdirectory>freecad/stemfie</subdirectory>
+      <subdirectory>freecad/freegrid</subdirectory>
       <classname>FreeGridWorkbench</classname>
     </workbench>
   </content>

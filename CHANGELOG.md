@@ -1,5 +1,20 @@
 # Changelog
 
+## [2.1.0] - 2024-11-10
+
+### Added
+
+* Make boxes and holders attachable to grids.
+
+### Changed
+
+* Strings for translation.
+* Disable `ExtraBottomMaterial` property when subtractive method is not selected
+
+### Fixed
+
+* Set limits on integer and length properties
+
 ## [2.0.1] - 2024-10-31
 
 ### Changed
@@ -112,3 +127,4 @@
 [1.3.0]: https://github.com/instancezero/in3dca-freegrid/releases/tag/1.3.2
 [2.0.0]: https://github.com/instancezero/in3dca-freegrid/releases/tag/2.0.0
 [2.0.1]: https://github.com/instancezero/in3dca-freegrid/releases/tag/2.0.1
+[2.1.0]: https://github.com/instancezero/in3dca-freegrid/releases/tag/2.1.0
