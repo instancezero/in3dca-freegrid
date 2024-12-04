@@ -1,5 +1,9 @@
 # Changelog
 
+## Testing
+
+This branch is for testing changes on Addon Manager.
+
 ## [2.2.0] - 2025-01-22
 
 ### Added

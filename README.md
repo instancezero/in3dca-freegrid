@@ -12,6 +12,10 @@ This project contains a [FreeCAD](https://freecad.org) workbench for generating 
 
 ![Example of some FreeGrid components](img/screen.png "Example of some FreeGrid components")
 
+## Testing
+
+This branch is for testing changes on Addon Manager.
+
 ## Installation
 
 ### Automatic Installation
