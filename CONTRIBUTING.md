@@ -2,6 +2,10 @@
 
 Contributing can take many forms, and it's not just for developers.
 
+## Testing
+
+This branch is for testing changes on Addon Manager.
+
 ## Ideas
 
 Many of the workbench features were added because the developers thought they

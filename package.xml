@@ -3,11 +3,11 @@
 
   <name>FreeGrid Workbench</name>
 
-  <description>A simple tools workbench for generating FreeGrid storage system components.</description>
+  <description>A simple tools workbench for generating FreeGrid storage system components. BRANCH FOR TESTING FEATURE ON FREECAD.</description>
 
-  <version>2.2.0</version>
+  <version>3.2.1</version>
 
-  <date>2025-01-22</date>
+  <date>2026-12-31</date>
 
   <maintainer>Alan Langford</maintainer>
 
@@ -21,11 +21,15 @@
 
   <url type="website">https://in3d.ca/freegrid-an-open-grid-based-3d-printed-storage-system/</url>
 
-  <url branch="main" type="repository">https://github.com/instancezero/in3dca-freegrid</url>
+  <url branch="test/am_docs" type="repository">https://github.com/instancezero/in3dca-freegrid</url>
 
   <url type="bugtracker">https://github.com/instancezero/in3dca-freegrid/issues</url>
 
   <url type="readme">https://github.com/instancezero/in3dca-freegrid/blob/main/README.md</url>
+
+  <url type="changelog">https://github.com/instancezero/in3dca-freegrid/blob/main/CHANGELOG.md</url>
+
+  <url type="contributing">https://github.com/instancezero/in3dca-freegrid/blob/main/CONTRIBUTING.md</url>
 
   <url type="documentation">https://wiki.freecad.org/FreeGrid_Workbench</url>
 
@@ -39,14 +43,16 @@
 
   <tag>3d-printing</tag>
 
+  <tag>test</tag>
+
   <icon>freecad/freegrid/resources/icons/FreeGrid.svg</icon>
 
   <content>
     <workbench>
       <name>FreeGrid Workbench</name>
       <icon>resources/icons/FreeGrid.svg</icon>
-      <subdirectory>freecad/freegrid</subdirectory>
       <classname>FreeGridWorkbench</classname>
+      <subdirectory>freecad/freegrid</subdirectory>
     </workbench>
   </content>
 
