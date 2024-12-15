@@ -194,7 +194,7 @@
        </widget>
       </item>
       <item>
-       <widget class="Gui::PrefCheckBox" name="tooltipPicture">
+       <widget class="Gui::PrefCheckBox" name="TooltipPicture">
         <property name="toolTip">
          <string>Command's icon is showed in the tooltip (need restart)</string>
         </property>
@@ -205,7 +205,7 @@
          <bool>true</bool>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>tooltipPicture</cstring>
+         <cstring>TooltipPicture</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/FreeGrid</cstring>
@@ -238,7 +238,7 @@
          </spacer>
         </item>
         <item>
-         <widget class="Gui::PrefSpinBox" name="iconTooltipSize">
+         <widget class="Gui::PrefSpinBox" name="IconTooltipSize">
           <property name="sizePolicy">
            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -270,7 +270,7 @@
            <number>10</number>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>iconTooltipSize</cstring>
+           <cstring>IconTooltipSize</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/FreeGrid</cstring>
@@ -465,6 +465,15 @@
           <property name="unit" stdset="0">
            <string notr="true">mm</string>
           </property>
+          <property name="minimum">
+           <double>2.600000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>9999.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>5.000000000000000</double>
+          </property>
           <property name="value">
            <double>50.000000000000000</double>
           </property>
@@ -583,10 +592,37 @@
           </property>
          </widget>
         </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_13">
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="label_13">
+          <property name="text">
+           <string>Divider height in percent</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_13">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
         <item>
          <widget class="Gui::PrefSpinBox" name="DivisionHeight">
           <property name="toolTip">
-           <string>Divider height in percent</string>
+           <string>Relative to inside available height</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -599,6 +635,9 @@
           </property>
           <property name="maximum">
            <number>100</number>
+          </property>
+          <property name="singleStep">
+           <number>5</number>
           </property>
           <property name="value">
            <number>100</number>
@@ -636,6 +675,22 @@
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>BoxRamp</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/FreeGrid</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="FloorSupport">
+        <property name="text">
+         <string>Add integral floor support</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>FloorSupport</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/FreeGrid</cstring>
@@ -700,6 +755,12 @@
           <property name="unit" stdset="0">
            <string notr="true">mm</string>
           </property>
+          <property name="minimum">
+           <double>3.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>99.000000000000000</double>
+          </property>
           <property name="value">
            <double>15.000000000000000</double>
           </property>
@@ -712,22 +773,6 @@
          </widget>
         </item>
        </layout>
-      </item>
-      <item>
-       <widget class="Gui::PrefCheckBox" name="FloorSupport">
-        <property name="text">
-         <string>Add integral floor support</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>FloorSupport</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/FreeGrid</cstring>
-        </property>
-       </widget>
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_10">
@@ -841,6 +886,15 @@
           <property name="unit" stdset="0">
            <string notr="true">mm</string>
           </property>
+          <property name="minimum">
+           <double>2.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>6.900000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.100000000000000</double>
+          </property>
           <property name="value">
            <double>6.000000000000000</double>
           </property>
@@ -895,6 +949,15 @@
           </property>
           <property name="unit" stdset="0">
            <string notr="true">mm</string>
+          </property>
+          <property name="minimum">
+           <double>1.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>3.400000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.100000000000000</double>
           </property>
           <property name="value">
            <double>2.000000000000000</double>

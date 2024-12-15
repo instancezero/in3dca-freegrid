@@ -69,7 +69,7 @@ class BaseCommand(object):
         # to be showed, decide if remove this feature.
         # Also, scaling treats SVG as bitmaps, if SVG is small enlargement is blurry
         # TODO: New Ribbon WB offers UI to make icons bigger, make custom FreeGrid Ribbon
-        if paramFreeGrid.GetBool("tooltipPicture", True):
+        if paramFreeGrid.GetBool("TooltipPicture", True):
             tt = (
                 "<img src="
                 + get_icon_path(self.pixmap)  # full path because HTML needs it
@@ -92,7 +92,7 @@ class BaseCommand(object):
             # We can use this without the full path because we used `FreeCADGui.addIconPath()`
             "Pixmap": self.pixmap,
             "MenuText": self.menuText,
-            "ToolTip": self.toolTipWithIcon(paramFreeGrid.GetInt("iconTooltipSize", 125)),
+            "ToolTip": self.toolTipWithIcon(paramFreeGrid.GetInt("IconTooltipSize", 125)),
         }
 
 

@@ -15,17 +15,13 @@
 # * along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
 # *                                                                         *
 # ***************************************************************************
-# TODO: create a Wiki page
-
-try:
-    import FreeCAD
-    import FreeCADGui
-except ImportError as e:
-    print(f"Failed to import module: {e}\nModule not loaded with FreeCAD")
 
 import os
 
-from freecad.freegrid import ICONPATH, TRANSLATIONSPATH, UIPATH, __version__
+import FreeCAD
+import FreeCADGui
+
+from freecad.freegrid import ICONPATH, TRANSLATIONSPATH, __version__
 
 translate = FreeCAD.Qt.translate
 
@@ -48,6 +44,7 @@ except ImportError as e:
             "The class Workbench is loaded, although not imported: magic",
         )
     )
+    FreeCAD.Console.PrintError(f"{e}")
 
 
 class FreeGridWorkbench(Workbench):
@@ -78,6 +75,7 @@ class FreeGridWorkbench(Workbench):
         # Add commands to toolbar and menu
 
         from freecad.freegrid import commands
+        from freecad.freegrid.PreferencesPage import FreeGridPreferencesPage
 
         self.appendToolbar("FreeGrid", self.commands)
         self.appendMenu("FreeGrid", self.commands)
@@ -90,7 +88,7 @@ class FreeGridWorkbench(Workbench):
         FreeCADGui.addCommand("FreeGrid_About", commands.About())
 
         FreeCADGui.addIconPath(ICONPATH)
-        FreeCADGui.addPreferencePage(os.path.join(UIPATH, "preferences.ui"), "FreeGrid")
+        FreeCADGui.addPreferencePage(FreeGridPreferencesPage, "FreeGrid")
 
         FreeCAD.Console.PrintMessage(
             translate("Log", "FreeGrid Workbench initialized v{}").format(__version__) + "\n"

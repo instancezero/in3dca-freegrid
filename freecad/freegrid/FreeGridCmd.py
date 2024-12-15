@@ -3,7 +3,7 @@ import os
 import FreeCAD
 import FreeCADGui
 import Part
-from FreeCAD import Base, Placement, Rotation, Vector
+from FreeCAD import Placement, Rotation, Vector
 
 from freecad.freegrid import SPACING, UIPATH
 from freecad.freegrid.in3dca import StorageBox, StorageGrid
@@ -114,9 +114,9 @@ class StorageBoxObject(StorageObject):
         # Define value constraints for length properties
         self.min_len_constraints = {
             "Height": 2.6,  # No point having less than 2.6[mm] because geometry remains the same
-            "MagnetDiameter": 1,
-            "MagnetHeight": 0.2,
-            "BoxGripDepth": 1,
+            "MagnetDiameter": 2,
+            "MagnetHeight": 1,
+            "BoxGripDepth": 3,
         }
         self.max_len_constraints = {"MagnetDiameter": 6.9, "MagnetHeight": 3.4}
 
@@ -300,10 +300,9 @@ class BitCartridgeHolderObject(StorageBoxObject):
 
         # Define value constraints for length properties
         self.min_len_constraints = {
-            "Height": 2.6,  # No point having less than 2.6[mm] because geometry remains the same
-            "MagnetDiameter": 1,
-            "MagnetHeight": 0.2,
-            "BoxGripDepth": 1,
+            "Height": 20,  # geometry breaks at 8[mm] but don't make sense too small
+            "MagnetDiameter": 2,
+            "MagnetHeight": 1,
             "SideLength": 10,
         }
         self.max_len_constraints = {"MagnetDiameter": 6.9, "MagnetHeight": 3.4}
@@ -378,7 +377,7 @@ class StorageGridObject(StorageObject):
         self.storageType = "StorageGrid"
 
         # Define value constraints for length properties
-        self.min_len_constraints = {"MagnetDiameter": 1, "MagnetHeight": 0.2}
+        self.min_len_constraints = {"MagnetDiameter": 2, "MagnetHeight": 1}
         self.max_len_constraints = {"MagnetDiameter": 6.9, "MagnetHeight": 3.4}
 
         obj.Proxy = self
