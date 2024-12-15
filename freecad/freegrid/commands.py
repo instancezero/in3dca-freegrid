@@ -109,7 +109,7 @@ class BaseObjectCommand(BaseCommand):
 
     def Activated(self):
         Gui.doCommandGui("import freecad.freegrid.commands")
-        Gui.doCommandGui("freecad.freegrid.commands.{}.create()".format(self.__class__.__name__))
+        Gui.doCommandGui(f"freecad.freegrid.commands.{self.__class__.__name__}.create()")
         FreeCAD.ActiveDocument.recompute()
         Gui.SendMsgToActiveView("ViewFit")
 
