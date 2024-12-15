@@ -11,11 +11,12 @@ repos:
       - id: check-yaml
       - id: check-added-large-files
       - id: mixed-line-ending
-  - repo: https://github.com/psf/black
-    rev: 24.10.0
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.9.1
     hooks:
-      - id: black
-        args: ["--line-length", "100"]
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
   - repo: https://github.com/codespell-project/codespell
     rev: v2.3.0
     hooks:
