@@ -79,16 +79,54 @@ update_locale() {
 	fi
 }
 
+normalize_crowdin_files() {
+	# Rename files which locales are different on FreeCAD and delete not supported locales
+	crowdin_fixes=(af-ZA ar-SA be-BY bg-BG ca-ES cs-CZ da-DK de-DE el-GR eu-ES fi-FI
+		fil-PH fr-FR gl-ES hr-HR hu-HU it-IT ja-JP ka-GE kab-KAB ko-KR lt-LT nl-NL
+		no-NO pl-PL ro-RO ru-RU sk-SK sl-SI sr-SP tr-TR uk-UA vi-VN)
+
+	crowdin_deletes=(az-AZ bn-BD br-FR bs-BA en en-GB en-US eo-UY es-CO es-VE et-EE fa-IR he-IL
+		hi-IN hy-AM id-ID kaa lv-LV mk-MK ms-MY sat-IN si-LK ta-IN te-IN th-TH ur-PK xav yo-NG)
+
+	for pattern in "${crowdin_fixes[@]}"; do
+		find . -type f -name "*_${pattern}\.*" | while read -r file; do
+			mv -v "$file" "${file//-*./.}"
+		done
+	done
+
+	for pattern in "${crowdin_deletes[@]}"; do
+		find . -type f -name "*_${pattern}\.*" -delete
+	done
+}
+
+git_add_above_threshold() {
+	local ts_file=$1
+
+	csv_output=$(pocount --csv "$ts_file" | tail -n 1)
+	translated_messages=$(echo "$csv_output" | cut -d',' -f2)
+	total_messages=$(echo "$csv_output" | cut -d',' -f9)
+
+	progress_percentage=$((translated_messages * 100 / total_messages))
+
+	echo "Translation progress for $ts_file: $progress_percentage%"
+
+	if [ "$progress_percentage" -ge 20 ]; then
+		git add "${ts_file::-2}*" # to add ts and qm files
+	fi
+}
+
 help() {
 	echo -e "\nDescription:"
 	echo -e "\tCreate, update and release translation files."
 	echo -e "\nUsage:"
 	echo -e "\t./update_translation.sh [-R] [-U] [-r <locale>] [-u <locale>]"
 	echo -e "\nFlags:"
-	echo -e "  -R\n\tRelease all locales"
-	echo -e "  -U\n\tUpdate main translation file (locale agnostic)"
+	echo -e "  -A\n\tAdd files above threshold to commit them"
+	echo -e "  -R\n\tRelease all translations (qm files)"
+	echo -e "  -U\n\tUpdate all translations (ts files)"
 	echo -e "  -r <locale>\n\tRelease the specified locale"
 	echo -e "  -u <locale>\n\tUpdate strings for the specified locale"
+	echo -e "  -N\n\tNormalize CrowdIn filenames"
 }
 
 # Main function ------------------------------------------------------------------------------------
@@ -99,19 +137,30 @@ LRELEASE=/usr/lib/qt6/bin/lrelease # from Qt6
 # LRELEASE=lrelease                 # from Qt5
 WB="FreeGrid"
 
-# Enforce underscore on locales
-sed -i '3s/-/_/' ${WB}*.ts
+sed -i '3s/-/_/' ${WB}*.ts               # Enforce underscore on locales
+sed -i '3s/\"en\"/\"en_US\"/g' ${WB}*.ts # Use en_US
 
 if [ $# -eq 1 ]; then
-	if [ "$1" == "-R" ]; then
+	if [ "$1" == "-A" ]; then
+		find . -type f -name '*_*.ts' | while IFS= read -r file; do
+			git_add_above_threshold "$file"
+		done
+		git status
+		git commit -m "Update translations from CrowdIn"
+	elif [ "$1" == "-R" ]; then
 		find . -type f -name '*_*.ts' | while IFS= read -r file; do
 			# Release all locales
-			$LRELEASE "$file"
+			$LRELEASE -nounfinished "$file"
 			echo
 		done
 	elif [ "$1" == "-U" ]; then
-		# Update main file (agnostic)
-		update_locale
+		for locale in "${supported_locales[@]}"; do
+			update_locale "$locale"
+		done
+	elif [ "$1" == "-u" ]; then
+		update_locale # Update main file (agnostic)
+	elif [ "$1" == "-N" ]; then
+		normalize_crowdin_files
 	else
 		help
 	fi
@@ -120,7 +169,7 @@ elif [ $# -eq 2 ]; then
 	if is_locale_supported "$LOCALE"; then
 		if [ "$1" == "-r" ]; then
 			# Release locale (creation of *.qm file from *.ts file)
-			$LRELEASE "${WB}_${LOCALE}.ts"
+			$LRELEASE -nounfinished "${WB}_${LOCALE}.ts"
 		elif [ "$1" == "-u" ]; then
 			# Update main & locale files
 			update_locale
