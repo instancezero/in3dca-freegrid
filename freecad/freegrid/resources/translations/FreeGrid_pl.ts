@@ -1,39 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="fr" sourcelanguage="en_US">
+<TS version="2.1" language="pl" sourcelanguage="en_US">
   <context>
     <name>App::Property</name>
     <message>
       <location filename="../../FreeGridCmd.py" line="28"/>
       <source>Width</source>
-      <translation>Largeur</translation>
+      <translation>Szerokość</translation>
     </message>
     <message>
       <location filename="../../FreeGridCmd.py" line="29"/>
       <location filename="../../FreeGridCmd.py" line="35"/>
       <location filename="../../FreeGridCmd.py" line="83"/>
       <source>Size</source>
-      <translation>Taille</translation>
+      <translation>Rozmiar</translation>
     </message>
     <message>
       <location filename="../../FreeGridCmd.py" line="30"/>
       <source>Number of 50[mm] units in X direction</source>
-      <translation type="unfinished">Number of 50[mm] units in X direction</translation>
+      <translation>Liczba modułów 50[mm] w kierunku X</translation>
     </message>
     <message>
       <location filename="../../FreeGridCmd.py" line="34"/>
       <source>Depth</source>
-      <translation>Profondeur</translation>
+      <translation>Głębokość</translation>
     </message>
     <message>
       <location filename="../../FreeGridCmd.py" line="36"/>
       <source>Number of 50[mm] units in Y direction</source>
-      <translation type="unfinished">Number of 50[mm] units in Y direction</translation>
+      <translation>Liczba modułów 50[mm] w kierunku Y</translation>
     </message>
     <message>
       <location filename="../../FreeGridCmd.py" line="40"/>
       <source>MagnetDiameter</source>
-      <translation type="unfinished">MagnetDiameter</translation>
+      <translation>Średnica magnesu</translation>
     </message>
     <message>
       <location filename="../../FreeGridCmd.py" line="41"/>
@@ -41,34 +41,34 @@
       <location filename="../../FreeGridCmd.py" line="140"/>
       <location filename="../../FreeGridCmd.py" line="298"/>
       <source>Magnet mount</source>
-      <translation type="unfinished">Magnet mount</translation>
+      <translation>Mocowanie na magnes</translation>
     </message>
     <message>
       <location filename="../../FreeGridCmd.py" line="42"/>
       <source>Diameter of the magnet</source>
-      <translation type="unfinished">Diameter of the magnet</translation>
+      <translation>Średnica magnesu</translation>
     </message>
     <message>
       <location filename="../../FreeGridCmd.py" line="46"/>
       <source>MagnetHeight</source>
-      <translation type="unfinished">MagnetHeight</translation>
+      <translation>Wysokość magnesu</translation>
     </message>
     <message>
       <location filename="../../FreeGridCmd.py" line="48"/>
       <source>Height of the magnet</source>
-      <translation type="unfinished">Height of the magnet</translation>
+      <translation>Wysokość magnesu</translation>
     </message>
     <message>
       <location filename="../../FreeGridCmd.py" line="82"/>
       <source>Height</source>
-      <translation>Hauteur</translation>
+      <translation>Wysokość</translation>
     </message>
     <message>
       <location filename="../../FreeGridCmd.py" line="87"/>
       <source>Height (in Z direction), enter value and unit
 example: 4cm, 1dm, 3in, 0.5ft</source>
-      <translation type="unfinished">Height (in Z direction), enter value and unit
-example: 4cm, 1dm, 3in, 0.5ft</translation>
+      <translation>Wysokość (w kierunku Z), wprowadź wartość i jednostkę,
+przykład: 4cm, 1dm, 3in, 0.5ft</translation>
     </message>
     <message>
       <location filename="../../FreeGridCmd.py" line="91"/>
@@ -80,12 +80,12 @@ example: 4cm, 1dm, 3in, 0.5ft</translation>
       <location filename="../../FreeGridCmd.py" line="98"/>
       <location filename="../../FreeGridCmd.py" line="104"/>
       <source>Internal divisions</source>
-      <translation type="unfinished">Internal divisions</translation>
+      <translation>Podziały wewnętrzne</translation>
     </message>
     <message>
       <location filename="../../FreeGridCmd.py" line="93"/>
       <source>Number of divisions along the X axis</source>
-      <translation type="unfinished">Number of divisions along the X axis</translation>
+      <translation>Ilość podziałów wzdłuż osi X</translation>
     </message>
     <message>
       <location filename="../../FreeGridCmd.py" line="97"/>
@@ -95,7 +95,7 @@ example: 4cm, 1dm, 3in, 0.5ft</translation>
     <message>
       <location filename="../../FreeGridCmd.py" line="99"/>
       <source>Number of divisions along the Y axis</source>
-      <translation type="unfinished">Number of divisions along the Y axis</translation>
+      <translation>Ilość podziałów wzdłuż osi Y</translation>
     </message>
     <message>
       <location filename="../../FreeGridCmd.py" line="103"/>
@@ -244,12 +244,12 @@ example: 4cm, 1dm, 3in, 0.5ft</translation>
     <message>
       <location filename="../ui/about.ui" line="14"/>
       <source>About</source>
-      <translation>À propos</translation>
+      <translation>O programie</translation>
     </message>
     <message>
       <location filename="../ui/about.ui" line="377"/>
       <source>Close</source>
-      <translation>Fermer</translation>
+      <translation>Zamknij</translation>
     </message>
     <message>
       <location filename="../ui/about.ui" line="39"/>
@@ -259,12 +259,12 @@ example: 4cm, 1dm, 3in, 0.5ft</translation>
     <message>
       <location filename="../ui/about.ui" line="66"/>
       <source>Version:</source>
-      <translation type="unfinished">Version:</translation>
+      <translation>Wersja:</translation>
     </message>
     <message>
       <location filename="../ui/about.ui" line="93"/>
       <source>Description:</source>
-      <translation type="unfinished">Description:</translation>
+      <translation>Opis:</translation>
     </message>
     <message>
       <location filename="../ui/about.ui" line="112"/>
@@ -276,37 +276,37 @@ FreeGrid storage system components.</translation>
     <message>
       <location filename="../ui/about.ui" line="127"/>
       <source>Macro author:</source>
-      <translation type="unfinished">Macro author:</translation>
+      <translation>Autor makrodefinicji:</translation>
     </message>
     <message>
       <location filename="../ui/about.ui" line="154"/>
       <source>Workbench author:</source>
-      <translation type="unfinished">Workbench author:</translation>
+      <translation>Autor środowiska pracy:</translation>
     </message>
     <message>
       <location filename="../ui/about.ui" line="181"/>
       <source>Maintainers:</source>
-      <translation type="unfinished">Maintainers:</translation>
+      <translation>Opiekunowie:</translation>
     </message>
     <message>
       <location filename="../ui/about.ui" line="210"/>
       <source>License:</source>
-      <translation type="unfinished">License:</translation>
+      <translation>Licencja:</translation>
     </message>
     <message>
       <location filename="../ui/about.ui" line="223"/>
       <source>AGPL-3.0 license</source>
-      <translation type="unfinished">AGPL-3.0 license</translation>
+      <translation>Licencja AGPL-3.0</translation>
     </message>
     <message>
       <location filename="../ui/about.ui" line="272"/>
       <source>Forum thread</source>
-      <translation type="unfinished">Forum thread</translation>
+      <translation>Wątek na forum</translation>
     </message>
     <message>
       <location filename="../ui/about.ui" line="343"/>
       <source>Repository</source>
-      <translation type="unfinished">Repository</translation>
+      <translation>Repozytorium</translation>
     </message>
   </context>
   <context>
@@ -315,7 +315,7 @@ FreeGrid storage system components.</translation>
       <location filename="../ui/preferences.ui" line="14"/>
       <location filename="../ui/preferences.ui" line="174"/>
       <source>General</source>
-      <translation>Général</translation>
+      <translation type="unfinished">General</translation>
     </message>
     <message>
       <location filename="../ui/preferences.ui" line="20"/>
@@ -332,7 +332,7 @@ FreeGrid storage system components.</translation>
       <location filename="../ui/preferences.ui" line="57"/>
       <location filename="../ui/preferences.ui" line="338"/>
       <source>Number of 50[mm] units in X direction</source>
-      <translation type="unfinished">Number of 50[mm] units in X direction</translation>
+      <translation>Liczba modułów 50[mm] w kierunku X</translation>
     </message>
     <message>
       <location filename="../ui/preferences.ui" line="63"/>
@@ -340,19 +340,19 @@ FreeGrid storage system components.</translation>
       <location filename="../ui/preferences.ui" line="344"/>
       <location filename="../ui/preferences.ui" line="405"/>
       <source> unit(s)</source>
-      <translation type="unfinished"> unit(s)</translation>
+      <translation> jednostka(-ki)</translation>
     </message>
     <message>
       <location filename="../ui/preferences.ui" line="86"/>
       <location filename="../ui/preferences.ui" line="373"/>
       <source>Default depth</source>
-      <translation type="unfinished">Default depth</translation>
+      <translation>Domyślna głębokość</translation>
     </message>
     <message>
       <location filename="../ui/preferences.ui" line="112"/>
       <location filename="../ui/preferences.ui" line="399"/>
       <source>Number of 50[mm] units in Y direction</source>
-      <translation type="unfinished">Number of 50[mm] units in Y direction</translation>
+      <translation>Liczba modułów 50[mm] w kierunku Y</translation>
     </message>
     <message>
       <location filename="../ui/preferences.ui" line="136"/>
@@ -372,7 +372,7 @@ FreeGrid storage system components.</translation>
     <message>
       <location filename="../ui/preferences.ui" line="183"/>
       <source>Assign random color to new objects</source>
-      <translation type="unfinished">Assign random color to new objects</translation>
+      <translation>Przypisz losowy kolor do nowych obiektów</translation>
     </message>
     <message>
       <location filename="../ui/preferences.ui" line="199"/>
@@ -397,7 +397,7 @@ FreeGrid storage system components.</translation>
     <message>
       <location filename="../ui/preferences.ui" line="301"/>
       <source>Box</source>
-      <translation>Boite</translation>
+      <translation>Sześcian</translation>
     </message>
     <message>
       <location filename="../ui/preferences.ui" line="434"/>
@@ -414,7 +414,7 @@ FreeGrid storage system components.</translation>
     <message>
       <location filename="../ui/preferences.ui" line="486"/>
       <source>Number of divisions along the X axis</source>
-      <translation type="unfinished">Number of divisions along the X axis</translation>
+      <translation>Ilość podziałów wzdłuż osi X</translation>
     </message>
     <message>
       <location filename="../ui/preferences.ui" line="512"/>
@@ -425,7 +425,7 @@ FreeGrid storage system components.</translation>
     <message>
       <location filename="../ui/preferences.ui" line="541"/>
       <source>Number of divisions along the Y axis</source>
-      <translation type="unfinished">Number of divisions along the Y axis</translation>
+      <translation>Ilość podziałów wzdłuż osi Y</translation>
     </message>
     <message>
       <location filename="../ui/preferences.ui" line="589"/>
@@ -481,22 +481,22 @@ FreeGrid storage system components.</translation>
     <message>
       <location filename="../ui/preferences.ui" line="799"/>
       <source>Magnet</source>
-      <translation type="unfinished">Magnet</translation>
+      <translation>Magnes</translation>
     </message>
     <message>
       <location filename="../ui/preferences.ui" line="810"/>
       <source>Default diameter</source>
-      <translation type="unfinished">Default diameter</translation>
+      <translation>Średnica domyślnie</translation>
     </message>
     <message>
       <location filename="../ui/preferences.ui" line="836"/>
       <source>Magnet&apos;s diameter at creation time</source>
-      <translation type="unfinished">Magnet&apos;s diameter at creation time</translation>
+      <translation>Średnica magnesu w czasie tworzenia</translation>
     </message>
     <message>
       <location filename="../ui/preferences.ui" line="891"/>
       <source>Magnet&apos;s height at creation time</source>
-      <translation type="unfinished">Magnet&apos;s height at creation time</translation>
+      <translation>Wysokość magnesu w czasie tworzenia</translation>
     </message>
   </context>
   <context>
@@ -504,40 +504,40 @@ FreeGrid storage system components.</translation>
     <message>
       <location filename="../ui/sketch.ui" line="14"/>
       <source>Sketch size</source>
-      <translation type="unfinished">Sketch size</translation>
+      <translation>Rozmiar szkicu</translation>
     </message>
     <message>
       <location filename="../ui/sketch.ui" line="22"/>
       <location filename="../ui/sketch.ui" line="45"/>
       <source>Number of 50[mm] units in X direction</source>
-      <translation type="unfinished">Number of 50[mm] units in X direction</translation>
+      <translation>Liczba modułów 50[mm] w kierunku X</translation>
     </message>
     <message>
       <location filename="../ui/sketch.ui" line="25"/>
       <source>Width</source>
-      <translation>Largeur</translation>
+      <translation>Szerokość</translation>
     </message>
     <message>
       <location filename="../ui/sketch.ui" line="48"/>
       <location filename="../ui/sketch.ui" line="85"/>
       <source> unit(s)</source>
-      <translation type="unfinished"> unit(s)</translation>
+      <translation> jednostka(-ki)</translation>
     </message>
     <message>
       <location filename="../ui/sketch.ui" line="59"/>
       <location filename="../ui/sketch.ui" line="82"/>
       <source>Number of 50[mm] units in Y direction</source>
-      <translation type="unfinished">Number of 50[mm] units in Y direction</translation>
+      <translation>Liczba modułów 50[mm] w kierunku Y</translation>
     </message>
     <message>
       <location filename="../ui/sketch.ui" line="62"/>
       <source>Depth</source>
-      <translation>Profondeur</translation>
+      <translation>Głębokość</translation>
     </message>
     <message>
       <location filename="../ui/sketch.ui" line="99"/>
       <source>Include open front</source>
-      <translation type="unfinished">Include open front</translation>
+      <translation>Dołącz otwarty przód</translation>
     </message>
   </context>
   <context>
@@ -545,12 +545,12 @@ FreeGrid storage system components.</translation>
     <message>
       <location filename="../../commands.py" line="234"/>
       <source>About FreeGrid</source>
-      <translation type="unfinished">About FreeGrid</translation>
+      <translation>Informacje o FreeGrid</translation>
     </message>
     <message>
       <location filename="../../commands.py" line="236"/>
       <source>Show information about FreeGrid</source>
-      <translation type="unfinished">Show information about FreeGrid</translation>
+      <translation>Wyświetl informacje o FreeGrid</translation>
     </message>
   </context>
   <context>
@@ -571,7 +571,7 @@ FreeGrid storage system components.</translation>
     <message>
       <location filename="../../commands.py" line="222"/>
       <source>Preferences page</source>
-      <translation type="unfinished">Preferences page</translation>
+      <translation>Strona preferencji</translation>
     </message>
     <message>
       <location filename="../../commands.py" line="224"/>
@@ -584,7 +584,7 @@ FreeGrid storage system components.</translation>
     <message>
       <location filename="../../commands.py" line="198"/>
       <source>Sketch</source>
-      <translation>Esquisse</translation>
+      <translation>Szkic</translation>
     </message>
     <message>
       <location filename="../../commands.py" line="200"/>
@@ -597,12 +597,12 @@ FreeGrid storage system components.</translation>
     <message>
       <location filename="../../commands.py" line="176"/>
       <source>Storage box</source>
-      <translation type="unfinished">Storage box</translation>
+      <translation>Pudełko</translation>
     </message>
     <message>
       <location filename="../../commands.py" line="179"/>
       <source>Create a storage box</source>
-      <translation type="unfinished">Create a storage box</translation>
+      <translation>Utwórz pudełko</translation>
     </message>
   </context>
   <context>
@@ -646,7 +646,7 @@ FreeGrid storage system components.</translation>
     <message>
       <location filename="../../commands.py" line="144"/>
       <source>Create {}</source>
-      <translation type="unfinished">Create {}</translation>
+      <translation>Utwórz {}</translation>
     </message>
   </context>
   <context>

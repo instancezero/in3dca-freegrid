@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="fr" sourcelanguage="en_US">
+<TS version="2.1" language="sv_SE" sourcelanguage="en_US">
   <context>
     <name>App::Property</name>
     <message>
       <location filename="../../FreeGridCmd.py" line="28"/>
       <source>Width</source>
-      <translation>Largeur</translation>
+      <translation>Bredd</translation>
     </message>
     <message>
       <location filename="../../FreeGridCmd.py" line="29"/>
       <location filename="../../FreeGridCmd.py" line="35"/>
       <location filename="../../FreeGridCmd.py" line="83"/>
       <source>Size</source>
-      <translation>Taille</translation>
+      <translation>Storlek</translation>
     </message>
     <message>
       <location filename="../../FreeGridCmd.py" line="30"/>
@@ -23,7 +23,7 @@
     <message>
       <location filename="../../FreeGridCmd.py" line="34"/>
       <source>Depth</source>
-      <translation>Profondeur</translation>
+      <translation>Djup</translation>
     </message>
     <message>
       <location filename="../../FreeGridCmd.py" line="36"/>
@@ -61,7 +61,7 @@
     <message>
       <location filename="../../FreeGridCmd.py" line="82"/>
       <source>Height</source>
-      <translation>Hauteur</translation>
+      <translation>Höjd</translation>
     </message>
     <message>
       <location filename="../../FreeGridCmd.py" line="87"/>
@@ -244,12 +244,12 @@ example: 4cm, 1dm, 3in, 0.5ft</translation>
     <message>
       <location filename="../ui/about.ui" line="14"/>
       <source>About</source>
-      <translation>À propos</translation>
+      <translation>Om</translation>
     </message>
     <message>
       <location filename="../ui/about.ui" line="377"/>
       <source>Close</source>
-      <translation>Fermer</translation>
+      <translation>Stäng</translation>
     </message>
     <message>
       <location filename="../ui/about.ui" line="39"/>
@@ -259,7 +259,7 @@ example: 4cm, 1dm, 3in, 0.5ft</translation>
     <message>
       <location filename="../ui/about.ui" line="66"/>
       <source>Version:</source>
-      <translation type="unfinished">Version:</translation>
+      <translation>Version:</translation>
     </message>
     <message>
       <location filename="../ui/about.ui" line="93"/>
@@ -291,7 +291,7 @@ FreeGrid storage system components.</translation>
     <message>
       <location filename="../ui/about.ui" line="210"/>
       <source>License:</source>
-      <translation type="unfinished">License:</translation>
+      <translation>Licens:</translation>
     </message>
     <message>
       <location filename="../ui/about.ui" line="223"/>
@@ -301,7 +301,7 @@ FreeGrid storage system components.</translation>
     <message>
       <location filename="../ui/about.ui" line="272"/>
       <source>Forum thread</source>
-      <translation type="unfinished">Forum thread</translation>
+      <translation>Forumtråd</translation>
     </message>
     <message>
       <location filename="../ui/about.ui" line="343"/>
@@ -315,7 +315,7 @@ FreeGrid storage system components.</translation>
       <location filename="../ui/preferences.ui" line="14"/>
       <location filename="../ui/preferences.ui" line="174"/>
       <source>General</source>
-      <translation>Général</translation>
+      <translation type="unfinished">General</translation>
     </message>
     <message>
       <location filename="../ui/preferences.ui" line="20"/>
@@ -397,7 +397,7 @@ FreeGrid storage system components.</translation>
     <message>
       <location filename="../ui/preferences.ui" line="301"/>
       <source>Box</source>
-      <translation>Boite</translation>
+      <translation type="unfinished">Box</translation>
     </message>
     <message>
       <location filename="../ui/preferences.ui" line="434"/>
@@ -515,7 +515,7 @@ FreeGrid storage system components.</translation>
     <message>
       <location filename="../ui/sketch.ui" line="25"/>
       <source>Width</source>
-      <translation>Largeur</translation>
+      <translation>Bredd</translation>
     </message>
     <message>
       <location filename="../ui/sketch.ui" line="48"/>
@@ -532,7 +532,7 @@ FreeGrid storage system components.</translation>
     <message>
       <location filename="../ui/sketch.ui" line="62"/>
       <source>Depth</source>
-      <translation>Profondeur</translation>
+      <translation>Djup</translation>
     </message>
     <message>
       <location filename="../ui/sketch.ui" line="99"/>
@@ -584,7 +584,7 @@ FreeGrid storage system components.</translation>
     <message>
       <location filename="../../commands.py" line="198"/>
       <source>Sketch</source>
-      <translation>Esquisse</translation>
+      <translation type="unfinished">Sketch</translation>
     </message>
     <message>
       <location filename="../../commands.py" line="200"/>
