@@ -1,17 +1,5 @@
 # About translating FreeGrid Workbench
 
-<!--toc:start-->
-- [About translating FreeGrid Workbench](#about-translating-freegrid-workbench)
-  - [Updating translations template file](#updating-translations-template-file)
-  - [Creating file for missing locale](#creating-file-for-missing-locale)
-    - [Using script](#using-script)
-    - [Renaming file](#renaming-file)
-  - [Translating](#translating)
-  - [Compiling translations](#compiling-translations)
-  - [Sending translations](#sending-translations)
-  - [More information](#more-information)
-<!--toc:end-->
-
 > [!NOTE]
 > All commands **must** be run in `./freecad/freegrid/resources/translations/` directory.
 
@@ -20,12 +8,23 @@
 > `lupdate` and `lrelease` from **Qt6** version. Using the versions from
 > Qt5 is not advised because they're buggy.
 
+| language | translated strings | completion |
+|:----|:----:|:-----:|
+|de|16|12%|
+|el|23|18%|
+|es-AR|126|100%|
+|es-ES|126|100%|
+|fr|11|8%|
+|it|16|12%|
+|pl|61|48%|
+|sv-SE|11|8%|
+
 ## Updating translations template file
 
 To update the template file from source files you should use this command:
 
 ```shell
-./update_translation.sh -U
+./update_translation.sh -u
 ```
 
 Once done you can commit the changes and upload the new file to CrowdIn platform
@@ -84,6 +83,17 @@ package or in a text editor like `xed`, `mousepad`, `gedit`, `nano`, `vim`/`nvim
 Alternatively you can visit the **FreeCAD-addons** project on CrowdIn platform
 at <https://crowdin.com/project/freecad-addons> webpage and find your language,
 once done, look for the **FreeGrid** project.
+
+## Finding potential typos
+
+You can use the `aspell` command along with `awk` to potentially find some typos on the translation.
+Also you need to install the language package, `aspell-es` for Spanish.
+
+```sh
+awk 'BEGIN { RS="</translation>" } /<translation>/ { sub(/.*<translation>/, ""); print }' \
+  STEMFIE_es-ES.ts | aspell --lang=es list | sort | uniq
+
+```
 
 ## Compiling translations
 

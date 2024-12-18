@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="fr" sourcelanguage="en_US">
+<TS version="2.1" language="el" sourcelanguage="en_US">
   <context>
     <name>App::Property</name>
     <message>
       <location filename="../../FreeGridCmd.py" line="31"/>
       <source>Width</source>
-      <translation>Largeur</translation>
+      <translation>Πλάτος</translation>
     </message>
     <message>
       <location filename="../../FreeGridCmd.py" line="32"/>
       <location filename="../../FreeGridCmd.py" line="43"/>
       <location filename="../../FreeGridCmd.py" line="131"/>
       <source>Size</source>
-      <translation>Taille</translation>
+      <translation>Μέγεθος</translation>
     </message>
     <message>
       <location filename="../../FreeGridCmd.py" line="33"/>
@@ -23,7 +23,7 @@
     <message>
       <location filename="../../FreeGridCmd.py" line="42"/>
       <source>Depth</source>
-      <translation>Profondeur</translation>
+      <translation>Βάθος</translation>
     </message>
     <message>
       <location filename="../../FreeGridCmd.py" line="44"/>
@@ -61,7 +61,7 @@
     <message>
       <location filename="../../FreeGridCmd.py" line="130"/>
       <source>Height</source>
-      <translation>Hauteur</translation>
+      <translation>Ύψος</translation>
     </message>
     <message>
       <location filename="../../FreeGridCmd.py" line="135"/>
@@ -274,54 +274,53 @@ Starts at zero.</translation>
     <message>
       <location filename="../ui/about.ui" line="14"/>
       <source>About</source>
-      <translation>À propos</translation>
+      <translation>Σχετικά με</translation>
     </message>
     <message>
       <location filename="../ui/about.ui" line="39"/>
       <source>About FreeGrid Workbench</source>
-      <translation type="unfinished">About FreeGrid Workbench</translation>
+      <translation>Σχετικά με τον πάγκο εργασίας FreeGrid</translation>
     </message>
     <message>
       <location filename="../ui/about.ui" line="66"/>
       <source>Version:</source>
-      <translation type="unfinished">Version:</translation>
+      <translation>Έκδοση:</translation>
     </message>
     <message>
       <location filename="../ui/about.ui" line="93"/>
       <source>Description:</source>
-      <translation type="unfinished">Description:</translation>
+      <translation>Περιγραφή:</translation>
     </message>
     <message>
       <location filename="../ui/about.ui" line="112"/>
       <source>A simple tools workbench for generating
 FreeGrid storage system components.</source>
-      <translation type="unfinished">A simple tools workbench for generating
-FreeGrid storage system components.</translation>
+      <translation>Ένας απλός πάγκος εργαλείων για τη δημιουργία στοιχείων του συστήματος αποθήκευσης FreeGrid.</translation>
     </message>
     <message>
       <location filename="../ui/about.ui" line="127"/>
       <source>Macro author:</source>
-      <translation type="unfinished">Macro author:</translation>
+      <translation>Συγγραφέας μακροεντολών:</translation>
     </message>
     <message>
       <location filename="../ui/about.ui" line="154"/>
       <source>Workbench author:</source>
-      <translation type="unfinished">Workbench author:</translation>
+      <translation>Συγγραφέας Workbench:</translation>
     </message>
     <message>
       <location filename="../ui/about.ui" line="181"/>
       <source>Maintainers:</source>
-      <translation type="unfinished">Maintainers:</translation>
+      <translation>Συντηρητές:</translation>
     </message>
     <message>
       <location filename="../ui/about.ui" line="210"/>
       <source>License:</source>
-      <translation type="unfinished">License:</translation>
+      <translation>Άδεια:</translation>
     </message>
     <message>
       <location filename="../ui/about.ui" line="223"/>
       <source>AGPL-3.0 license</source>
-      <translation type="unfinished">AGPL-3.0 license</translation>
+      <translation>Άδεια AGPL-3.0</translation>
     </message>
     <message>
       <location filename="../ui/about.ui" line="263"/>
@@ -331,17 +330,17 @@ FreeGrid storage system components.</translation>
     <message>
       <location filename="../ui/about.ui" line="328"/>
       <source>Forum thread</source>
-      <translation type="unfinished">Forum thread</translation>
+      <translation>Φόρουμ</translation>
     </message>
     <message>
       <location filename="../ui/about.ui" line="399"/>
       <source>Repository</source>
-      <translation type="unfinished">Repository</translation>
+      <translation>Αποθετήριο</translation>
     </message>
     <message>
       <location filename="../ui/about.ui" line="433"/>
       <source>Close</source>
-      <translation>Fermer</translation>
+      <translation>Κλείσιμο</translation>
     </message>
   </context>
   <context>
@@ -350,7 +349,7 @@ FreeGrid storage system components.</translation>
       <location filename="../ui/preferences.ui" line="14"/>
       <location filename="../ui/preferences.ui" line="174"/>
       <source>General</source>
-      <translation>Général</translation>
+      <translation type="unfinished">General</translation>
     </message>
     <message>
       <location filename="../ui/preferences.ui" line="20"/>
@@ -432,7 +431,7 @@ FreeGrid storage system components.</translation>
     <message>
       <location filename="../ui/preferences.ui" line="301"/>
       <source>Box</source>
-      <translation>Boite</translation>
+      <translation>Κουτί</translation>
     </message>
     <message>
       <location filename="../ui/preferences.ui" line="434"/>
@@ -544,7 +543,7 @@ FreeGrid storage system components.</translation>
     <message>
       <location filename="../ui/sketch.ui" line="14"/>
       <source>Sketch size</source>
-      <translation type="unfinished">Sketch size</translation>
+      <translation>Μέγεθος Σκίτσου</translation>
     </message>
     <message>
       <location filename="../ui/sketch.ui" line="22"/>
@@ -555,7 +554,7 @@ FreeGrid storage system components.</translation>
     <message>
       <location filename="../ui/sketch.ui" line="25"/>
       <source>Width</source>
-      <translation>Largeur</translation>
+      <translation>Πλάτος</translation>
     </message>
     <message>
       <location filename="../ui/sketch.ui" line="48"/>
@@ -572,12 +571,12 @@ FreeGrid storage system components.</translation>
     <message>
       <location filename="../ui/sketch.ui" line="62"/>
       <source>Depth</source>
-      <translation>Profondeur</translation>
+      <translation>Βάθος</translation>
     </message>
     <message>
       <location filename="../ui/sketch.ui" line="99"/>
       <source>Include open front</source>
-      <translation type="unfinished">Include open front</translation>
+      <translation>Συμπεριλάβετε την ανοιχτή πρόσοψη</translation>
     </message>
   </context>
   <context>
@@ -624,7 +623,7 @@ FreeGrid storage system components.</translation>
     <message>
       <location filename="../../commands.py" line="207"/>
       <source>Sketch</source>
-      <translation>Esquisse</translation>
+      <translation>Σχέδιο</translation>
     </message>
     <message>
       <location filename="../../commands.py" line="209"/>
