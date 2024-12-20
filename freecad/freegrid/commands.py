@@ -9,6 +9,7 @@ from PySide import QtGui
 from freecad.freegrid import ICONPATH, IMGPATH, SPACING, UIPATH, get_icon_path
 from freecad.freegrid.FreeGridCmd import (
     BitCartridgeHolderObject,
+    CornerConnectorObject,
     SketchUI,
     StorageBoxObject,
     StorageGridObject,
@@ -146,9 +147,9 @@ class BaseObjectCommand(BaseCommand):
             # Assign a random color to newly created object
             obj.ViewObject.ShapeColor = tuple(random.random() for _ in range(3))
 
-        if cls.NAME == "StorageGrid":
+        if cls.NAME in ["StorageGrid", "CornerConnector"]:
             obj.Placement = Placement(Base.Vector(0.0, 0.0, -3.2), Rotation())
-        else:
+        elif cls.NAME in ["StorageBox", "StorageCartridgeHolder"]:
             try:
                 selection = Gui.Selection.getSelection()
                 if len(selection) == 1:
@@ -199,6 +200,14 @@ class CreateStorageGrid(BaseObjectCommand):
     pixmap = "grid"
     menuText = QT_TRANSLATE_NOOP("FreeGrid_StorageGrid", "Storage grid")
     toolTip = QT_TRANSLATE_NOOP("FreeGrid_StorageGrid", "Create a storage grid")
+
+
+class CreateCornerConnector(BaseObjectCommand):
+    NAME = "CornerConnector"
+    FREEGRID_FUNCTION = CornerConnectorObject
+    pixmap = "FreeGrid_CornerConnector"
+    menuText = QT_TRANSLATE_NOOP("FreeGrid_CornerConnector", "Corner connector")
+    toolTip = QT_TRANSLATE_NOOP("FreeGrid_CornerConnector", "Create a corner connector")
 
 
 class CreateSketch(BaseCommand):
