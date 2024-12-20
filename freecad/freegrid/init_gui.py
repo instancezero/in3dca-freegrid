@@ -60,6 +60,7 @@ class FreeGridWorkbench(Workbench):
         "FreeGrid_StorageBox",
         "FreeGrid_BitCartridgeHolder",
         "FreeGrid_StorageGrid",
+        "FreeGrid_CornerConnector",
         "FreeGrid_Sketch",
         "Separator",
         "FreeGrid_PreferencesPage",
@@ -83,6 +84,7 @@ class FreeGridWorkbench(Workbench):
         FreeCADGui.addCommand("FreeGrid_StorageBox", commands.CreateStorageBox())
         FreeCADGui.addCommand("FreeGrid_BitCartridgeHolder", commands.CreateBitCartridgeHolder())
         FreeCADGui.addCommand("FreeGrid_StorageGrid", commands.CreateStorageGrid())
+        FreeCADGui.addCommand("FreeGrid_CornerConnector", commands.CreateCornerConnector())
         FreeCADGui.addCommand("FreeGrid_Sketch", commands.CreateSketch())
         FreeCADGui.addCommand("FreeGrid_PreferencesPage", commands.OpenPreferencePage())
         FreeCADGui.addCommand("FreeGrid_About", commands.About())

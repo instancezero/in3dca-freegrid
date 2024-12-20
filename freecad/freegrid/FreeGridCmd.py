@@ -21,6 +21,7 @@ class StorageObject:
 
     def __init__(self, obj):
         """Initialize common properties."""
+        obj.Proxy = self  # really needed
 
         self.storageType = ""
         self.min_len_constraints = {}
@@ -31,23 +32,13 @@ class StorageObject:
             QT_TRANSLATE_NOOP("App::Property", "Width"),  # property
             QT_TRANSLATE_NOOP("App::Property", "Size"),  # group
             QT_TRANSLATE_NOOP("App::Property", "Number of 50[mm] units in X direction"),  # tooltip
-        ).Width = (
-            1,
-            1,
-            50,
-            1,
-        )  # (Default, Minimum, Maximum, Step size)
+        ).Width = (1, 1, 50, 1)  # (Default, Minimum, Maximum, Step size)
         obj.addProperty(
             "App::PropertyIntegerConstraint",
             QT_TRANSLATE_NOOP("App::Property", "Depth"),
             QT_TRANSLATE_NOOP("App::Property", "Size"),
             QT_TRANSLATE_NOOP("App::Property", "Number of 50[mm] units in Y direction"),
-        ).Depth = (
-            1,
-            1,
-            50,
-            1,
-        )  # (Default, Minimum, Maximum, Step size)
+        ).Depth = (1, 1, 50, 1)  # (Default, Minimum, Maximum, Step size)
         obj.addProperty(
             "App::PropertyLength",
             QT_TRANSLATE_NOOP("App::Property", "MagnetDiameter"),
@@ -64,7 +55,7 @@ class StorageObject:
         obj.addExtension("Part::AttachExtensionPython")
         obj.AttacherEngine = "Engine Plane"
 
-    def check_limits(self, obj, prop):
+    def check_limits(self, obj, prop: str):
         """Check if the property being modified is in the dictionaries and apply the constraint"""
         # Old-file compatibility
         if not hasattr(self, "min_len_constraints"):
@@ -122,7 +113,6 @@ class StorageBoxObject(StorageObject):
 
         obj.Depth = (paramFreeGrid.GetInt("BoxDepth", 1), 1, 50, 1)
         obj.Width = (paramFreeGrid.GetInt("BoxWidth", 1), 1, 50, 1)
-        obj.Proxy = self
 
         # TODO: check if it works when default system is imperial
         obj.addProperty(
@@ -206,7 +196,7 @@ class StorageBoxObject(StorageObject):
             ),
         ).PositionY = (0, 0, 50, 1)
 
-    def onChanged(self, obj, prop):
+    def onChanged(self, obj, prop: str):
         """Verify length properties are inside limits and disable properties if needed"""
 
         self.check_limits(obj, prop)
@@ -380,7 +370,6 @@ class StorageGridObject(StorageObject):
         self.min_len_constraints = {"MagnetDiameter": 2, "MagnetHeight": 1}
         self.max_len_constraints = {"MagnetDiameter": 6.9, "MagnetHeight": 3.4}
 
-        obj.Proxy = self
         obj.Depth = (paramFreeGrid.GetInt("GridDepth", 2), 1, 50, 1)
         obj.Width = (paramFreeGrid.GetInt("GridWidth", 3), 1, 50, 1)
         obj.addProperty(
@@ -411,7 +400,7 @@ class StorageGridObject(StorageObject):
             QT_TRANSLATE_NOOP("App::Property", "Include magnet receptacles"),
         ).IncludeMagnets = paramFreeGrid.GetBool("IncludeMagnets", True)
 
-    def onChanged(self, obj, prop):
+    def onChanged(self, obj, prop: str):
         """Verify length properties are inside limits and disable properties if needed"""
 
         self.check_limits(obj, prop)
@@ -449,6 +438,78 @@ class StorageGridObject(StorageObject):
 
         obj.Shape = self.generate_grid(obj)
         obj.Label = self.descriptionStr(obj)
+
+
+class CornerConnectorObject:
+    """Corner connector used to join grids at the corners."""
+
+    def __init__(self, obj):
+        """Initialize common properties."""
+        obj.Proxy = self  # really needed
+
+        obj.addProperty(
+            "App::PropertyBool",
+            QT_TRANSLATE_NOOP("App::Property", "Half"),
+            QT_TRANSLATE_NOOP("App::Property", "Connector features"),
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Use an entire connector to join 4 grids.\nUse half connector to join 2 grids.",
+            ),
+        ).Half = paramFreeGrid.GetBool("Half", False)
+        obj.addExtension("Part::AttachExtensionPython")
+        obj.AttacherEngine = "Engine Plane"
+        FreeCAD.Console.PrintMessage("corner connector")
+
+    def onChanged(self, obj, prop: str):
+        pass
+
+    def execute(self, obj):
+        """Create the requested bit cartridge holder object."""
+
+        FreeCAD.Console.PrintMessage("execute\n")
+        # Update position when attached-to object changes position
+        obj.positionBySupport()
+
+        # Draw corner-quarter and mirror it twice
+        p0 = Vector(0, 0, 0)
+        p1 = Vector(2.5, 0, 0)
+        p2 = Vector(2.5, 0.5, 0)
+        p3 = Vector(3.2, 1.2, 0)
+        p4 = Vector(4.4, 1.2, 0)
+        p5 = Vector(4.4, 2.3, 0)
+        p6 = Vector(2.3, 2.3, 0)
+        p7 = Vector(2.3, 4.4, 0)
+        p8 = Vector(1.2, 4.4, 0)
+        p9 = Vector(1.2, 3.2, 0)
+        p10 = Vector(0.5, 2.5, 0)
+        p11 = Vector(0, 2.5, 0)
+
+        l0 = Part.LineSegment(p0, p1)
+        l1 = Part.LineSegment(p1, p2)
+        l2 = Part.LineSegment(p2, p3)
+        l3 = Part.LineSegment(p3, p4)
+        l4 = Part.LineSegment(p4, p5)
+        l5 = Part.LineSegment(p5, p6)
+        l6 = Part.LineSegment(p6, p7)
+        l7 = Part.LineSegment(p7, p8)
+        l8 = Part.LineSegment(p8, p9)
+        l9 = Part.LineSegment(p9, p10)
+        l10 = Part.LineSegment(p10, p11)
+        l11 = Part.LineSegment(p11, p0)
+
+        # Create the shape and wire
+        shape = Part.Shape([l0, l1, l2, l3, l4, l5, l6, l7, l8, l9, l10, l11])
+        wire = Part.Wire(shape.Edges)
+        face = Part.Face(wire)
+
+        # Extrude the solid
+        extrusion = face.extrude(Vector(0, 0, 1.9))
+        e2 = extrusion.mirror(Vector(0, 0, 0), Vector(1, 0, 0))  # Mirror across the YZ plane
+        extrusion = extrusion.fuse(e2)
+        if not obj.Half:
+            e2 = extrusion.mirror(Vector(0, 0, 0), Vector(0, 1, 0))  # Mirror across the YZ plane
+            extrusion = extrusion.fuse(e2)
+        obj.Shape = extrusion.removeSplitter()
 
 
 class SketchUI:
