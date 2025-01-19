@@ -181,7 +181,7 @@ class BaseObjectCommand(BaseCommand):
 class CreateStorageBox(BaseObjectCommand):
     NAME = "StorageBox"
     FREEGRID_FUNCTION = StorageBoxObject
-    pixmap = "box"
+    pixmap = "FreeGrid_StorageBox"
     menuText = QT_TRANSLATE_NOOP("FreeGrid_StorageBox", "Storage box")
     toolTip = QT_TRANSLATE_NOOP("FreeGrid_StorageBox", "Create a storage box")
 
@@ -189,7 +189,7 @@ class CreateStorageBox(BaseObjectCommand):
 class CreateBitCartridgeHolder(BaseObjectCommand):
     NAME = "StorageCartridgeHolder"
     FREEGRID_FUNCTION = BitCartridgeHolderObject
-    pixmap = "holder"
+    pixmap = "FreeGrid_BitCartridgeHolder"
     menuText = QT_TRANSLATE_NOOP("FreeGrid_BitCartridgeHolder", "Bit cartridge holder")
     toolTip = QT_TRANSLATE_NOOP("FreeGrid_BitCartridgeHolder", "Create a bit cartridge holder")
 
@@ -197,7 +197,7 @@ class CreateBitCartridgeHolder(BaseObjectCommand):
 class CreateStorageGrid(BaseObjectCommand):
     NAME = "StorageGrid"
     FREEGRID_FUNCTION = StorageGridObject
-    pixmap = "grid"
+    pixmap = "FreeGrid_StorageGrid"
     menuText = QT_TRANSLATE_NOOP("FreeGrid_StorageGrid", "Storage grid")
     toolTip = QT_TRANSLATE_NOOP("FreeGrid_StorageGrid", "Create a storage grid")
 
@@ -211,7 +211,7 @@ class CreateCornerConnector(BaseObjectCommand):
 
 
 class CreateSketch(BaseCommand):
-    pixmap = "sketch"
+    pixmap = "FreeGrid_Sketch"
     menuText = QT_TRANSLATE_NOOP("FreeGrid_Sketch", "Sketch")
     toolTip = QT_TRANSLATE_NOOP("FreeGrid_Sketch", "Generate inner box profile")
 
@@ -235,7 +235,7 @@ class CreateSketch(BaseCommand):
 
 
 class OpenPreferencePage(BaseCommand):
-    pixmap = "preferences_page"
+    pixmap = "FreeGrid_PreferencesPage"
     menuText = QT_TRANSLATE_NOOP("FreeGrid_PreferencesPage", "Preferences page")
     toolTip = QT_TRANSLATE_NOOP("FreeGrid_PreferencesPage", "Open the FreeGrid preferences page")
 
@@ -247,7 +247,7 @@ class OpenPreferencePage(BaseCommand):
 
 
 class About(BaseCommand):
-    pixmap = "about"
+    pixmap = "FreeGrid_About"
     menuText = QT_TRANSLATE_NOOP("FreeGrid_About", "About FreeGrid")
     toolTip = QT_TRANSLATE_NOOP("FreeGrid_About", "Show information about FreeGrid")
 

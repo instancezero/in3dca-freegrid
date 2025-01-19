@@ -8,7 +8,7 @@
    version="1.1"
    id="svg1"
    inkscape:version="1.4 (e7c3feb100, 2024-10-09)"
-   sodipodi:docname="sketch.svg"
+   sodipodi:docname="FreeGrid_Sketch.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -17,7 +17,7 @@
    xmlns:cc="http://creativecommons.org/ns#"
    xmlns:dc="http://purl.org/dc/elements/1.1/">
   <title
-     id="title21">sketch</title>
+     id="title21">FreeGrid - Sketch</title>
   <sodipodi:namedview
      id="namedview1"
      pagecolor="#323232"
@@ -29,9 +29,9 @@
      inkscape:deskcolor="#191919"
      inkscape:document-units="px"
      showgrid="true"
-     inkscape:zoom="45.254831"
-     inkscape:cx="46.580662"
-     inkscape:cy="46.326546"
+     inkscape:zoom="7.9999995"
+     inkscape:cx="24.937502"
+     inkscape:cy="46.312503"
      inkscape:window-width="1894"
      inkscape:window-height="999"
      inkscape:window-x="0"
@@ -133,7 +133,7 @@
           </cc:Agent>
         </dc:publisher>
         <dc:relation>https://wiki.freecad.org/Artwork</dc:relation>
-        <dc:title>sketch</dc:title>
+        <dc:title>FreeGrid - Sketch</dc:title>
       </cc:Work>
       <cc:License
          rdf:about="http://creativecommons.org/licenses/by-nc-sa/4.0/">
