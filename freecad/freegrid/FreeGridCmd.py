@@ -78,13 +78,13 @@ class StorageObject:
         ):
             setattr(obj, prop, str(self.max_len_constraints[prop]) + "mm")
 
-    def descriptionStr(self, obj):
+    def descriptionStr(self, obj) -> str:
         """Return the designation of the storage object."""
         h = ""
-        # FIXME: Make it work with inches
         if self.storageType in ["StorageBox", "BitCartridgeHolder"]:
-            h = "x{:.1f}mm".format(obj.Height.getValueAs("mm").Value)
-        return self.storageType + "_" + str(obj.Width) + "x" + str(obj.Depth) + h
+            (preferred, value, unit) = obj.Height.getUserPreferred()
+            h = f"x{preferred}"
+        return f"{self.storageType}_{obj.Width}x{obj.Depth}{h}"
 
     def onDocumentRestored(self, obj):
         # If in the future more properties are added we can check here
@@ -114,7 +114,6 @@ class StorageBoxObject(StorageObject):
         obj.Depth = (paramFreeGrid.GetInt("BoxDepth", 1), 1, 50, 1)
         obj.Width = (paramFreeGrid.GetInt("BoxWidth", 1), 1, 50, 1)
 
-        # TODO: check if it works when default system is imperial
         obj.addProperty(
             "App::PropertyLength",
             QT_TRANSLATE_NOOP("App::Property", "Height"),
