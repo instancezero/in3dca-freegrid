@@ -66,22 +66,15 @@ class BaseCommand(object):
 
     def toolTipWithIcon(self, icon_size: int = 125) -> str:
         """Return an html formatted string to include the command's icon along the tooltip."""
-        # NOTE:The use of html code on the toolTip prevents the translated strings
-        # to be showed, decide if remove this feature.
-        # Also, scaling treats SVG as bitmaps, if SVG is small enlargement is blurry
+        # NOTE: Scaling treats SVG as bitmaps, if SVG is small enlargement is blurry
         # TODO: New Ribbon WB offers UI to make icons bigger, make custom FreeGrid Ribbon
         if paramFreeGrid.GetBool("tooltipPicture", True):
+            # NOTE: This works because the context of the tooltip string is exactly the same
+            # as the name for the pixmap used, which is the command name.
             tt = (
-                "<img src="
-                + get_icon_path(self.pixmap)  # full path because HTML needs it
-                + " align=left width='"
-                + str(icon_size)
-                + "' height='"
-                + str(icon_size)
-                + "' type='image/svg+xml' />"
-                + "<div align=center>"
-                + self.toolTip
-                + "</div>"
+                f"<img src={get_icon_path(self.pixmap)} align=left "
+                f"width='{icon_size}' height='{icon_size}' type='image/svg+xml'/>"
+                f"<div align=center>{translate(self.pixmap, self.toolTip)}</div>"
             )
         else:
             tt = self.toolTip
