@@ -24,8 +24,8 @@ class StorageObject:
         obj.Proxy = self  # Stores a reference to the Python instance in the FeaturePython object
 
         self.storageType = ""
-        self.min_len_constraints = {}
-        self.max_len_constraints = {}
+        self.min_len_constraints = {"MagnetDiameter": 1, "MagnetHeight": 0.2}
+        self.max_len_constraints = {"MagnetDiameter": 6.9, "MagnetHeight": 3.4}
 
         obj.addProperty(
             "App::PropertyIntegerConstraint",
@@ -103,13 +103,9 @@ class StorageBoxObject(StorageObject):
         self.magnetOptions = ["allIntersections", "cornersOnly", "noMagnets"]
 
         # Define value constraints for length properties
-        self.min_len_constraints = {
-            "Height": 2.6,  # No point having less than 2.6[mm] because geometry remains the same
-            "MagnetDiameter": 1,
-            "MagnetHeight": 0.2,
-            "BoxGripDepth": 1,
-        }
-        self.max_len_constraints = {"MagnetDiameter": 6.9, "MagnetHeight": 3.4}
+        # No point having less than 2.6[mm] because geometry remains the same
+        self.min_len_constraints["Height"] = 2.6
+        self.min_len_constraints["BoxGripDepth"] = 1
 
         obj.Depth = (paramFreeGrid.GetInt("BoxDepth", 1), 1, 50, 1)
         obj.Width = (paramFreeGrid.GetInt("BoxWidth", 1), 1, 50, 1)
@@ -289,14 +285,7 @@ class BitCartridgeHolderObject(StorageBoxObject):
         self.storageType = "BitCartridgeHolder"
 
         # Define value constraints for length properties
-        self.min_len_constraints = {
-            "Height": 2.6,  # No point having less than 2.6[mm] because geometry remains the same
-            "MagnetDiameter": 1,
-            "MagnetHeight": 0.2,
-            "BoxGripDepth": 1,
-            "SideLength": 10,
-        }
-        self.max_len_constraints = {"MagnetDiameter": 6.9, "MagnetHeight": 3.4}
+        self.min_len_constraints["SideLength"] = 10
 
         for prop in [
             "DivisionsX",
@@ -368,8 +357,6 @@ class StorageGridObject(StorageObject):
         self.storageType = "StorageGrid"
 
         # Define value constraints for length properties
-        self.min_len_constraints = {"MagnetDiameter": 1, "MagnetHeight": 0.2}
-        self.max_len_constraints = {"MagnetDiameter": 6.9, "MagnetHeight": 3.4}
 
         obj.Depth = (paramFreeGrid.GetInt("GridDepth", 2), 1, 50, 1)
         obj.Width = (paramFreeGrid.GetInt("GridWidth", 3), 1, 50, 1)
