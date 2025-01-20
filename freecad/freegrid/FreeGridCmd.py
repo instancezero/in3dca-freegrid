@@ -31,25 +31,29 @@ class StorageObject:
             "App::PropertyIntegerConstraint",
             QT_TRANSLATE_NOOP("App::Property", "Width"),  # property
             QT_TRANSLATE_NOOP("App::Property", "Size"),  # group
-            QT_TRANSLATE_NOOP("App::Property", "Number of 50[mm] units in X direction"),  # tooltip
+            QT_TRANSLATE_NOOP(
+                "App::Property", "Number of 50 mm units in the X direction of the object"
+            ),  # tooltip
         ).Width = (1, 1, 50, 1)  # (Default, Minimum, Maximum, Step size)
         obj.addProperty(
             "App::PropertyIntegerConstraint",
             QT_TRANSLATE_NOOP("App::Property", "Depth"),
             QT_TRANSLATE_NOOP("App::Property", "Size"),
-            QT_TRANSLATE_NOOP("App::Property", "Number of 50[mm] units in Y direction"),
+            QT_TRANSLATE_NOOP(
+                "App::Property", "Number of 50 mm units in the Y direction of the object"
+            ),
         ).Depth = (1, 1, 50, 1)  # (Default, Minimum, Maximum, Step size)
         obj.addProperty(
             "App::PropertyLength",
             QT_TRANSLATE_NOOP("App::Property", "MagnetDiameter"),
             QT_TRANSLATE_NOOP("App::Property", "Magnet mount"),
-            QT_TRANSLATE_NOOP("App::Property", "Diameter of the magnet"),
+            QT_TRANSLATE_NOOP("App::Property", "Diameter of the magnets"),
         ).MagnetDiameter = paramFreeGrid.GetString("MagnetDiameter", "6mm")
         obj.addProperty(
             "App::PropertyLength",
             QT_TRANSLATE_NOOP("App::Property", "MagnetHeight"),
             QT_TRANSLATE_NOOP("App::Property", "Magnet mount"),
-            QT_TRANSLATE_NOOP("App::Property", "Height of the magnet"),
+            QT_TRANSLATE_NOOP("App::Property", "Height of the magnets"),
         ).MagnetHeight = paramFreeGrid.GetString("MagnetHeight", "2mm")
 
         obj.addExtension("Part::AttachExtensionPython")
@@ -115,10 +119,7 @@ class StorageBoxObject(StorageObject):
             "App::PropertyLength",
             QT_TRANSLATE_NOOP("App::Property", "Height"),
             QT_TRANSLATE_NOOP("App::Property", "Size"),
-            QT_TRANSLATE_NOOP(
-                "App::Property",
-                "Height (in Z direction), enter value and unit\nexample: 4cm, 1dm, 3in, 0.5ft",
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Height of the object"),
         ).Height = paramFreeGrid.GetString("BoxHeight", "50mm")
         obj.addProperty(
             "App::PropertyIntegerConstraint",
@@ -142,25 +143,25 @@ class StorageBoxObject(StorageObject):
             "App::PropertyBool",
             QT_TRANSLATE_NOOP("App::Property", "BoxOpenFront"),
             QT_TRANSLATE_NOOP("App::Property", "Box features"),
-            QT_TRANSLATE_NOOP("App::Property", "Leave front of box open"),
+            QT_TRANSLATE_NOOP("App::Property", "Leave the front of the box open"),
         ).BoxOpenFront = paramFreeGrid.GetBool("BoxOpenFront", False)
         obj.addProperty(
             "App::PropertyBool",
             QT_TRANSLATE_NOOP("App::Property", "BoxRamp"),
             QT_TRANSLATE_NOOP("App::Property", "Box features"),
-            QT_TRANSLATE_NOOP("App::Property", "Add scoop inside front of box"),
+            QT_TRANSLATE_NOOP("App::Property", "Add a scoop inside the front of box"),
         ).BoxRamp = paramFreeGrid.GetBool("BoxRamp", True)
         obj.addProperty(
             "App::PropertyBool",
             QT_TRANSLATE_NOOP("App::Property", "BoxGrip"),
             QT_TRANSLATE_NOOP("App::Property", "Box features"),
-            QT_TRANSLATE_NOOP("App::Property", "Add grip/label area at rear of box"),
+            QT_TRANSLATE_NOOP("App::Property", "Add grip/label area at the rear of box"),
         ).BoxGrip = paramFreeGrid.GetBool("BoxGrip", True)
         obj.addProperty(
             "App::PropertyLength",
             QT_TRANSLATE_NOOP("App::Property", "BoxGripDepth"),
             QT_TRANSLATE_NOOP("App::Property", "Box features"),
-            QT_TRANSLATE_NOOP("App::Property", "Depth of grip (mm)"),
+            QT_TRANSLATE_NOOP("App::Property", "Depth of the grip"),
         ).BoxGripDepth = paramFreeGrid.GetString("BoxGripDepth", "15mm")
         obj.addProperty(
             "App::PropertyBool",
@@ -180,7 +181,7 @@ class StorageBoxObject(StorageObject):
             QT_TRANSLATE_NOOP("App::Property", "PositionX"),
             QT_TRANSLATE_NOOP("App::Property", "Position on grid"),
             QT_TRANSLATE_NOOP(
-                "App::Property", "Box position on the grid in the X axis.\nStarts at zero."
+                "App::Property", "Object position on the grid along the X axis.\nStarts at zero."
             ),
         ).PositionX = (0, 0, 50, 1)
         obj.addProperty(
@@ -188,7 +189,7 @@ class StorageBoxObject(StorageObject):
             QT_TRANSLATE_NOOP("App::Property", "PositionY"),
             QT_TRANSLATE_NOOP("App::Property", "Position on grid"),
             QT_TRANSLATE_NOOP(
-                "App::Property", "Box position on the grid in the Y axis.\nStarts at zero."
+                "App::Property", "Object position on the grid along the Y axis.\nStarts at zero."
             ),
         ).PositionY = (0, 0, 50, 1)
 
@@ -364,7 +365,7 @@ class StorageGridObject(StorageObject):
             "App::PropertyBool",
             QT_TRANSLATE_NOOP("App::Property", "CornerConnectors"),
             QT_TRANSLATE_NOOP("App::Property", "Grid features"),
-            QT_TRANSLATE_NOOP("App::Property", "Space for locking connectors at outside corners"),
+            QT_TRANSLATE_NOOP("App::Property", "Add cavities for corner connectors"),
         ).CornerConnectors = paramFreeGrid.GetBool("CornerConnectors", True)
         obj.addProperty(
             "App::PropertyBool",
@@ -378,7 +379,7 @@ class StorageGridObject(StorageObject):
             "App::PropertyLength",
             QT_TRANSLATE_NOOP("App::Property", "ExtraBottomMaterial"),
             QT_TRANSLATE_NOOP("App::Property", "Grid features"),
-            QT_TRANSLATE_NOOP("App::Property", "Extra thickness under grid (mm)"),
+            QT_TRANSLATE_NOOP("App::Property", "Extra thickness under the grid"),
         ).ExtraBottomMaterial = "16mm"
         obj.setEditorMode("ExtraBottomMaterial", True)
         obj.addProperty(
