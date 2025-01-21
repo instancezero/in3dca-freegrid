@@ -396,7 +396,7 @@ class StorageGridObject(StorageObject):
         if prop == "IncludeMagnets":
             obj.setEditorMode("MagnetDiameter", not obj.IncludeMagnets)
             obj.setEditorMode("MagnetHeight", not obj.IncludeMagnets)
-        elif prop == "IsSubtractive" and hasattr(self, "ExtraBottomMaterial"):
+        elif prop == "IsSubtractive" and hasattr(obj, "ExtraBottomMaterial"):
             obj.setEditorMode("ExtraBottomMaterial", not obj.IsSubtractive)
 
     def generate_grid(self, obj) -> Part.Shape:
