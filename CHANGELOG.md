@@ -1,5 +1,25 @@
 # Changelog
 
+## [2.2.0] - 2024-01-22
+
+### Added
+
+* Add corner connector command
+* Add script to download translations from CrowdIn using API
+* Add German, Greek, French, Italian, Polish and Swedish translations
+
+### Changed
+
+* Rename the icons following FreeCAD guidelines
+* Match properties tooltips to wiki
+* Update Spanish translations
+
+### Fixed
+
+* Show commands' translated tooltips when using custom tooltip with icon
+* Show height in the units preferred by the user
+* Use correct parameter on `ExtraBottomMaterial` check
+
 ## [2.1.1] - 2024-11-10
 
 ### Fixed
@@ -135,3 +155,4 @@
 [2.0.1]: https://github.com/instancezero/in3dca-freegrid/releases/tag/2.0.1
 [2.1.0]: https://github.com/instancezero/in3dca-freegrid/releases/tag/2.1.0
 [2.1.1]: https://github.com/instancezero/in3dca-freegrid/releases/tag/2.1.1
+[2.2.0]: https://github.com/instancezero/in3dca-freegrid/releases/tag/2.2.0
