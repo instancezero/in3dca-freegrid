@@ -92,7 +92,6 @@ Also you need to install the language package, `aspell-es` for Spanish.
 ```sh
 awk 'BEGIN { RS="</translation>" } /<translation>/ { sub(/.*<translation>/, ""); print }' \
   STEMFIE_es-ES.ts | aspell --lang=es list | sort | uniq
-
 ```
 
 ## Compiling translations

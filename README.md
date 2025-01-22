@@ -1,12 +1,12 @@
 # In3D.ca FreeGrid Storage System
 
-[![Contributions welcome][ContribsW_badge]][ContribsW]
-[![license][license_badge]][license]
+[![Contributions welcome][ContribsW_badge]][CONTRIBUTING]
+[![license][license_badge]][LICENSE]
 [![FreeCAD Addon Manager][AddonMgr_badge]][AddonMgr]
 [![pre-commit enabled][pre-commit_badge]][pre-commit]
 [![Code style: black][black_badge]][black]
 [![GitHub Tag][tag_bagde]][tag]
-[![Common Changelog][cc_badge]][cc]
+[![Common Changelog][cc_badge]][CHANGELOG]
 
 This project contains a [FreeCAD](https://freecad.org) workbench for generating FreeGrid storage system components.
 
@@ -47,7 +47,7 @@ git clone https://github.com/instancezero/in3dca-freegrid.git FreeGrid
 
 If you are updating the code, restarting FreeCAD is advised.
 
-## Community/Contributing
+## Community
 
 If you use FreeGrid or add components to it, please let me know! If you have models
 on Cults, tag them with In3D and FreeGrid.
@@ -61,8 +61,13 @@ You can find In3D:
 
 Bug reports, coding questions, and pull requests are welcome on Github.
 
-Read our [CONTRIBUTING](./CONTRIBUTING.md) file to know about ways how to help
-on the FreeCAD workbench.
+## Changelog
+
+Read our [CHANGELOG] file to know about the latest changes.
+
+## Contributing
+
+Read our [CONTRIBUTING] file to know about ways how to help on the workbench.
 
 ## History
 
@@ -158,17 +163,17 @@ is that the used material and time needed to complete a big grid can be exaggera
 this problem we can make use of another manufacturing process as CNC machining. Now we can save some minutes and
 a few bucks if instead of plastic filament we use a wood/acrylic board to carve the grid shape.
 
-[ContribsW]: ./CONTRIBUTING.md
-[ContribsW_badge]: https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat
-[license]: ./LICENSE
-[license_badge]: https://img.shields.io/github/license/instancezero/in3dca-freegrid
-[AddonMgr]: https://github.com/FreeCAD/FreeCAD-addons
-[AddonMgr_badge]: https://img.shields.io/badge/FreeCAD%20addon%20manager-available-brightgreen
-[pre-commit]: https://github.com/pre-commit/pre-commit
-[pre-commit_badge]: https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit
-[black]: https://github.com/psf/black
-[black_badge]: https://img.shields.io/badge/code%20style-black-000000.svg
-[tag]: https://github.com/instancezero/in3dca-freegrid/releases
-[tag_bagde]: https://img.shields.io/github/v/tag/instancezero/in3dca-freegrid
+[CONTRIBUTING]: ./CONTRIBUTING.md
+[ContribsW_badge]: <https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat>
+[LICENSE]: ./LICENSE
+[license_badge]: <https://img.shields.io/github/license/instancezero/in3dca-freegrid>
+[AddonMgr]: <https://github.com/FreeCAD/FreeCAD-addons>
+[AddonMgr_badge]: <https://img.shields.io/badge/FreeCAD%20addon%20manager-available-brightgreen>
+[pre-commit]: <https://github.com/pre-commit/pre-commit>
+[pre-commit_badge]: <https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit>
+[black]: <https://github.com/psf/black>
+[black_badge]: <https://img.shields.io/badge/code%20style-black-000000.svg>
+[tag]: <https://github.com/instancezero/in3dca-freegrid/releases>
+[tag_bagde]: <https://img.shields.io/github/v/tag/instancezero/in3dca-freegrid>
 [cc_badge]: <https://common-changelog.org/badge.svg>
-[cc]: <./CHANGELOG.md>
+[CHANGELOG]: ./CHANGELOG.md

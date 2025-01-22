@@ -1,15 +1,5 @@
 # Contributing
 
-<!--toc:start-->
-- [Contributing](#contributing)
-  - [Ideas](#ideas)
-  - [Translators](#translators)
-  - [Designers](#designers)
-  - [Accessibility / Usability](#accessibility-usability)
-  - [Testers](#testers)
-  - [Developers](#developers)
-<!--toc:end-->
-
 Contributing can take many forms, and it's not just for developers.
 
 ## Ideas
@@ -38,14 +28,9 @@ translations directory.
 
 ## Designers
 
-Our current icons were created by exporting a page with a isometric view created
-by TechDraw WB to `.dwg` file and then modified on Inkscape to a`.svg` file.
-
-Do our icons make you cringe too? Think you can do better?
+Some icons may need to be improved to be easier to identify.
 
 Here are FreeCAD guidelines for icons: <https://wiki.freecad.org/Artwork_Guidelines>
-
-Related: <https://forum.freecad.org/viewtopic.php?t=87507>
 
 ## Accessibility / Usability
 
@@ -62,4 +47,5 @@ If you have QA experience consider writing test cases.
 ## Developers
 
 Feel like adding a new feature? Open a ticket to use as a basis for discussion.
+
 Describe your idea. Discuss with the other developers and start coding!
