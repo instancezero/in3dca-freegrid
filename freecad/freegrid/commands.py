@@ -9,6 +9,7 @@ from PySide import QtGui
 from freecad.freegrid import ICONPATH, IMGPATH, SPACING, UIPATH, get_icon_path
 from freecad.freegrid.FreeGridCmd import (
     BitCartridgeHolderObject,
+    CornerConnectorObject,
     SketchUI,
     StorageBoxObject,
     StorageGridObject,
@@ -65,22 +66,15 @@ class BaseCommand(object):
 
     def toolTipWithIcon(self, icon_size: int = 125) -> str:
         """Return an html formatted string to include the command's icon along the tooltip."""
-        # NOTE:The use of html code on the toolTip prevents the translated strings
-        # to be showed, decide if remove this feature.
-        # Also, scaling treats SVG as bitmaps, if SVG is small enlargement is blurry
+        # NOTE: Scaling treats SVG as bitmaps, if SVG is small enlargement is blurry
         # TODO: New Ribbon WB offers UI to make icons bigger, make custom FreeGrid Ribbon
         if paramFreeGrid.GetBool("tooltipPicture", True):
+            # NOTE: This works because the context of the tooltip string is exactly the same
+            # as the name for the pixmap used, which is the command name.
             tt = (
-                "<img src="
-                + get_icon_path(self.pixmap)  # full path because HTML needs it
-                + " align=left width='"
-                + str(icon_size)
-                + "' height='"
-                + str(icon_size)
-                + "' type='image/svg+xml' />"
-                + "<div align=center>"
-                + self.toolTip
-                + "</div>"
+                f"<img src={get_icon_path(self.pixmap)} align=left "
+                f"width='{icon_size}' height='{icon_size}' type='image/svg+xml'/>"
+                f"<div align=center>{translate(self.pixmap, self.toolTip)}</div>"
             )
         else:
             tt = self.toolTip
@@ -109,7 +103,7 @@ class BaseObjectCommand(BaseCommand):
 
     def Activated(self):
         Gui.doCommandGui("import freecad.freegrid.commands")
-        Gui.doCommandGui("freecad.freegrid.commands.{}.create()".format(self.__class__.__name__))
+        Gui.doCommandGui(f"freecad.freegrid.commands.{self.__class__.__name__}.create()")
         FreeCAD.ActiveDocument.recompute()
         Gui.SendMsgToActiveView("ViewFit")
 
@@ -146,9 +140,9 @@ class BaseObjectCommand(BaseCommand):
             # Assign a random color to newly created object
             obj.ViewObject.ShapeColor = tuple(random.random() for _ in range(3))
 
-        if cls.NAME == "StorageGrid":
+        if cls.NAME in ["StorageGrid", "CornerConnector"]:
             obj.Placement = Placement(Base.Vector(0.0, 0.0, -3.2), Rotation())
-        else:
+        elif cls.NAME in ["StorageBox", "StorageCartridgeHolder"]:
             try:
                 selection = Gui.Selection.getSelection()
                 if len(selection) == 1:
@@ -180,7 +174,7 @@ class BaseObjectCommand(BaseCommand):
 class CreateStorageBox(BaseObjectCommand):
     NAME = "StorageBox"
     FREEGRID_FUNCTION = StorageBoxObject
-    pixmap = "box"
+    pixmap = "FreeGrid_StorageBox"
     menuText = QT_TRANSLATE_NOOP("FreeGrid_StorageBox", "Storage box")
     toolTip = QT_TRANSLATE_NOOP("FreeGrid_StorageBox", "Create a storage box")
 
@@ -188,7 +182,7 @@ class CreateStorageBox(BaseObjectCommand):
 class CreateBitCartridgeHolder(BaseObjectCommand):
     NAME = "StorageCartridgeHolder"
     FREEGRID_FUNCTION = BitCartridgeHolderObject
-    pixmap = "holder"
+    pixmap = "FreeGrid_BitCartridgeHolder"
     menuText = QT_TRANSLATE_NOOP("FreeGrid_BitCartridgeHolder", "Bit cartridge holder")
     toolTip = QT_TRANSLATE_NOOP("FreeGrid_BitCartridgeHolder", "Create a bit cartridge holder")
 
@@ -196,13 +190,21 @@ class CreateBitCartridgeHolder(BaseObjectCommand):
 class CreateStorageGrid(BaseObjectCommand):
     NAME = "StorageGrid"
     FREEGRID_FUNCTION = StorageGridObject
-    pixmap = "grid"
+    pixmap = "FreeGrid_StorageGrid"
     menuText = QT_TRANSLATE_NOOP("FreeGrid_StorageGrid", "Storage grid")
     toolTip = QT_TRANSLATE_NOOP("FreeGrid_StorageGrid", "Create a storage grid")
 
 
+class CreateCornerConnector(BaseObjectCommand):
+    NAME = "CornerConnector"
+    FREEGRID_FUNCTION = CornerConnectorObject
+    pixmap = "FreeGrid_CornerConnector"
+    menuText = QT_TRANSLATE_NOOP("FreeGrid_CornerConnector", "Corner connector")
+    toolTip = QT_TRANSLATE_NOOP("FreeGrid_CornerConnector", "Create a corner connector")
+
+
 class CreateSketch(BaseCommand):
-    pixmap = "sketch"
+    pixmap = "FreeGrid_Sketch"
     menuText = QT_TRANSLATE_NOOP("FreeGrid_Sketch", "Sketch")
     toolTip = QT_TRANSLATE_NOOP("FreeGrid_Sketch", "Generate inner box profile")
 
@@ -226,7 +228,7 @@ class CreateSketch(BaseCommand):
 
 
 class OpenPreferencePage(BaseCommand):
-    pixmap = "preferences_page"
+    pixmap = "FreeGrid_PreferencesPage"
     menuText = QT_TRANSLATE_NOOP("FreeGrid_PreferencesPage", "Preferences page")
     toolTip = QT_TRANSLATE_NOOP("FreeGrid_PreferencesPage", "Open the FreeGrid preferences page")
 
@@ -238,7 +240,7 @@ class OpenPreferencePage(BaseCommand):
 
 
 class About(BaseCommand):
-    pixmap = "about"
+    pixmap = "FreeGrid_About"
     menuText = QT_TRANSLATE_NOOP("FreeGrid_About", "About FreeGrid")
     toolTip = QT_TRANSLATE_NOOP("FreeGrid_About", "Show information about FreeGrid")
 

@@ -3,7 +3,7 @@ import os
 import FreeCAD
 import FreeCADGui
 import Part
-from FreeCAD import Base, Placement, Rotation, Vector
+from FreeCAD import Placement, Rotation, Vector
 
 from freecad.freegrid import SPACING, UIPATH
 from freecad.freegrid.in3dca import StorageBox, StorageGrid
@@ -21,50 +21,45 @@ class StorageObject:
 
     def __init__(self, obj):
         """Initialize common properties."""
+        obj.Proxy = self  # Stores a reference to the Python instance in the FeaturePython object
 
         self.storageType = ""
-        self.min_len_constraints = {}
-        self.max_len_constraints = {}
+        self.min_len_constraints = {"MagnetDiameter": 1, "MagnetHeight": 0.2}
+        self.max_len_constraints = {"MagnetDiameter": 6.9, "MagnetHeight": 3.4}
 
         obj.addProperty(
             "App::PropertyIntegerConstraint",
             QT_TRANSLATE_NOOP("App::Property", "Width"),  # property
             QT_TRANSLATE_NOOP("App::Property", "Size"),  # group
-            QT_TRANSLATE_NOOP("App::Property", "Number of 50[mm] units in X direction"),  # tooltip
-        ).Width = (
-            1,
-            1,
-            50,
-            1,
-        )  # (Default, Minimum, Maximum, Step size)
+            QT_TRANSLATE_NOOP(
+                "App::Property", "Number of 50 mm units in the X direction of the object"
+            ),  # tooltip
+        ).Width = (1, 1, 50, 1)  # (Default, Minimum, Maximum, Step size)
         obj.addProperty(
             "App::PropertyIntegerConstraint",
             QT_TRANSLATE_NOOP("App::Property", "Depth"),
             QT_TRANSLATE_NOOP("App::Property", "Size"),
-            QT_TRANSLATE_NOOP("App::Property", "Number of 50[mm] units in Y direction"),
-        ).Depth = (
-            1,
-            1,
-            50,
-            1,
-        )  # (Default, Minimum, Maximum, Step size)
+            QT_TRANSLATE_NOOP(
+                "App::Property", "Number of 50 mm units in the Y direction of the object"
+            ),
+        ).Depth = (1, 1, 50, 1)  # (Default, Minimum, Maximum, Step size)
         obj.addProperty(
             "App::PropertyLength",
             QT_TRANSLATE_NOOP("App::Property", "MagnetDiameter"),
             QT_TRANSLATE_NOOP("App::Property", "Magnet mount"),
-            QT_TRANSLATE_NOOP("App::Property", "Diameter of the magnet"),
+            QT_TRANSLATE_NOOP("App::Property", "Diameter of the magnets"),
         ).MagnetDiameter = paramFreeGrid.GetString("MagnetDiameter", "6mm")
         obj.addProperty(
             "App::PropertyLength",
             QT_TRANSLATE_NOOP("App::Property", "MagnetHeight"),
             QT_TRANSLATE_NOOP("App::Property", "Magnet mount"),
-            QT_TRANSLATE_NOOP("App::Property", "Height of the magnet"),
+            QT_TRANSLATE_NOOP("App::Property", "Height of the magnets"),
         ).MagnetHeight = paramFreeGrid.GetString("MagnetHeight", "2mm")
 
         obj.addExtension("Part::AttachExtensionPython")
         obj.AttacherEngine = "Engine Plane"
 
-    def check_limits(self, obj, prop):
+    def check_limits(self, obj, prop: str):
         """Check if the property being modified is in the dictionaries and apply the constraint"""
         # Old-file compatibility
         if not hasattr(self, "min_len_constraints"):
@@ -83,13 +78,13 @@ class StorageObject:
         ):
             setattr(obj, prop, str(self.max_len_constraints[prop]) + "mm")
 
-    def descriptionStr(self, obj):
+    def descriptionStr(self, obj) -> str:
         """Return the designation of the storage object."""
         h = ""
-        # FIXME: Make it work with inches
         if self.storageType in ["StorageBox", "BitCartridgeHolder"]:
-            h = "x{:.1f}mm".format(obj.Height.getValueAs("mm").Value)
-        return self.storageType + "_" + str(obj.Width) + "x" + str(obj.Depth) + h
+            (preferred, value, unit) = obj.Height.getUserPreferred()
+            h = f"x{preferred}"
+        return f"{self.storageType}_{obj.Width}x{obj.Depth}{h}"
 
     def onDocumentRestored(self, obj):
         # If in the future more properties are added we can check here
@@ -112,27 +107,18 @@ class StorageBoxObject(StorageObject):
         self.magnetOptions = ["allIntersections", "cornersOnly", "noMagnets"]
 
         # Define value constraints for length properties
-        self.min_len_constraints = {
-            "Height": 2.6,  # No point having less than 2.6[mm] because geometry remains the same
-            "MagnetDiameter": 1,
-            "MagnetHeight": 0.2,
-            "BoxGripDepth": 1,
-        }
-        self.max_len_constraints = {"MagnetDiameter": 6.9, "MagnetHeight": 3.4}
+        # No point having less than 2.6[mm] because geometry remains the same
+        self.min_len_constraints["Height"] = 2.6
+        self.min_len_constraints["BoxGripDepth"] = 1
 
         obj.Depth = (paramFreeGrid.GetInt("BoxDepth", 1), 1, 50, 1)
         obj.Width = (paramFreeGrid.GetInt("BoxWidth", 1), 1, 50, 1)
-        obj.Proxy = self
 
-        # TODO: check if it works when default system is imperial
         obj.addProperty(
             "App::PropertyLength",
             QT_TRANSLATE_NOOP("App::Property", "Height"),
             QT_TRANSLATE_NOOP("App::Property", "Size"),
-            QT_TRANSLATE_NOOP(
-                "App::Property",
-                "Height (in Z direction), enter value and unit\nexample: 4cm, 1dm, 3in, 0.5ft",
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Height of the object"),
         ).Height = paramFreeGrid.GetString("BoxHeight", "50mm")
         obj.addProperty(
             "App::PropertyIntegerConstraint",
@@ -156,25 +142,25 @@ class StorageBoxObject(StorageObject):
             "App::PropertyBool",
             QT_TRANSLATE_NOOP("App::Property", "BoxOpenFront"),
             QT_TRANSLATE_NOOP("App::Property", "Box features"),
-            QT_TRANSLATE_NOOP("App::Property", "Leave front of box open"),
+            QT_TRANSLATE_NOOP("App::Property", "Leave the front of the box open"),
         ).BoxOpenFront = paramFreeGrid.GetBool("BoxOpenFront", False)
         obj.addProperty(
             "App::PropertyBool",
             QT_TRANSLATE_NOOP("App::Property", "BoxRamp"),
             QT_TRANSLATE_NOOP("App::Property", "Box features"),
-            QT_TRANSLATE_NOOP("App::Property", "Add scoop inside front of box"),
+            QT_TRANSLATE_NOOP("App::Property", "Add a scoop inside the front of box"),
         ).BoxRamp = paramFreeGrid.GetBool("BoxRamp", True)
         obj.addProperty(
             "App::PropertyBool",
             QT_TRANSLATE_NOOP("App::Property", "BoxGrip"),
             QT_TRANSLATE_NOOP("App::Property", "Box features"),
-            QT_TRANSLATE_NOOP("App::Property", "Add grip/label area at rear of box"),
+            QT_TRANSLATE_NOOP("App::Property", "Add grip/label area at the rear of box"),
         ).BoxGrip = paramFreeGrid.GetBool("BoxGrip", True)
         obj.addProperty(
             "App::PropertyLength",
             QT_TRANSLATE_NOOP("App::Property", "BoxGripDepth"),
             QT_TRANSLATE_NOOP("App::Property", "Box features"),
-            QT_TRANSLATE_NOOP("App::Property", "Depth of grip (mm)"),
+            QT_TRANSLATE_NOOP("App::Property", "Depth of the grip"),
         ).BoxGripDepth = paramFreeGrid.GetString("BoxGripDepth", "15mm")
         obj.addProperty(
             "App::PropertyBool",
@@ -194,7 +180,7 @@ class StorageBoxObject(StorageObject):
             QT_TRANSLATE_NOOP("App::Property", "PositionX"),
             QT_TRANSLATE_NOOP("App::Property", "Position on grid"),
             QT_TRANSLATE_NOOP(
-                "App::Property", "Box position on the grid in the X axis.\nStarts at zero."
+                "App::Property", "Object position on the grid along the X axis.\nStarts at zero."
             ),
         ).PositionX = (0, 0, 50, 1)
         obj.addProperty(
@@ -202,11 +188,11 @@ class StorageBoxObject(StorageObject):
             QT_TRANSLATE_NOOP("App::Property", "PositionY"),
             QT_TRANSLATE_NOOP("App::Property", "Position on grid"),
             QT_TRANSLATE_NOOP(
-                "App::Property", "Box position on the grid in the Y axis.\nStarts at zero."
+                "App::Property", "Object position on the grid along the Y axis.\nStarts at zero."
             ),
         ).PositionY = (0, 0, 50, 1)
 
-    def onChanged(self, obj, prop):
+    def onChanged(self, obj, prop: str):
         """Verify length properties are inside limits and disable properties if needed"""
 
         self.check_limits(obj, prop)
@@ -299,14 +285,7 @@ class BitCartridgeHolderObject(StorageBoxObject):
         self.storageType = "BitCartridgeHolder"
 
         # Define value constraints for length properties
-        self.min_len_constraints = {
-            "Height": 2.6,  # No point having less than 2.6[mm] because geometry remains the same
-            "MagnetDiameter": 1,
-            "MagnetHeight": 0.2,
-            "BoxGripDepth": 1,
-            "SideLength": 10,
-        }
-        self.max_len_constraints = {"MagnetDiameter": 6.9, "MagnetHeight": 3.4}
+        self.min_len_constraints["SideLength"] = 10
 
         for prop in [
             "DivisionsX",
@@ -378,17 +357,14 @@ class StorageGridObject(StorageObject):
         self.storageType = "StorageGrid"
 
         # Define value constraints for length properties
-        self.min_len_constraints = {"MagnetDiameter": 1, "MagnetHeight": 0.2}
-        self.max_len_constraints = {"MagnetDiameter": 6.9, "MagnetHeight": 3.4}
 
-        obj.Proxy = self
         obj.Depth = (paramFreeGrid.GetInt("GridDepth", 2), 1, 50, 1)
         obj.Width = (paramFreeGrid.GetInt("GridWidth", 3), 1, 50, 1)
         obj.addProperty(
             "App::PropertyBool",
             QT_TRANSLATE_NOOP("App::Property", "CornerConnectors"),
             QT_TRANSLATE_NOOP("App::Property", "Grid features"),
-            QT_TRANSLATE_NOOP("App::Property", "Space for locking connectors at outside corners"),
+            QT_TRANSLATE_NOOP("App::Property", "Add cavities for corner connectors"),
         ).CornerConnectors = paramFreeGrid.GetBool("CornerConnectors", True)
         obj.addProperty(
             "App::PropertyBool",
@@ -402,7 +378,7 @@ class StorageGridObject(StorageObject):
             "App::PropertyLength",
             QT_TRANSLATE_NOOP("App::Property", "ExtraBottomMaterial"),
             QT_TRANSLATE_NOOP("App::Property", "Grid features"),
-            QT_TRANSLATE_NOOP("App::Property", "Extra thickness under grid (mm)"),
+            QT_TRANSLATE_NOOP("App::Property", "Extra thickness under the grid"),
         ).ExtraBottomMaterial = "16mm"
         obj.setEditorMode("ExtraBottomMaterial", True)
         obj.addProperty(
@@ -412,7 +388,7 @@ class StorageGridObject(StorageObject):
             QT_TRANSLATE_NOOP("App::Property", "Include magnet receptacles"),
         ).IncludeMagnets = paramFreeGrid.GetBool("IncludeMagnets", True)
 
-    def onChanged(self, obj, prop):
+    def onChanged(self, obj, prop: str):
         """Verify length properties are inside limits and disable properties if needed"""
 
         self.check_limits(obj, prop)
@@ -420,7 +396,7 @@ class StorageGridObject(StorageObject):
         if prop == "IncludeMagnets":
             obj.setEditorMode("MagnetDiameter", not obj.IncludeMagnets)
             obj.setEditorMode("MagnetHeight", not obj.IncludeMagnets)
-        elif prop == "IsSubtractive" and hasattr(self, "ExtraBottomMaterial"):
+        elif prop == "IsSubtractive" and hasattr(obj, "ExtraBottomMaterial"):
             obj.setEditorMode("ExtraBottomMaterial", not obj.IsSubtractive)
 
     def generate_grid(self, obj) -> Part.Shape:
@@ -450,6 +426,76 @@ class StorageGridObject(StorageObject):
 
         obj.Shape = self.generate_grid(obj)
         obj.Label = self.descriptionStr(obj)
+
+
+class CornerConnectorObject:
+    """Corner connector used to join grids at the corners."""
+
+    def __init__(self, obj):
+        """Initialize common properties."""
+        obj.Proxy = self  # Stores a reference to the Python instance in the FeaturePython object
+
+        obj.addProperty(
+            "App::PropertyBool",
+            QT_TRANSLATE_NOOP("App::Property", "Half"),
+            QT_TRANSLATE_NOOP("App::Property", "Connector features"),
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Use an entire connector to join 4 grids.\nUse half connector to join 2 grids.",
+            ),
+        ).Half = paramFreeGrid.GetBool("Half", False)
+        obj.addExtension("Part::AttachExtensionPython")
+        obj.AttacherEngine = "Engine Plane"
+
+    def onChanged(self, obj, prop: str):
+        pass
+
+    def execute(self, obj):
+        """Create the requested bit cartridge holder object."""
+
+        # Update position when attached-to object changes position
+        obj.positionBySupport()
+
+        # Draw corner-quarter and mirror it twice
+        p0 = Vector(0, 0, 0)
+        p1 = Vector(2.5, 0, 0)
+        p2 = Vector(2.5, 0.5, 0)
+        p3 = Vector(3.2, 1.2, 0)
+        p4 = Vector(4.4, 1.2, 0)
+        p5 = Vector(4.4, 2.3, 0)
+        p6 = Vector(2.3, 2.3, 0)
+        p7 = Vector(2.3, 4.4, 0)
+        p8 = Vector(1.2, 4.4, 0)
+        p9 = Vector(1.2, 3.2, 0)
+        p10 = Vector(0.5, 2.5, 0)
+        p11 = Vector(0, 2.5, 0)
+
+        l0 = Part.LineSegment(p0, p1)
+        l1 = Part.LineSegment(p1, p2)
+        l2 = Part.LineSegment(p2, p3)
+        l3 = Part.LineSegment(p3, p4)
+        l4 = Part.LineSegment(p4, p5)
+        l5 = Part.LineSegment(p5, p6)
+        l6 = Part.LineSegment(p6, p7)
+        l7 = Part.LineSegment(p7, p8)
+        l8 = Part.LineSegment(p8, p9)
+        l9 = Part.LineSegment(p9, p10)
+        l10 = Part.LineSegment(p10, p11)
+        l11 = Part.LineSegment(p11, p0)
+
+        # Create the shape and wire
+        shape = Part.Shape([l0, l1, l2, l3, l4, l5, l6, l7, l8, l9, l10, l11])
+        wire = Part.Wire(shape.Edges)
+        face = Part.Face(wire)
+
+        # Extrude the solid
+        extrusion = face.extrude(Vector(0, 0, 1.9))
+        e2 = extrusion.mirror(Vector(0, 0, 0), Vector(1, 0, 0))  # Mirror across the YZ plane
+        extrusion = extrusion.fuse(e2)
+        if not obj.Half:
+            e2 = extrusion.mirror(Vector(0, 0, 0), Vector(0, 1, 0))  # Mirror across the XZ plane
+            extrusion = extrusion.fuse(e2)
+        obj.Shape = extrusion.removeSplitter()
 
 
 class SketchUI:

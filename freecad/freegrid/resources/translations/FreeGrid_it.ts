@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="fr" sourcelanguage="en_US">
+<TS version="2.1" language="it" sourcelanguage="en_US">
   <context>
     <name>App::Property</name>
     <message>
       <location filename="../../FreeGridCmd.py" line="31"/>
       <source>Width</source>
-      <translation>Largeur</translation>
+      <translation>Larghezza</translation>
     </message>
     <message>
       <location filename="../../FreeGridCmd.py" line="32"/>
       <location filename="../../FreeGridCmd.py" line="43"/>
       <location filename="../../FreeGridCmd.py" line="131"/>
       <source>Size</source>
-      <translation>Taille</translation>
+      <translation>Dimensione</translation>
     </message>
     <message>
       <location filename="../../FreeGridCmd.py" line="33"/>
@@ -23,7 +23,7 @@
     <message>
       <location filename="../../FreeGridCmd.py" line="42"/>
       <source>Depth</source>
-      <translation>Profondeur</translation>
+      <translation>Profondità</translation>
     </message>
     <message>
       <location filename="../../FreeGridCmd.py" line="44"/>
@@ -61,7 +61,7 @@
     <message>
       <location filename="../../FreeGridCmd.py" line="130"/>
       <source>Height</source>
-      <translation>Hauteur</translation>
+      <translation>Altezza</translation>
     </message>
     <message>
       <location filename="../../FreeGridCmd.py" line="135"/>
@@ -274,7 +274,7 @@ Starts at zero.</translation>
     <message>
       <location filename="../ui/about.ui" line="14"/>
       <source>About</source>
-      <translation>À propos</translation>
+      <translation>Informazioni</translation>
     </message>
     <message>
       <location filename="../ui/about.ui" line="39"/>
@@ -284,12 +284,12 @@ Starts at zero.</translation>
     <message>
       <location filename="../ui/about.ui" line="66"/>
       <source>Version:</source>
-      <translation type="unfinished">Version:</translation>
+      <translation>Versione:</translation>
     </message>
     <message>
       <location filename="../ui/about.ui" line="93"/>
       <source>Description:</source>
-      <translation type="unfinished">Description:</translation>
+      <translation>Descrizione:</translation>
     </message>
     <message>
       <location filename="../ui/about.ui" line="112"/>
@@ -301,27 +301,27 @@ FreeGrid storage system components.</translation>
     <message>
       <location filename="../ui/about.ui" line="127"/>
       <source>Macro author:</source>
-      <translation type="unfinished">Macro author:</translation>
+      <translation>Autore della macro:</translation>
     </message>
     <message>
       <location filename="../ui/about.ui" line="154"/>
       <source>Workbench author:</source>
-      <translation type="unfinished">Workbench author:</translation>
+      <translation>Autore dell'Ambiente di lavoro:</translation>
     </message>
     <message>
       <location filename="../ui/about.ui" line="181"/>
       <source>Maintainers:</source>
-      <translation type="unfinished">Maintainers:</translation>
+      <translation>Manutentori:</translation>
     </message>
     <message>
       <location filename="../ui/about.ui" line="210"/>
       <source>License:</source>
-      <translation type="unfinished">License:</translation>
+      <translation>Licenza:</translation>
     </message>
     <message>
       <location filename="../ui/about.ui" line="223"/>
       <source>AGPL-3.0 license</source>
-      <translation type="unfinished">AGPL-3.0 license</translation>
+      <translation>Licenza AGPL-3.0</translation>
     </message>
     <message>
       <location filename="../ui/about.ui" line="263"/>
@@ -331,7 +331,7 @@ FreeGrid storage system components.</translation>
     <message>
       <location filename="../ui/about.ui" line="328"/>
       <source>Forum thread</source>
-      <translation type="unfinished">Forum thread</translation>
+      <translation>Discussione nel forum</translation>
     </message>
     <message>
       <location filename="../ui/about.ui" line="399"/>
@@ -341,7 +341,7 @@ FreeGrid storage system components.</translation>
     <message>
       <location filename="../ui/about.ui" line="433"/>
       <source>Close</source>
-      <translation>Fermer</translation>
+      <translation>Chiudi</translation>
     </message>
   </context>
   <context>
@@ -350,7 +350,7 @@ FreeGrid storage system components.</translation>
       <location filename="../ui/preferences.ui" line="14"/>
       <location filename="../ui/preferences.ui" line="174"/>
       <source>General</source>
-      <translation>Général</translation>
+      <translation type="unfinished">General</translation>
     </message>
     <message>
       <location filename="../ui/preferences.ui" line="20"/>
@@ -432,7 +432,7 @@ FreeGrid storage system components.</translation>
     <message>
       <location filename="../ui/preferences.ui" line="301"/>
       <source>Box</source>
-      <translation>Boite</translation>
+      <translation type="unfinished">Box</translation>
     </message>
     <message>
       <location filename="../ui/preferences.ui" line="434"/>
@@ -555,7 +555,7 @@ FreeGrid storage system components.</translation>
     <message>
       <location filename="../ui/sketch.ui" line="25"/>
       <source>Width</source>
-      <translation>Largeur</translation>
+      <translation>Larghezza</translation>
     </message>
     <message>
       <location filename="../ui/sketch.ui" line="48"/>
@@ -572,7 +572,7 @@ FreeGrid storage system components.</translation>
     <message>
       <location filename="../ui/sketch.ui" line="62"/>
       <source>Depth</source>
-      <translation>Profondeur</translation>
+      <translation>Profondità</translation>
     </message>
     <message>
       <location filename="../ui/sketch.ui" line="99"/>
@@ -624,7 +624,7 @@ FreeGrid storage system components.</translation>
     <message>
       <location filename="../../commands.py" line="207"/>
       <source>Sketch</source>
-      <translation>Esquisse</translation>
+      <translation type="unfinished">Sketch</translation>
     </message>
     <message>
       <location filename="../../commands.py" line="209"/>

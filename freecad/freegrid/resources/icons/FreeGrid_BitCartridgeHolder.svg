@@ -8,7 +8,7 @@
    version="1.1"
    id="svg1"
    inkscape:version="1.4 (e7c3feb100, 2024-10-09)"
-   sodipodi:docname="holder.svg"
+   sodipodi:docname="FreeGrid_BitCartridgeHolder.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -18,7 +18,7 @@
    xmlns:cc="http://creativecommons.org/ns#"
    xmlns:dc="http://purl.org/dc/elements/1.1/">
   <title
-     id="title10">FreeGrid WB Holder</title>
+     id="title10">FreeGrid - Bit Cartridge Holder</title>
   <sodipodi:namedview
      id="namedview1"
      pagecolor="#323232"
@@ -31,8 +31,8 @@
      inkscape:document-units="px"
      showgrid="true"
      inkscape:zoom="11.313709"
-     inkscape:cx="16.396038"
-     inkscape:cy="27.091028"
+     inkscape:cx="16.484426"
+     inkscape:cy="27.091027"
      inkscape:window-width="1894"
      inkscape:window-height="999"
      inkscape:window-x="0"
@@ -233,7 +233,7 @@
           </cc:Agent>
         </dc:publisher>
         <dc:relation>https://wiki.freecad.org/Artwork</dc:relation>
-        <dc:title>FreeGrid WB Holder</dc:title>
+        <dc:title>FreeGrid - Bit Cartridge Holder</dc:title>
       </cc:Work>
       <cc:License
          rdf:about="http://creativecommons.org/licenses/by-nc-sa/4.0/">
