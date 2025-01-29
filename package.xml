@@ -19,6 +19,12 @@
 
   <pythonmin>3.6.0</pythonmin>
 
+  <doc type="readme">README.md</doc>
+
+  <doc type="changelog">CHANGELOG.md</doc>
+
+  <doc type="contributing">CONTRIBUTING.md</doc>
+
   <url type="website">https://in3d.ca/freegrid-an-open-grid-based-3d-printed-storage-system/</url>
 
   <url branch="test/am_docs" type="repository">https://github.com/instancezero/in3dca-freegrid</url>
