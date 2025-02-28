@@ -6,6 +6,7 @@
 # *   Copyright (c) 2015 Yorik van Havre <yorik@uncreated.net>              *
 # *   Copyright (c) 2021 Benjamin Nauck <benjamin@nauck.se>                 *
 # *   Copyright (c) 2021 Mattias Pierre <github@mattiaspierre.com>          *
+# *   Copyright (c) 2025 hasecilu <hasecilu@tuta.io>                        *
 # *                                                                         *
 # *   This file is part of FreeCAD.                                         *
 # *                                                                         *
@@ -41,17 +42,20 @@ Usage:
 
 Available commands:
 
-    gather:                       update all ts files found in the source code
-                                  (runs updatets.py)
-    status:                       prints a status of the translations
-    update-source:                updates on CrowdIn the current version of .ts file
+    gather:                       update the locale agnostic file with latest strings from
+                                  source code and locales file from arguments entries
+    overall-status:               displays the translation status for each locale on all
+                                  workbenches available on Crowdin
+    wb-status:                    displays the translation status for each locale only
+                                  on the current workbench
+    update-source:                updates on Crowdin the current version of .ts file
                                   found in the source code
-    update-translation [locale]:  updates on CrowdIn the current version of locale .ts files
+    update-translation [locale]:  updates on Crowdin the current version of locale .ts files
                                   passed to the command
-    build:                        builds a new downloadable package on CrowdIn with all
+    build:                        builds a new downloadable package on Crowdin with all
                                   translated strings
     build-status:                 shows the status of the current builds available on
-                                  CrowdIn
+                                  Crowdin
     download [build_id]:          downloads build specified by 'build_id' or latest if
                                   build_id is left blank
     apply / install:              applies downloaded translations to source code
@@ -66,9 +70,16 @@ Setting the project name adhoc:
     CROWDIN_PROJECT_ID=some_project ./updatecrowdin.py update
 """
 
-# NOTE: See CrowdIn API docs at: https://support.crowdin.com/developer/api/v2/
+# NOTE:
+# This script is a remake of:
+#   https://github.com/davesrocketshop/Rocket/blob/master/util/updatecrowdin.py
+# which also is a remake of:
+#   https://github.com/FreeCAD/FreeCAD/blob/main/src/Tools/updatecrowdin.py
+
+# INFO: See Crowdin API documentation at: https://support.crowdin.com/developer/api/v2/
 
 import concurrent.futures
+import glob
 import json
 import os
 import shutil
@@ -85,74 +96,86 @@ TsFile = namedtuple("TsFile", ["filename", "src_path"])
 translation_source = [TsFile("FreeGrid.ts", "FreeGrid.ts")]
 
 # NOTE: location tuple contains:
-# - module name
+# - module name, must match files
 # - relative path to translation folder
 WBLocation = namedtuple("WBLocation", ["module_name", "translations_path"])
 wb_location = WBLocation("FreeGrid", ".")
 
+# fmt: off
+# "file_suffix": "Crowdin-locale"
 supported_locales = {
-    "af": "af-ZA",
-    "ar": "ar-SA",
-    "eu": "eu-ES",
-    "be": "be-BY",
-    "bg": "bg-BG",
-    "ca": "ca-ES",
-    "zh-CN": "zh-CN",
-    "zh-TW": "zh-TW",
-    "hr": "hr-HR",
-    "cs": "cs-CZ",
-    "da": "da-DK",
-    "nl": "nl-NL",
-    "fil": "fil-PH",
-    "fi": "fi-FI",
-    "fr": "fr-FR",
-    "gl": "gl-ES",
-    "ka": "ka-GE",
-    "de": "de-DE",
-    "el": "el-GR",
-    "hu": "hu-HU",
-    "id": "id-ID",
-    "it": "it-IT",
-    "ja": "ja-JP",
-    "kab": "kab-KAB",
-    "ko": "ko-KR",
-    "lt": "lt-LT",
-    "no": "no-NO",
-    "pl": "pl-PL",
-    "pt-PT": "pt-PT",
-    "pt-BR": "pt-BR",
-    "ro": "ro-RO",
-    "ru": "ru-RU",
-    "sr": "sr-SP",
-    "sr-CS": "sr-CS",
-    "sk": "sk-SK",
-    "sl": "sl-SI",
-    "es-ES": "es-ES",
-    "es-AR": "es-AR",
-    "sv-SE": "sv-SE",
-    "tr": "tr-TR",
-    "uk": "uk-UA",
-    "val-ES": "val-ES",
-    "vi": "vi-VN",
+    "af": "af-ZA",    "ar": "ar-SA",      "eu": "eu-ES",    "be": "be-BY",
+    "bg": "bg-BG",    "ca": "ca-ES",      "zh-CN": "zh-CN", "zh-TW": "zh-TW",
+    "hr": "hr-HR",    "cs": "cs-CZ",      "da": "da-DK",    "nl": "nl-NL",
+    "fil": "fil-PH",  "fi": "fi-FI",      "fr": "fr-FR",    "gl": "gl-ES",
+    "ka": "ka-GE",    "de": "de-DE",      "el": "el-GR",    "hu": "hu-HU",
+    "id": "id-ID",    "it": "it-IT",      "ja": "ja-JP",    "kab": "kab-KAB",
+    "ko": "ko-KR",    "lt": "lt-LT",      "no": "no-NO",    "pl": "pl-PL",
+    "pt-PT": "pt-PT", "pt-BR": "pt-BR",   "ro": "ro-RO",    "ru": "ru-RU",
+    "sr": "sr-SP",    "sr-CS": "sr-CS",   "sk": "sk-SK",    "sl": "sl-SI",
+    "es-ES": "es-ES", "es-AR": "es-AR",   "sv-SE": "sv-SE", "tr": "tr-TR",
+    "uk": "uk-UA",    "val-ES": "val-ES", "vi": "vi-VN"  # "en": "en-US"
 }
+# fmt: on
 
-GREEN = "\033[;32m" if os.name == "posix" else ""
 NC = "\033[0m" if os.name == "posix" else ""  # no color
+RED = "\033[;31m" if os.name == "posix" else ""
+GREEN = "\033[;32m" if os.name == "posix" else ""
+YELLOW = "\033[;33m" if os.name == "posix" else ""
+BLUE = "\033[;34m" if os.name == "posix" else ""
 
-THRESHOLD = 20  # percent for all WB on CrowdIn, useless for each WB
-DEBUG_URL = True
+THRESHOLD = 25  # 25 is used on main FreeCAD
+DEBUG_URL = False
 
 
 class CrowdinUpdater:
+    """Client methods to interact with the Crowdin API."""
+
     BASE_URL = "https://api.crowdin.com/api/v2"
 
-    def __init__(self, token, project_identifier, multithread=True):
+    def __init__(self, token: str, project_identifier: str, multithread: bool = True):
+        """
+        Initialize the Crowdin API client.
+
+        :param token: The API token for authentication.
+        :param project_identifier: The identifier of the Crowdin project.
+        :param multithread: Whether to use multithreading.
+        """
         self.token = token
         self.project_identifier = project_identifier
         self.multithread = multithread
 
+    def _make_api_req(
+        self, url: str, extra_headers: dict = {}, method: str = "GET", data=None
+    ) -> dict:
+        """
+        Make an API request to the specified URL.
+
+        :param url: The URL for the API request.
+        :param extra_headers: Additional headers to include in the request.
+        :param method: The HTTP method to use (default is GET).
+        :param data: The data to send with the request (default is None).
+        :return: The JSON response data.
+        """
+        headers = {"Authorization": f"Bearer {self.token}", **extra_headers}
+
+        if isinstance(data, dict):
+            headers["Content-Type"] = "application/json"
+            data = json.dumps(data).encode("utf-8")
+
+        request = Request(url, headers=headers, method=method, data=data)
+        if DEBUG_URL:
+            print(f"\n-> {url}\n")
+        return json.loads(urlopen(request).read())["data"]
+
+    def _make_project_api_req(self, project_path: str, *args, **kwargs) -> dict:
+        """Make an API request to a project-specific endpoint."""
+        url = f"{self.BASE_URL}/projects/{self._get_project_id()}{project_path}"
+        return self._make_api_req(url=url, *args, **kwargs)
+
     @lru_cache()
     def _get_project_id(self) -> int:
+        """Get the ID for the FreeCAD-addons project."""
         url = f"{self.BASE_URL}/projects/"
         response = self._make_api_req(url)
 
@@ -162,27 +185,18 @@ class CrowdinUpdater:
 
         raise Exception("No project identifier found!")
 
-    def _make_api_req(self, url: str, extra_headers: dict = {}, method: str = "GET", data=None):
-        headers = {"Authorization": "Bearer " + load_token(), **extra_headers}
-
-        if type(data) is dict:
-            headers["Content-Type"] = "application/json"
-            data = json.dumps(data).encode("utf-8")
-
-        request = Request(url, headers=headers, method=method, data=data)
-        return json.loads(urlopen(request).read())["data"]
-
-    def _make_project_api_req(self, project_path: str, *args, **kwargs):
-        url = f"{self.BASE_URL}/projects/{self._get_project_id()}{project_path}"
-        if DEBUG_URL:
-            print(url)
-        return self._make_api_req(url=url, *args, **kwargs)
-
     def _get_source_files_info(self) -> dict:
+        """Get the ID for all workbenches' translation source files."""
         files = self._make_project_api_req("/files?limit=250")
         return {f["data"]["path"].strip("/"): str(f["data"]["id"]) for f in files}
 
+    def _target_language_ids(self):
+        """Retrieve the valid language IDs."""
+        response = self._make_project_api_req("")
+        return response["targetLanguageIds"]
+
     def _add_storage(self, filename: str, fp):
+        """Get a storage ID to upload a file."""
         response = self._make_api_req(
             f"{self.BASE_URL}/storages",
             data=fp,
@@ -195,6 +209,7 @@ class CrowdinUpdater:
         return response["id"]
 
     def _update_source_file(self, ts_file: TsFile, files_info: dict):
+        """Update source file on Crowdin platform."""
         filename = quote_plus(ts_file.filename)
 
         with open(ts_file.src_path, "rb") as fp:
@@ -216,52 +231,70 @@ class CrowdinUpdater:
             self._make_project_api_req("/files", data={"storageId": storage_id, "name": filename})
             print(f"{filename} was not updated because is not on the list")
 
-    def _upload_translation_file(self, ts_file: TsFile, files_info: dict):
+    def _upload_translation_file(self, locale: str):
+        """Update translation file for the specified locale on Crowdin platform."""
+        files_info = self._get_source_files_info()
+
+        ts_file = TsFile(f"FreeGrid_{locale}.ts", f"FreeGrid_{locale}.ts")
+
         translation_filename = quote_plus(ts_file.filename)
 
         with open(ts_file.src_path, "rb") as fp:
             storage_id = self._add_storage(translation_filename, fp)
 
-        locale = translation_filename.split("_")[1].split(".")[0]  # Extracts 'es-ES'
-
         src_filename = translation_source[0].filename
 
         if src_filename in files_info:
-            file_id = files_info[src_filename]
-            r = self._make_project_api_req(
-                f"/translations/{supported_locales[locale]}",
+            file_id = int(files_info[src_filename])
+
+            self._make_project_api_req(
+                f"/translations/{locale}",
                 method="POST",
                 data={
                     "storageId": storage_id,
                     "fileId": file_id,
-                    "importEqSuggestions": "true",
-                    "autoApproveImported": "false",
-                    "translateHidden": "false",
-                    "addToTm": "false",
+                    "importEqSuggestions": True,
+                    "autoApproveImported": False,
+                    "translateHidden": False,
+                    "addToTm": False,
                 },
             )
-            print_response(r)
         else:
             print(f"{translation_filename} was not updated because is not on the list")
 
-    def status(self):
+    def project_progress(self):
+        """Check the translation progress for the whole Freecad-addons project."""
         response = self._make_project_api_req("/languages/progress?limit=100")
         return [item["data"] for item in response]
 
+    def file_progress(self, filename: str):
+        """Check the translation progress of a specific file."""
+        files_info = self._get_source_files_info()
+
+        if filename in files_info:
+            file_id = int(files_info[filename])
+            response = self._make_project_api_req(f"/files/{file_id}/languages/progress?limit=100")
+            return [item["data"] for item in response]
+        return None
+
     def download(self, build_id: str):
+        """Download the translations archive with the specified build ID."""
         filename = f"{self.project_identifier}.zip"
         response = self._make_project_api_req(f"/translations/builds/{build_id}/download")
         urlretrieve(response["url"], filename)
         print("download of " + filename + " complete")
 
     def build(self):
+        """Create a new translations archive with current translations."""
         self._make_project_api_req("/translations/builds", data={}, method="POST")
 
     def build_status(self):
+        """Check completion progress of translations archive."""
         response = self._make_project_api_req("/translations/builds")
         return [item["data"] for item in response]
 
     def update_source(self, ts_files: list):
+        """Prepare source files."""
         files_info = self._get_source_files_info()
         futures = []
 
@@ -277,18 +310,16 @@ class CrowdinUpdater:
         for future in futures:
             future.result()
 
-    def update_translation(self, ts_files: list):
-        files_info = self._get_source_files_info()
-        print(files_info)
+    def update_translation(self, locale: str):
+        """Prepare translation file."""
         futures = []
 
         with concurrent.futures.ThreadPoolExecutor() as executor:
-            for ts_file in ts_files:
-                if self.multithread:
-                    future = executor.submit(self._upload_translation_file, ts_file, files_info)
-                    futures.append(future)
-                else:
-                    self._upload_translation_file(ts_file, files_info)
+            if self.multithread:
+                future = executor.submit(self._upload_translation_file, locale)
+                futures.append(future)
+            else:
+                self._upload_translation_file(locale)
 
         # This blocks until all futures are complete and will also throw any exception
         for future in futures:
@@ -296,22 +327,22 @@ class CrowdinUpdater:
 
 
 def print_response(response: dict):
+    """Print pretty version of response dictionary."""
     print(json.dumps(response, indent=2))
 
 
-def load_token() -> None | str:
-    """Loads API token stored in ~/.crowdin-freecad-token"""
-    config_file = os.path.expanduser("~") + os.sep + ".crowdin-freecad-token"
-    if not os.path.exists(config_file):
-        config_file = os.path.expanduser("~") + os.sep + ".crowdin-freecadaddons"
-    if os.path.exists(config_file):
-        with open(config_file) as file:
-            return file.read().strip()
+def load_token() -> str | None:
+    """Load API token stored in ~/.crowdin-freecad-token or ~/.crowdin-freecadaddons files."""
+    for filename in [".crowdin-freecad-token", ".crowdin-freecadaddons"]:
+        config_file = os.path.expanduser(f"~/{filename}")
+        if os.path.exists(config_file):
+            with open(config_file) as file:
+                return file.read().strip()
     return None
 
 
-def applyTranslations():
-    """Extracts files from ZIP file and copy TS files"""
+def apply_translations():
+    """Extract files from ZIP translation build and copy appropriate workbench TS files."""
     global tempfolder
     currentfolder = os.getcwd()
     tempfolder = tempfile.mkdtemp()
@@ -344,7 +375,102 @@ def applyTranslations():
         print("Update of translations files has been completed.")
 
 
+def update_strings(locale: str):
+    """Update the TS agnostic file or the file specified by locale."""
+    u = "_" if locale else ""
+    # files from where strings will be picked up
+    FILES = sorted(glob.glob("../../*.py") + glob.glob("../ui/*.ui"))
+    filename = f"{wb_location.module_name}{u}{locale}.ts"
+    action = "Creating" if not os.path.isfile(filename) else "Updating"
+    print(f"{BLUE}\n<<< {action} '{filename}' file >>>{NC}")
+    flags = ["-ts", filename, "-no-obsolete"]
+    if u:
+        flags = [
+            "-source-language",
+            "en_US",
+            "-target-language",
+            locale.replace("-", "_"),
+        ] + flags
+
+    # print("Executing: ", [LUPDATE] + FILES + flags)
+    subprocess.run([LUPDATE] + FILES + flags)
+
+
+def print_translation_progress(status: list):
+    """Print a user friendly list with the translation progress."""
+    status = sorted(status, key=lambda item: item["translationProgress"], reverse=True)
+    print(
+        len([item for item in status if item["translationProgress"] > THRESHOLD]),
+        f"languages with status > {str(THRESHOLD)}%:\n",
+    )
+    sep = False
+    for item in status:
+        if item["translationProgress"] > 0:
+            if (item["translationProgress"] < THRESHOLD) and (not sep):
+                print("\nOther languages:\n")
+                sep = True
+            print(
+                f"{GREEN}{item['languageId']}{NC} {str(item['translationProgress'])}% "
+                f"({str(item['approvalProgress'])}% approved)"
+            )
+
+
+def print_translation_progress_md_table(status: list):
+    """
+    Print a Markdown table with the translation progress to use on 'translation/README.md' file.
+    """
+    status = sorted(status, key=lambda item: item["translationProgress"], reverse=True)
+
+    print("\n\n| language | translated strings | completion |")
+    print("|:---------|:------------------:|:----------:|")
+    for item in status:
+        if item["translationProgress"] > 0:
+            print(f"| {item['languageId']:<8} | {item['phrases']['translated']:<18} | ", end="")
+            print(f"{item['translationProgress']}%".ljust(11) + "|")
+
+
+def add_files_above_threshold(status: list):
+    """Add files above threshold to git staging area, other files are deleted."""
+    status = sorted(status, key=lambda item: item["translationProgress"], reverse=True)
+    for item in status:
+        filename = f"{wb_location.module_name}_{item['languageId']}"
+        if item["translationProgress"] < THRESHOLD:
+            if os.path.exists(f"{filename}.ts"):
+                os.remove(f"{filename}.ts")
+        else:
+            subprocess.run([LRELEASE, "-nounfinished", f"{filename}.ts"])
+            subprocess.run(["git", "add", f"{filename}.ts", f"{filename}.qm"])
+
+
+def check_third_line():
+    """Normalize locales on third line of TS files."""
+    for file in glob.glob(f"{wb_location.module_name}_*.ts"):
+        with open(file, "r") as f:
+            lines = f.readlines()
+        if len(lines) >= 3:
+            lines[2] = lines[2].replace("-", "_").replace('"en"', '"en_US"')
+        with open(file, "w") as f:
+            f.writelines(lines)
+
+
+def no_locale(locale: str):
+    """Print error message when entered locale is not valid."""
+    print(
+        f"\nVerify your language code '{RED}{locale}{NC}'. Case sensitive.\n"
+        "If it's correct, ask a maintainer to add support for your language on FreeCAD."
+        "\nYour language should have a progress of at least 25% on FreeCAD project on Crowdin.\n"
+        f"\nSupported locales, '{BLUE}FreeCADGui.supportedLocales(){NC}': {YELLOW}",
+        " ".join(supported_locales.keys()),
+        NC,
+    )
+
+
 if __name__ == "__main__":
+    LUPDATE = os.environ.get("LUPDATE", "/usr/lib/qt6/bin/lupdate")
+    LRELEASE = os.environ.get("LRELEASE", "/usr/lib/qt6/bin/lrelease")
+
+    check_third_line()
+
     command = None
 
     args = sys.argv[1:]
@@ -358,33 +484,28 @@ if __name__ == "__main__":
 
     project_identifier = "freecad-addons"
 
-    updater = CrowdinUpdater(token, project_identifier)
+    updater = CrowdinUpdater(token or "", project_identifier)
 
-    if command == "status":
-        status = updater.status()
-        status = sorted(status, key=lambda item: item["translationProgress"], reverse=True)
-        # NOTE: this check progress for all WB on CrowdIn, not only the current one
+    if command == "overall-status":
+        status = updater.project_progress()
         print(
-            len([item for item in status if item["translationProgress"] > THRESHOLD]),
-            f"languages with status > {str(THRESHOLD)}%:\n",
+            f"{BLUE}Translation progress for all workbenches available on "
+            f"'Freecad-addons' project on Crowdin{NC}\n"
         )
-        sep = False
-        for item in status:
-            if item["translationProgress"] > 0:
-                if (item["translationProgress"] < THRESHOLD) and (not sep):
-                    print("\nOther languages:\n")
-                    sep = True
-                print(
-                    f"{GREEN}{item['languageId']}{NC} {str(item['translationProgress'])}% "
-                    f"({str(item['approvalProgress'])}% approved)"
-                )
+        print_translation_progress(status)
+
+    elif command == "wb-status":
+        status = updater.file_progress(translation_source[0].filename)
+        print(f"{BLUE}Translation progress for {wb_location.module_name} workbench{NC}\n")
+        print_translation_progress(status or [])
+        print_translation_progress_md_table(status or [])
+
+    elif command == "build":
+        updater.build()
 
     elif command == "build-status":
         for item in updater.build_status():
             print(f"  id: {item['id']} progress: {item['progress']}% status: {item['status']}")
-
-    elif command == "build":
-        updater.build()
 
     elif command == "download":
         if len(args) == 2:
@@ -404,28 +525,41 @@ if __name__ == "__main__":
                 print("please specify a build id")
 
     elif command in ["apply", "install"]:
-        applyTranslations()
-        subprocess.run(["./update_translation.sh", "-R"])
-        subprocess.run(["./update_translation.sh", "-A"])
+        # copy files above threshold
+        apply_translations()
+        check_third_line()
+        # normalize indentation
+        for locale in supported_locales:
+            update_strings(locale)
+        # add files to stage area
+        status = updater.file_progress(translation_source[0].filename)
+        add_files_above_threshold(status or [])
 
     elif command == "gather":
-        # Update agnostic file
-        subprocess.run(["./update_translation.sh", "-u"])
+        # NOTE: you can pass several locales at once
+        # $ ./update_crowdin.py gather el fr pl sv-SE
+        update_strings("")  # update agnostic file
+        if len(args[1:]) > 0:
+            for locale in args[1:]:
+                if locale in supported_locales:
+                    update_strings(locale)  # update valid locales
+                else:
+                    no_locale(locale)
 
     elif command == "update-source":
-        # Execute after "gather"" command
-        print("ts file being uploaded to CrowdIn: ", translation_source)
+        # NOTE: Execute after "gather" command
+        print("ts file being uploaded to Crowdin:", translation_source)
         updater.update_source(translation_source)
 
     elif command == "update-translation":
-        print("Still does not work")
-        exit(69)
-        locale_source = []
-        for arg in args[1:]:
-            locale_source.append(TsFile(f"STEMFIE_{arg}.ts", f"STEMFIE_{arg}.ts"))
-            updater.update_translation(locale_source)
-
-        print(locale_source)
+        # NOTE: you can pass several locales at once
+        # $ ./update_crowdin.py update-translation de es-ES ja pt-BR
+        for locale in args[1:]:
+            # locales = sorted(updater._target_language_ids())
+            if locale in supported_locales:
+                updater.update_translation(locale)
+            else:
+                no_locale(locale)
 
     else:
         print(__doc__)
